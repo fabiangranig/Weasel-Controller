@@ -25,6 +25,7 @@ namespace Weasel_Controller
             weasel_map.AddNodeToNumber(new C_Waypoint(30), 10);
             weasel_map.AddNodeToNumber(new C_Waypoint(40), 30);
 
+            weasel_map.ConnectTwoPoints(40, 20);
             C_Waypoint way = weasel_map.FindWayPoint(10);
             Console.WriteLine(way._PointId);
         }
