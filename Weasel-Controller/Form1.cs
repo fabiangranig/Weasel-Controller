@@ -23,6 +23,10 @@ namespace Weasel_Controller
             weasel_map.AddNodeToNumber(new C_Waypoint(10), -1);
             weasel_map.AddNodeToNumber(new C_Waypoint(20), 10);
             weasel_map.AddNodeToNumber(new C_Waypoint(30), 10);
+            weasel_map.AddNodeToNumber(new C_Waypoint(40), 30);
+
+            C_Waypoint way = weasel_map.FindWayPoint(10);
+            Console.WriteLine(way._PointId);
         }
     }
 }

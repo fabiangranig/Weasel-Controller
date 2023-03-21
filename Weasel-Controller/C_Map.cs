@@ -47,7 +47,6 @@ namespace Weasel_Controller
 
             if(temp_map._Next == null)
             {
-                Console.WriteLine("no Point to add too! bad input");
                 return;
             }
 
@@ -56,6 +55,40 @@ namespace Weasel_Controller
             {
                 AddNodeToNumberBackend(temp_map._Next[i], waypoint1, id1);
             }
+        }
+
+        public C_Waypoint FindWayPoint(int id1)
+        {
+            return FindWayPointBackend(_Head, id1);
+        }
+
+        public C_Waypoint FindWayPointBackend(C_Waypoint header, int id1)
+        {
+            if(header == null)
+            {
+                return null;
+            }
+
+            if(header._PointId == id1)
+            {
+                return header;
+            }
+
+            if(header._Next != null)
+            {
+                C_Waypoint[] waypoints = new C_Waypoint[header._Next.Count];
+                for(int i = 0; i < waypoints.Length; i++)
+                {
+                    waypoints[i] = FindWayPointBackend(header._Next[i], id1);
+                    if(waypoints[i] != null)
+                    {
+                        return waypoints[i];
+                    }
+                }
+            }
+
+            //When nothing works return null
+            return null;
         }
     }
 }
