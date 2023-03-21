@@ -21,38 +21,17 @@ namespace Weasel_Controller
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Parsing the .txt input
-            txtParser parser = new txtParser("input.txt");
+            //Get the map from the .txt input
+            txtParser txtparse1 = new txtParser(@"input.txt");
 
-            for(int i = 0; i < parser._good_blob.Count; i++)
-            {
-                if(parser._good_blob[i] == "---")
-                {
-                    for(int u = i + 1; u < parser._good_blob.Count; u++)
-                    {
-                        if(parser._good_blob[u] == "---")
-                        {
-                            break;
-                        }
+            //Build the map from the parser
+            weasel_map = txtparse1.ParseToWeaselMap();
 
-                        string[] split2 = parser._good_blob[u].Split('-');
-                        weasel_map.ConnectTwoPoints(Int32.Parse(split2[0]), Int32.Parse(split2[1]));
-                    }
-                    break;
-                }
-
-                string[] split = parser._good_blob[i].Split('-');
-
-                if(i == 0)
-                {
-                    weasel_map.AddNodeToNumber(new C_Waypoint(Int32.Parse(split[0])), Int32.Parse(split[1]));
-                }
-                else
-                {
-                    weasel_map.AddNodeToNumber(new C_Waypoint(Int32.Parse(split[1])), Int32.Parse(split[0]));
-                }
-            }
-            Console.WriteLine();
+            //Testcase
+            Weasel w1 = new Weasel("MC6", false);
+            string path = weasel_map.FreePath(w1._LastPosition, 41);
+            Console.WriteLine("Path: " + path);
+            w1.MoveThroughCordinates(path);
         }
     }
 }

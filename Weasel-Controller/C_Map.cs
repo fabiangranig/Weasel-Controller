@@ -104,10 +104,27 @@ namespace Weasel_Controller
             waypoint._Next.Add(FindWayPointBackend(_Head, end_point));
         }
 
-        public void FreePath(int start, int end)
+        public string FreePath(int start, int end)
         {
             C_Waypoint start_position = FindWayPoint(start);
-            Console.WriteLine(FreePathBackend(start_position, end, ""));
+
+            //The randomness should be killed through about 20 iterations
+            List<string> routes = new List<string>();
+            for (int i = 0; i < 20; i++)
+            {
+                string path = FreePathBackend(start_position, end, "");
+
+                if(path != null)
+                {
+                    routes.Add(path);
+                }
+            }
+
+            //Sort the paths
+            routes.Sort();
+
+            //Get the top route
+            return routes[0];
         }
 
         public string FreePathBackend(C_Waypoint way, int id, string path)
@@ -124,6 +141,18 @@ namespace Weasel_Controller
 
             C_Waypoint RandomWay = way._Next[r1.Next(0, way._Next.Count)];
             return FreePathBackend(RandomWay, id, path + way._PointId + " ");
+        }
+
+        public void Reserve(int id)
+        {
+            C_Waypoint temp = FindWayPoint(id);
+            temp._Reserved = true;
+        }
+
+        public void UnReserve(int id)
+        {
+            C_Waypoint temp = FindWayPoint(id);
+            temp._Reserved = false;
         }
     }
 }
