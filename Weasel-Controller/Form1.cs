@@ -12,6 +12,8 @@ namespace Weasel_Controller
 {
     public partial class Form1 : Form
     {
+        private C_Map weasel_map = new C_Map();
+
         public Form1()
         {
             InitializeComponent();
@@ -19,15 +21,38 @@ namespace Weasel_Controller
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            C_Map weasel_map = new C_Map();
-            weasel_map.AddNodeToNumber(new C_Waypoint(10), -1);
-            weasel_map.AddNodeToNumber(new C_Waypoint(20), 10);
-            weasel_map.AddNodeToNumber(new C_Waypoint(30), 10);
-            weasel_map.AddNodeToNumber(new C_Waypoint(40), 30);
+            //Parsing the .txt input
+            txtParser parser = new txtParser("input.txt");
 
-            weasel_map.ConnectTwoPoints(40, 20);
-            C_Waypoint way = weasel_map.FindWayPoint(10);
-            Console.WriteLine(way._PointId);
+            for(int i = 0; i < parser._good_blob.Count; i++)
+            {
+                if(parser._good_blob[i] == "---")
+                {
+                    for(int u = i + 1; u < parser._good_blob.Count; u++)
+                    {
+                        if(parser._good_blob[u] == "---")
+                        {
+                            break;
+                        }
+
+                        string[] split2 = parser._good_blob[u].Split('-');
+                        weasel_map.ConnectTwoPoints(Int32.Parse(split2[0]), Int32.Parse(split2[1]));
+                    }
+                    break;
+                }
+
+                string[] split = parser._good_blob[i].Split('-');
+
+                if(i == 0)
+                {
+                    weasel_map.AddNodeToNumber(new C_Waypoint(Int32.Parse(split[0])), Int32.Parse(split[1]));
+                }
+                else
+                {
+                    weasel_map.AddNodeToNumber(new C_Waypoint(Int32.Parse(split[1])), Int32.Parse(split[0]));
+                }
+            }
+            Console.WriteLine();
         }
     }
 }

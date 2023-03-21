@@ -92,14 +92,14 @@ namespace Weasel_Controller
 
         public void ConnectTwoPoints(int start_point, int end_point)
         {
-            C_Waypoint waypoint = FindWayPointBackend(_Head, end_point);
+            C_Waypoint waypoint = FindWayPointBackend(_Head, start_point);
 
             if(waypoint._Next == null)
             {
                 waypoint._Next = new List<C_Waypoint>();
             }
 
-            waypoint._Next.Add(FindWayPointBackend(_Head, start_point));
+            waypoint._Next.Add(FindWayPointBackend(_Head, end_point));
         }
     }
 }
