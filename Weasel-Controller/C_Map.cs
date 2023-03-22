@@ -104,7 +104,7 @@ namespace Weasel_Controller
             waypoint._Next.Add(FindWayPointBackend(_Head, end_point));
         }
 
-        public string FreePath(int start, int end)
+        public int[] FreePath(int start, int end)
         {
             C_Waypoint start_position = FindWayPoint(start);
 
@@ -120,27 +120,52 @@ namespace Weasel_Controller
                 }
             }
 
+            if(routes.Count == 0)
+            {
+                return new int[] { -1 };
+            }
+
             //Sort the paths
             routes.Sort();
 
+            //Convert to Int32 Array
+            string[] split = routes[0].Split(' ');
+            int[] arr = new int[split.Length];
+            for(int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = Int32.Parse(split[i]);
+            }
+
             //Get the top route
-            return routes[0];
+            return arr;
         }
 
         public string FreePathBackend(C_Waypoint way, int id, string path)
         {
-            if(way._Next == null)
+            if(way._Next == null && way._PointId != id && _Head._Reserved == false)
             {
                 return FreePathBackend(_Head, id, path + way._PointId + " ");
             }
 
-            if(way._PointId == id)
+            if(way._Next == null)
+            {
+                return null;
+            }
+
+            if(way._PointId == id && way._Reserved == false)
             {
                 return path + way._PointId;
             }
 
-            C_Waypoint RandomWay = way._Next[r1.Next(0, way._Next.Count)];
-            return FreePathBackend(RandomWay, id, path + way._PointId + " ");
+            int rnd = r1.Next(0, way._Next.Count);
+            if(way._Next[rnd]._Reserved == false)
+            {
+                C_Waypoint RandomWay = way._Next[rnd];
+                return FreePathBackend(RandomWay, id, path + way._PointId + " ");
+            }
+
+            //When all ways are blocked off
+            return null;
         }
 
         public void Reserve(int id)
@@ -153,6 +178,54 @@ namespace Weasel_Controller
         {
             C_Waypoint temp = FindWayPoint(id);
             temp._Reserved = false;
+        }
+
+        public void ReserveArr(int[] arr)
+        {
+            for(int i = 0; i < arr.Length; i++)
+            {
+                Reserve(arr[i]);
+            }
+        }
+
+        public void UnReserveArr(int[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                UnReserve(arr[i]);
+            }
+        }
+
+        public List<string> ShowMap()
+        {
+            C_Waypoint temp = _Head;
+            List<string> points = new List<string>();
+            ShowMapBackend(temp, ref points);
+            points.Sort();
+            return points;
+        }
+
+        public void ShowMapBackend(C_Waypoint way, ref List<string> points)
+        {
+            string toAdd = way._PointId + " " + way._Reserved;
+            if(way._Next == null)
+            {
+                if(!points.Contains(toAdd))
+                {
+                    points.Add(toAdd);
+                }
+                return;
+            }
+
+            if (!points.Contains(toAdd))
+            {
+                points.Add(toAdd);
+            }
+
+            for (int i = 0; i < way._Next.Count; i++)
+            {
+                ShowMapBackend(way._Next[i], ref points);
+            }
         }
     }
 }

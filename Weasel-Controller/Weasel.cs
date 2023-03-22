@@ -16,20 +16,22 @@ namespace Weasel_Controller
         private static string _IpAddress;
 
         private string _WeaselId;
+        private int _WeaselId2;
         public int _LastPosition;
-        private bool _AppOnline;
+        private int _AppOnline;
 
-        public Weasel(string weaselid1, bool AppOnline1)
+        public Weasel(string weaselid1, int AppOnline1, int weaselId21)
         {
             _IpAddress = "http://10.0.9.22:4567";
             _WeaselId = weaselid1;
-            _LastPosition = GetPosition();
             _AppOnline = AppOnline1;
+            _WeaselId2 = weaselId21;
+            _LastPosition = GetPosition();
         }
 
-        private void SetPosition(int waypoint)
+        public void SetPosition(int waypoint)
         {
-            if(_AppOnline == true)
+            if(_AppOnline == 1)
             {
                 var address = _IpAddress + "/controller/move/" + _WeaselId + "/" + waypoint.ToString();
 
@@ -45,36 +47,35 @@ namespace Weasel_Controller
             }
         }
 
-        public void MoveThroughCordinates(string input)
+        public void MoveThroughCordinates(int[] input)
         {
             Thread t1 = new Thread(() => MoveThroughCordinatesBackend(input));
             t1.Start();
         }
 
-        private void MoveThroughCordinatesBackend(string path)
+        private void MoveThroughCordinatesBackend(int[] path)
         {
-            string[] split1 = path.Split(' ');
-            int[] numbers = new Int32[split1.Length];
-            for(int i = 0; i < split1.Length; i++)
+            //When there is only one or two cordinates
+            if(path.Length < 3)
             {
-                numbers[i] = Int32.Parse(split1[i]);
+                SetPosition(path[path.Length-1]);
+                return;
             }
 
             int o = 0;
-            while(_LastPosition != numbers[numbers.Length - 1])
+            while(_LastPosition != path[path.Length - 1])
             {
-                if(_LastPosition == numbers[o])
+                if(_LastPosition == path[o])
                 {
-                    SetPosition(numbers[o+2]);
+                    SetPosition(path[o+2]);
 
-                    if(numbers[o + 2] == numbers[numbers.Length - 1])
+                    //Test
+                    Console.WriteLine(_WeaselId + ": gesetzte Position: " + path[o + 2]);
+
+                    if (path[o + 2] == path[path.Length - 1])
                     {
                         break;
                     }
-
-                    //Test
-                    Console.WriteLine(_WeaselId + ": gesetzte Position: " + numbers[o + 2]);
-
                     o++;
                 }
 
@@ -88,7 +89,7 @@ namespace Weasel_Controller
 
         public int GetPosition()
         {
-            if(_AppOnline == true)
+            if(_AppOnline == 1)
             {
                 WebClient wc = new WebClient();
 
@@ -102,15 +103,22 @@ namespace Weasel_Controller
                 JsonElement root = doc.RootElement;
 
                 //Weasels aufteilen
-                var u1 = root[0];
+                var u1 = root[_WeaselId2];
 
                 //Create string values
                 string test = u1.GetProperty("lastWaypoint") + "";
                 return Int32.Parse(test);
             }
+            else
+            {
+                Console.WriteLine(_WeaselId + ": App offline. Bitte derzeitige Position ausgeben: ");
+                return Convert.ToInt32(Console.ReadLine());
+            }
+        }
 
-            Console.WriteLine(_WeaselId + ": App offline. Bitte derzeitige Position ausgeben: ");
-            return Convert.ToInt32(Console.ReadLine());
+        public void UpdateInfos()
+        {
+            _LastPosition = GetPosition();
         }
     }
 }
