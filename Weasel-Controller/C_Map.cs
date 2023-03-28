@@ -227,5 +227,16 @@ namespace Weasel_Controller
                 ShowMapBackend(way._Next[i], ref points);
             }
         }
+
+        public override string ToString()
+        {
+            List<string> MapInList = ShowMap();
+            string MapInString = "";
+            for (int i = 0; i < MapInList.Count; i++)
+            {
+                MapInString += MapInList[i] + "\n";
+            }
+            return MapInString;
+        }
     }
 }

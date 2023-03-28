@@ -13,102 +13,103 @@ namespace Weasel_Controller
 {
     public partial class Form1 : Form
     {
-        private C_Map weasel_map;
-        private Weasel[] weasels;
-        private bool AppOnline;
-        private string _input_adress;
-        private int[] weasel_before_last_position;
+        //Public Variables
+        private C_Map _WeaselMap;
+        private Weasel[] _Weasels;
+        private bool _AppOnline;
+        private string _InputAddress;
+
+        //@USER INPUT
+        //@USER INPUT
+        //@USER INPUT
+        private void InputtableInformations()
+        {
+            //Values to set by user
+            //if app is online
+            _AppOnline = false;
+            //where the input files of the map is located
+            _InputAddress = @"input.txt";
+            //how many and which weasel names
+            _Weasels = new[]
+            {
+                new Weasel("MC6", _AppOnline, 0),
+                new Weasel("AV002", _AppOnline, 1),
+                new Weasel("AV015", _AppOnline, 2)
+            };
+        }
 
         public Form1()
         {
+            //Standard VS Studio Forms Intialize
             InitializeComponent();
 
+            //Timer -> uses are stated below this command
             Timer tmr = new Timer();
             tmr.Interval = 100;
-            tmr.Tick += fastUpdate;
+            tmr.Tick += Update100ms;
             tmr.Start();
-
-            Timer tmr2 = new Timer();
-            tmr2.Interval = 1000;
-            tmr2.Tick += slowUpdate;
-            tmr2.Start();
         }
 
-        private void fastUpdate(object sender, EventArgs e)
+        private void Update100ms(object sender, EventArgs e)
         {
-            //Unreserve past nodes
-            for(int i = 0; i < weasels.Length; i++)
+            //Unreserve past nodes with updating the weasels information
+            if(_AppOnline == true)
             {
-                weasels[i].UpdateInfos();
-                if (weasels[i]._LastPosition != weasel_before_last_position[i])
-                {
-                    weasel_map.UnReserve(weasel_before_last_position[i]);
-                    weasel_before_last_position[i] = weasels[i]._LastPosition;
-                }
+                UpdateWeaselInformation();
             }
-        }
+            UnreserveNodes();
 
-        public void slowUpdate(object sender, EventArgs e)
-        {
-            List<string> MapInList = weasel_map.ShowMap();
-            string MapInString = "";
-            for(int i = 0; i < MapInList.Count; i++)
-            {
-                MapInString += MapInList[i] + "\n";
-            }
-            File.WriteAllText(@"map.txt", MapInString);
+            //Write map to .txt
+            File.WriteAllText(@"map.txt", _WeaselMap.ToString());
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //User Input
-            //User Input
-            //User Input
-            AppOnline = false;
-            _input_adress = @"input.txt";
+            //Load the user input
+            InputtableInformations();
+            
+            //Build the map through the .txt
+            txtParser txtparse = new txtParser(_InputAddress);
+            _WeaselMap = txtparse.ParseToWeaselMap();
 
-            //Get the map from the .txt input
-            txtParser txtparse1 = new txtParser(_input_adress);
-
-            //Build the map from the parser
-            weasel_map = txtparse1.ParseToWeaselMap();
-
-            //Add weasels
-            weasels = new[]
+            //Intialize for last position and reserve spot on which they are standing on
+            for(int i = 0; i < _Weasels.Length; i++) 
             {
-                new Weasel("MC6", AppOnline, 0),
-                new Weasel("AV002", AppOnline, 1),
-                new Weasel("AV015", AppOnline, 2)
-            };
-
-            //Intialize for last position
-            weasel_before_last_position = new Int32[weasels.Length];
-            for(int i = 0; i < weasel_before_last_position.Length; i++)
-            {
-                weasel_before_last_position[i] = weasels[i]._LastPosition;
-            }
-
-            //Reserve spots on which the weasels are standing on
-            for(int i = 0; i < weasels.Length; i++)
-            {
-                weasel_map.Reserve(weasels[i]._LastPosition);
+                SetBeforeLastPosition(i);
+                _WeaselMap.Reserve(_Weasels[i]._LastPosition);
             }
         }
 
-        private void btn_Debug_Click(object sender, EventArgs e)
+        //Unreserve nodes when Weasel changes position. Has to be used in an Update function
+        private void UnreserveNodes()
         {
-            int weasel = Int32.Parse(txtBox_Weasel.Text);
-            int[] path = weasel_map.FreePath(weasels[weasel]._LastPosition, Int32.Parse(txtBox_Debug.Text));
+            for (int i = 0; i < _Weasels.Length; i++)
+            {
+                if (_Weasels[i]._LastPosition != _Weasels[i]._BeforeLastPosition)
+                {
+                    _WeaselMap.UnReserve(_Weasels[i]._BeforeLastPosition);
+                    SetBeforeLastPosition(i);
+                }
+            }
+        }
 
-            if (!(path[0] == -1))
+        private void UpdateWeaselInformation()
+        {
+            for(int i = 0; i < _Weasels.Length; i++)
             {
-                weasel_map.ReserveArr(path);
-                weasels[weasel].MoveThroughCordinates(path);
+                _Weasels[i].UpdateInfos();
             }
-            if (path[0] == -1)
-            {
-                Console.WriteLine(weasel + ": Weg blockiert!");
-            }
+        }
+
+        private void SetBeforeLastPosition(int weaselindex1)
+        {
+            _Weasels[weaselindex1]._BeforeLastPosition = _Weasels[weaselindex1]._LastPosition;
+        }
+
+        private void btn_WeaselPanel_Click(object sender, EventArgs e)
+        {
+            WeaselPanel wp1 = new WeaselPanel(ref _Weasels);
+            wp1.Show();
         }
     }
 }

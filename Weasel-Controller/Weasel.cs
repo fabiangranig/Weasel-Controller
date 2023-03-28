@@ -15,10 +15,11 @@ namespace Weasel_Controller
     {
         private static string _IpAddress;
 
-        private string _WeaselId;
-        private int _WeaselId2;
+        public string _WeaselId;
+        public int _WeaselId2;
         public int _LastPosition;
-        private bool _AppOnline;
+        public int _BeforeLastPosition;
+        public bool _AppOnline;
 
         public Weasel(string weaselid1, bool AppOnline1, int weaselId21)
         {
