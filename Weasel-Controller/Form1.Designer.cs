@@ -30,26 +30,38 @@ namespace Weasel_Controller
         private void InitializeComponent()
         {
             this.btn_WeaselPanel = new System.Windows.Forms.Button();
+            this.btn_WeaselControlPanel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_WeaselPanel
             // 
-            this.btn_WeaselPanel.Location = new System.Drawing.Point(334, 339);
+            this.btn_WeaselPanel.Location = new System.Drawing.Point(12, 12);
             this.btn_WeaselPanel.Name = "btn_WeaselPanel";
-            this.btn_WeaselPanel.Size = new System.Drawing.Size(115, 23);
+            this.btn_WeaselPanel.Size = new System.Drawing.Size(391, 23);
             this.btn_WeaselPanel.TabIndex = 3;
-            this.btn_WeaselPanel.Text = "Weasel Panel";
+            this.btn_WeaselPanel.Text = "Weasel Information Panel";
             this.btn_WeaselPanel.UseVisualStyleBackColor = true;
             this.btn_WeaselPanel.Click += new System.EventHandler(this.btn_WeaselPanel_Click);
+            // 
+            // btn_WeaselControlPanel
+            // 
+            this.btn_WeaselControlPanel.Location = new System.Drawing.Point(12, 41);
+            this.btn_WeaselControlPanel.Name = "btn_WeaselControlPanel";
+            this.btn_WeaselControlPanel.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselControlPanel.TabIndex = 4;
+            this.btn_WeaselControlPanel.Text = "Weasel Control Panel";
+            this.btn_WeaselControlPanel.UseVisualStyleBackColor = true;
+            this.btn_WeaselControlPanel.Click += new System.EventHandler(this.btn_WeaselControlPanel_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(415, 305);
+            this.Controls.Add(this.btn_WeaselControlPanel);
             this.Controls.Add(this.btn_WeaselPanel);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Weasel Controller";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
@@ -57,6 +69,7 @@ namespace Weasel_Controller
 
         #endregion
         private System.Windows.Forms.Button btn_WeaselPanel;
+        private System.Windows.Forms.Button btn_WeaselControlPanel;
     }
 }
 

@@ -8,13 +8,13 @@ using System.Drawing;
 
 namespace Weasel_Controller
 {
-    class WeaselPanel : Form
+    class WeaselInformationPanel : Form
     {
         private Weasel[] weasels;
         private Label[,] labels;
         private int InfoSize;
        
-        public WeaselPanel(ref Weasel[] weasels1)
+        public WeaselInformationPanel(ref Weasel[] weasels1)
         {
             //Get an reference to the weasels
             weasels = weasels1;

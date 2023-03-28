@@ -108,8 +108,14 @@ namespace Weasel_Controller
 
         private void btn_WeaselPanel_Click(object sender, EventArgs e)
         {
-            WeaselPanel wp1 = new WeaselPanel(ref _Weasels);
+            WeaselInformationPanel wp1 = new WeaselInformationPanel(ref _Weasels);
             wp1.Show();
+        }
+
+        private void btn_WeaselControlPanel_Click(object sender, EventArgs e)
+        {
+            WeaselControlPanel WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels);
+            WCP.Show();
         }
     }
 }

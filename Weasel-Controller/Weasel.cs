@@ -49,7 +49,7 @@ namespace Weasel_Controller
         {
             if(_AppOnline == true)
             {
-                var address = _IpAddress + "/controller/move/" + _WeaselId + "/" + waypoint.ToString();
+                var address = _IpAddress + "/controller/move/" + _WeaselName + "/" + waypoint.ToString();
 
                 var request = WebRequest.Create(address);
                 request.Method = "POST";
@@ -86,7 +86,7 @@ namespace Weasel_Controller
                     SetPosition(path[o+2]);
 
                     //Test
-                    Console.WriteLine(_WeaselId + ": gesetzte Position: " + path[o + 2]);
+                    Console.WriteLine(_WeaselName + ": gesetzte Position: " + path[o + 2]);
 
                     if (path[o + 2] == path[path.Length - 1])
                     {
@@ -127,7 +127,7 @@ namespace Weasel_Controller
             }
             else
             {
-                Console.WriteLine(_WeaselId + ": App offline. Bitte derzeitige Position eingeben: ");
+                Console.WriteLine(_WeaselName + ": App offline. Bitte derzeitige Position eingeben: ");
                 return Convert.ToInt32(Console.ReadLine());
             }
         }
