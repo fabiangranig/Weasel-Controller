@@ -13,20 +13,35 @@ namespace Weasel_Controller
 {
     class Weasel
     {
+        //Variables
         private static string _IpAddress;
-
-        public string _WeaselId;
-        public int _WeaselId2;
+        private string _WeaselName;
+        private int _WeaselId;
         public int _LastPosition;
         public int _BeforeLastPosition;
-        public bool _AppOnline;
+        private bool _AppOnline;
 
-        public Weasel(string weaselid1, bool AppOnline1, int weaselId21)
+        //encapsulation
+        public string WeaselName
+        {
+            get { return _WeaselName; }
+        }
+
+        public int WeaselID
+        {
+            get { return _WeaselId; }
+        }
+        public bool AppOnline
+        {
+            get { return _AppOnline; }
+        }
+
+        public Weasel(string weaselname, bool AppOnline1, int weaselId21)
         {
             _IpAddress = "http://10.0.9.22:4567";
-            _WeaselId = weaselid1;
+            _WeaselName = weaselname;
             _AppOnline = AppOnline1;
-            _WeaselId2 = weaselId21;
+            _WeaselId = weaselId21;
             _LastPosition = GetPosition();
         }
 
@@ -104,7 +119,7 @@ namespace Weasel_Controller
                 JsonElement root = doc.RootElement;
 
                 //Weasels aufteilen
-                var u1 = root[_WeaselId2];
+                var u1 = root[_WeaselId];
 
                 //Create string values
                 string test = u1.GetProperty("lastWaypoint") + "";
@@ -112,7 +127,7 @@ namespace Weasel_Controller
             }
             else
             {
-                Console.WriteLine(_WeaselId + ": App offline. Bitte derzeitige Position ausgeben: ");
+                Console.WriteLine(_WeaselId + ": App offline. Bitte derzeitige Position eingeben: ");
                 return Convert.ToInt32(Console.ReadLine());
             }
         }

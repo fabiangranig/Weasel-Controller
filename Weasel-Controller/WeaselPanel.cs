@@ -20,10 +20,10 @@ namespace Weasel_Controller
             weasels = weasels1;
 
             //Get how many infos there are
-            InfoSize = 4;
+            InfoSize = 5;
 
             //Create the labels for an weasel
-            labels = new Label[weasels.Length, 4];
+            labels = new Label[weasels.Length, InfoSize];
             for(int i = 0; i < weasels.Length; i++)
             {
                 for(int u = 0; u < InfoSize; u++)
@@ -62,10 +62,11 @@ namespace Weasel_Controller
         {
             for(int i = 0; i < weasels.Length; i++)
             {
-                labels[i, 0].Text = weasels[i]._WeaselId;
-                labels[i, 1].Text = Convert.ToString(weasels[i]._WeaselId2);
+                labels[i, 0].Text = weasels[i].WeaselName;
+                labels[i, 1].Text = Convert.ToString(weasels[i].WeaselID);
                 labels[i, 2].Text = Convert.ToString(weasels[i]._LastPosition);
-                labels[i, 3].Text = Convert.ToString(weasels[i]._AppOnline);
+                labels[i, 3].Text = Convert.ToString(weasels[i]._BeforeLastPosition);
+                labels[i, 4].Text = Convert.ToString(weasels[i].AppOnline);
             }
         }
 

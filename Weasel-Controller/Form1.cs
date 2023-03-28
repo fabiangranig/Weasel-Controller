@@ -14,7 +14,7 @@ namespace Weasel_Controller
     public partial class Form1 : Form
     {
         //Public Variables
-        private C_Map _WeaselMap;
+        private Map _WeaselMap;
         private Weasel[] _Weasels;
         private bool _AppOnline;
         private string _InputAddress;
