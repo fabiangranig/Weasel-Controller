@@ -18,9 +18,9 @@ namespace Weasel_Controller
         private string _WeaselId;
         private int _WeaselId2;
         public int _LastPosition;
-        private int _AppOnline;
+        private bool _AppOnline;
 
-        public Weasel(string weaselid1, int AppOnline1, int weaselId21)
+        public Weasel(string weaselid1, bool AppOnline1, int weaselId21)
         {
             _IpAddress = "http://10.0.9.22:4567";
             _WeaselId = weaselid1;
@@ -31,7 +31,7 @@ namespace Weasel_Controller
 
         public void SetPosition(int waypoint)
         {
-            if(_AppOnline == 1)
+            if(_AppOnline == true)
             {
                 var address = _IpAddress + "/controller/move/" + _WeaselId + "/" + waypoint.ToString();
 
@@ -89,7 +89,7 @@ namespace Weasel_Controller
 
         public int GetPosition()
         {
-            if(_AppOnline == 1)
+            if(_AppOnline == true)
             {
                 WebClient wc = new WebClient();
 

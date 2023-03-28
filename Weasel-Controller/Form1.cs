@@ -15,7 +15,7 @@ namespace Weasel_Controller
     {
         private C_Map weasel_map;
         private Weasel[] weasels;
-        private int AppOnline;
+        private bool AppOnline;
         private string _input_adress;
         private int[] weasel_before_last_position;
 
@@ -64,7 +64,7 @@ namespace Weasel_Controller
             //User Input
             //User Input
             //User Input
-            AppOnline = 0;
+            AppOnline = false;
             _input_adress = @"input.txt";
 
             //Get the map from the .txt input
