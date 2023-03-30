@@ -31,6 +31,7 @@ namespace Weasel_Controller
         {
             this.btn_WeaselPanel = new System.Windows.Forms.Button();
             this.btn_WeaselControlPanel = new System.Windows.Forms.Button();
+            this.btn_WeaselManipulator = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_WeaselPanel
@@ -53,11 +54,22 @@ namespace Weasel_Controller
             this.btn_WeaselControlPanel.UseVisualStyleBackColor = true;
             this.btn_WeaselControlPanel.Click += new System.EventHandler(this.btn_WeaselControlPanel_Click);
             // 
+            // btn_WeaselManipulator
+            // 
+            this.btn_WeaselManipulator.Location = new System.Drawing.Point(12, 70);
+            this.btn_WeaselManipulator.Name = "btn_WeaselManipulator";
+            this.btn_WeaselManipulator.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselManipulator.TabIndex = 5;
+            this.btn_WeaselManipulator.Text = "Weasel Manipulator";
+            this.btn_WeaselManipulator.UseVisualStyleBackColor = true;
+            this.btn_WeaselManipulator.Click += new System.EventHandler(this.btn_WeaselManipulator_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 305);
+            this.Controls.Add(this.btn_WeaselManipulator);
             this.Controls.Add(this.btn_WeaselControlPanel);
             this.Controls.Add(this.btn_WeaselPanel);
             this.Name = "Form1";
@@ -70,6 +82,7 @@ namespace Weasel_Controller
         #endregion
         private System.Windows.Forms.Button btn_WeaselPanel;
         private System.Windows.Forms.Button btn_WeaselControlPanel;
+        private System.Windows.Forms.Button btn_WeaselManipulator;
     }
 }
 

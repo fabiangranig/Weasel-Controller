@@ -32,9 +32,9 @@ namespace Weasel_Controller
             //how many and which weasel names
             _Weasels = new[]
             {
-                new Weasel("MC6", _AppOnline, 0),
-                new Weasel("AV002", _AppOnline, 1),
-                new Weasel("AV015", _AppOnline, 2)
+                new Weasel("MC6", _AppOnline, 0, 39),
+                new Weasel("AV002", _AppOnline, 1, 48),
+                new Weasel("AV015", _AppOnline, 2, 46)
             };
         }
 
@@ -89,6 +89,7 @@ namespace Weasel_Controller
                 {
                     _WeaselMap.UnReserve(_Weasels[i]._BeforeLastPosition);
                     SetBeforeLastPosition(i);
+                    _WeaselMap.Reserve(_Weasels[i]._LastPosition);
                 }
             }
         }
@@ -116,6 +117,12 @@ namespace Weasel_Controller
         {
             WeaselControlPanel WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels);
             WCP.Show();
+        }
+
+        private void btn_WeaselManipulator_Click(object sender, EventArgs e)
+        {
+            WeaselManipulator WMP = new WeaselManipulator(ref _Weasels);
+            WMP.Show();
         }
     }
 }

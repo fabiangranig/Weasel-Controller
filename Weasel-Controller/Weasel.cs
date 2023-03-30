@@ -20,6 +20,7 @@ namespace Weasel_Controller
         public int _LastPosition;
         public int _BeforeLastPosition;
         private bool _AppOnline;
+        public int _HomePosition;
 
         //encapsulation
         public string WeaselName
@@ -36,13 +37,22 @@ namespace Weasel_Controller
             get { return _AppOnline; }
         }
 
-        public Weasel(string weaselname, bool AppOnline1, int weaselId21)
+        public Weasel(string weaselname, bool AppOnline1, int weaselId21, int HomePosition1)
         {
             _IpAddress = "http://10.0.9.22:4567";
             _WeaselName = weaselname;
             _AppOnline = AppOnline1;
             _WeaselId = weaselId21;
-            _LastPosition = GetPosition();
+            _HomePosition = HomePosition1;
+            
+            if(_AppOnline == true)
+            {
+                _LastPosition = GetPosition();
+            }
+            if(_AppOnline == false)
+            {
+                _LastPosition = _HomePosition;
+            }
         }
 
         public void SetPosition(int waypoint)
@@ -85,9 +95,6 @@ namespace Weasel_Controller
                 {
                     SetPosition(path[o+2]);
 
-                    //Test
-                    Console.WriteLine(_WeaselName + ": gesetzte Position: " + path[o + 2]);
-
                     if (path[o + 2] == path[path.Length - 1])
                     {
                         break;
@@ -125,11 +132,9 @@ namespace Weasel_Controller
                 string test = u1.GetProperty("lastWaypoint") + "";
                 return Int32.Parse(test);
             }
-            else
-            {
-                Console.WriteLine(_WeaselName + ": App offline. Bitte derzeitige Position eingeben: ");
-                return Convert.ToInt32(Console.ReadLine());
-            }
+
+            //Offline Mode
+            return _LastPosition;
         }
 
         public void UpdateInfos()
