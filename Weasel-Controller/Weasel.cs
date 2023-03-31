@@ -57,9 +57,10 @@ namespace Weasel_Controller
 
         public void SetPosition(int waypoint)
         {
+            Console.WriteLine(_WeaselName + ": gesetzte Position: " + waypoint);
             if(_AppOnline == true)
             {
-                var address = _IpAddress + "/controller/move/" + _WeaselName + "/" + waypoint.ToString();
+                var address = _IpAddress + "/controller/move/" + _WeaselName + "/" + waypoint;
 
                 var request = WebRequest.Create(address);
                 request.Method = "POST";
@@ -104,9 +105,6 @@ namespace Weasel_Controller
 
                 //To not overuse processing units
                 Thread.Sleep(100);
-
-                //Test: for Offline Mode
-                _LastPosition = GetPosition();
             }
         } 
 

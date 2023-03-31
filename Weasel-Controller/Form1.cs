@@ -46,6 +46,7 @@ namespace Weasel_Controller
             //Timer -> uses are stated below this command
             Timer tmr = new Timer();
             tmr.Interval = 100;
+
             tmr.Tick += Update100ms;
             tmr.Start();
         }

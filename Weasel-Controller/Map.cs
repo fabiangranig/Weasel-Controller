@@ -105,7 +105,7 @@ namespace Weasel_Controller
             Waypoint start_position = FindWayPoint(start);
 
             List<string> routes = new List<string>();
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 100; i++)
             {
                 string path = FreePathBackend(start_position, end, "");
 
@@ -157,6 +157,68 @@ namespace Weasel_Controller
             }
 
             return null;
+        }
+
+        public int[] FreePathWithoutCheck(int start, int end)
+        {
+            Waypoint start_position = FindWayPoint(start);
+
+            List<string> routes = new List<string>();
+            for (int i = 0; i < 20; i++)
+            {
+                string path = FreePathBackendWithoutCheck(start_position, end, "");
+
+                if (path != null)
+                {
+                    routes.Add(path);
+                }
+            }
+
+            if (routes.Count == 0)
+            {
+                return new int[] { -1 };
+            }
+
+            //Get the shortest route
+            string shortest_route = routes[0];
+            for (int i = 1; i < routes.Count; i++)
+            {
+                if(routes[i].Length < shortest_route.Length)
+                {
+                    shortest_route = routes[i];
+                }
+            }
+
+            string[] split = shortest_route.Split(' ');
+            int[] arr = new int[split.Length];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = Int32.Parse(split[i]);
+            }
+
+            return arr;
+        }
+
+        private string FreePathBackendWithoutCheck(Waypoint way, int id, string path)
+        {
+            if (way._Next == null && way._PointId != id)
+            {
+                return FreePathBackendWithoutCheck(_Head, id, path + way._PointId + " ");
+            }
+
+            if (way._Next == null)
+            {
+                return null;
+            }
+
+            if (way._PointId == id)
+            {
+                return path + way._PointId;
+            }
+
+            int rnd = _Random1.Next(0, way._Next.Count);
+            Waypoint RandomWay = way._Next[rnd];
+            return FreePathBackendWithoutCheck(RandomWay, id, path + way._PointId + " ");
         }
 
         public void Reserve(int id)
@@ -229,6 +291,31 @@ namespace Weasel_Controller
                 MapInString += MapInList[i] + "\n";
             }
             return MapInString;
+        }
+
+        //Shrink the route to the possible route
+        public int[] possibleRoute(int[] route)
+        {
+            List<int> liste = new List<int>();
+            liste.Add(route[0]);
+            for (int i = 1; i < route.Length; i++)
+            {
+                Waypoint temp = FindWayPoint(route[i]);
+                
+                if(temp._Reserved == true)
+                {
+                    break;
+                }
+
+                liste.Add(route[i]);
+            }
+
+            int[] newroute = new int[liste.Count];
+            for(int i = 0; i < newroute.Length; i++)
+            {
+                newroute[i] = liste[i];
+            }
+            return newroute;
         }
     }
 }
