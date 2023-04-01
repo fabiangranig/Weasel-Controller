@@ -15,7 +15,10 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private Button btn_AddPoint;
         private Button btn_SaveMap;
         private Button btn_MapLoad;
-        private List<Label> _Labels;
+        private List<Label> _Labels_Waypoints;
+        private List<Label> _Labels_Lanes;
+        private Button btn_LaneAddHorizontal;
+        private Button btn_LaneAddVertical;
         private Timer tmr;
 
         public WeaselMapPanel(ref Map WeaselMap1)
@@ -23,8 +26,9 @@ namespace Weasel_Controller.NodeMap.MapPanel
             //Get Map
             _WeaselMap = WeaselMap1;
 
-            //Intialise list
-            _Labels = new List<Label>();
+            //Intialise lists
+            _Labels_Waypoints = new List<Label>();
+            _Labels_Lanes = new List<Label>();
 
             //Get static components
             InitializeComponent();
@@ -42,6 +46,8 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.btn_AddPoint = new System.Windows.Forms.Button();
             this.btn_SaveMap = new System.Windows.Forms.Button();
             this.btn_MapLoad = new System.Windows.Forms.Button();
+            this.btn_LaneAddHorizontal = new System.Windows.Forms.Button();
+            this.btn_LaneAddVertical = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_AddPoint
@@ -74,9 +80,31 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.btn_MapLoad.UseVisualStyleBackColor = true;
             this.btn_MapLoad.Click += new System.EventHandler(this.btn_MapLoad_Click);
             // 
+            // btn_LaneAddHorizontal
+            // 
+            this.btn_LaneAddHorizontal.Location = new System.Drawing.Point(142, 12);
+            this.btn_LaneAddHorizontal.Name = "btn_LaneAddHorizontal";
+            this.btn_LaneAddHorizontal.Size = new System.Drawing.Size(124, 27);
+            this.btn_LaneAddHorizontal.TabIndex = 3;
+            this.btn_LaneAddHorizontal.Text = "Lane -> -";
+            this.btn_LaneAddHorizontal.UseVisualStyleBackColor = true;
+            this.btn_LaneAddHorizontal.Click += new System.EventHandler(this.btn_LaneAddHorizontal_Click);
+            // 
+            // btn_LaneAddVertical
+            // 
+            this.btn_LaneAddVertical.Location = new System.Drawing.Point(272, 12);
+            this.btn_LaneAddVertical.Name = "btn_LaneAddVertical";
+            this.btn_LaneAddVertical.Size = new System.Drawing.Size(124, 27);
+            this.btn_LaneAddVertical.TabIndex = 4;
+            this.btn_LaneAddVertical.Text = "Lane -> |";
+            this.btn_LaneAddVertical.UseVisualStyleBackColor = true;
+            this.btn_LaneAddVertical.Click += new System.EventHandler(this.btn_LaneAddVertical_Click);
+            // 
             // WeaselMapPanel
             // 
             this.ClientSize = new System.Drawing.Size(942, 493);
+            this.Controls.Add(this.btn_LaneAddVertical);
+            this.Controls.Add(this.btn_LaneAddHorizontal);
             this.Controls.Add(this.btn_MapLoad);
             this.Controls.Add(this.btn_SaveMap);
             this.Controls.Add(this.btn_AddPoint);
@@ -96,47 +124,66 @@ namespace Weasel_Controller.NodeMap.MapPanel
             temp.BackColor = Color.LightGreen;
             temp.TextAlign = ContentAlignment.MiddleCenter;
             temp.Click += new EventHandler(Label_Options);
-            _Labels.Add(temp);
+            _Labels_Waypoints.Add(temp);
             this.Controls.Add(temp);
         }
 
         private void Label_Options(object sender, EventArgs e)
         {
             Label temp = (Label)sender;
-            LabelEdit LE = new LabelEdit(ref temp, ref _WeaselMap);
+            WayPointLabelEdit LE = new WayPointLabelEdit(ref temp, ref _WeaselMap);
             LE.ShowDialog();
         }
 
         private void btn_SaveMap_Click(object sender, EventArgs e)
         {
-            FileStream fs = new FileStream("MapPanel.txt", FileMode.Create);
+            FileStream fs = new FileStream("MapPanel_Waypoints.txt", FileMode.Create);
             StreamWriter sw = new StreamWriter(fs);
 
             //Write all important label properties to the file
-            for(int i = 0; i < _Labels.Count; i++)
+            for(int i = 0; i < _Labels_Waypoints.Count; i++)
             {
-                sw.WriteLine(_Labels[i].Text);
-                sw.WriteLine(_Labels[i].Location.X + " " + _Labels[i].Location.Y);
+                sw.WriteLine(_Labels_Waypoints[i].Text);
+                sw.WriteLine(_Labels_Waypoints[i].Location.X + " " + _Labels_Waypoints[i].Location.Y);
             }
 
             sw.Close();
             fs.Close();
+
+            FileStream fs2 = new FileStream("MapPanel_Lanes.txt", FileMode.Create);
+            StreamWriter sw2 = new StreamWriter(fs2);
+
+            //Write all important label properties to the file
+            for (int i = 0; i < _Labels_Lanes.Count; i++)
+            {
+                sw2.WriteLine(_Labels_Lanes[i].Size.Width + " " + _Labels_Lanes[i].Size.Height);
+                sw2.WriteLine(_Labels_Lanes[i].Location.X + " " + _Labels_Lanes[i].Location.Y);
+            }
+
+            sw2.Close();
+            fs2.Close();
         }
 
         private void btn_MapLoad_Click(object sender, EventArgs e)
         {
-            //Remove previous map
-            for (int i = 0; i < _Labels.Count; i++)
+            //Remove previous map and lanes
+            for (int i = 0; i < _Labels_Waypoints.Count; i++)
             {
-                this.Controls.Remove(_Labels[i]);
+                this.Controls.Remove(_Labels_Waypoints[i]);
+            }
+            for (int i = 0; i < _Labels_Lanes.Count; i++)
+            {
+                this.Controls.Remove(_Labels_Lanes[i]);
             }
 
-            _Labels = new List<Label>();
+            _Labels_Waypoints = new List<Label>();
+            _Labels_Lanes = new List<Label>();
 
-            string path = "MapPanel.txt";
+            //Get Waypoints
+            string path = "MapPanel_Waypoints.txt";
             string[] txt_MapPanel = System.IO.File.ReadAllLines(path);
 
-            int count_labels = 0;
+            int count_Labels_Waypoints = 0;
             for(int i = 0; i < txt_MapPanel.Length; i = i + 2)
             {
                 Label newLabel = new Label();
@@ -147,27 +194,46 @@ namespace Weasel_Controller.NodeMap.MapPanel
                 newLabel.Size = new Size(40, 15);
                 newLabel.TextAlign = ContentAlignment.MiddleCenter;
                 newLabel.Click += new EventHandler(Label_Options);
-                _Labels.Add(newLabel);
-                this.Controls.Add(_Labels[count_labels]);
-                count_labels++;
+                _Labels_Waypoints.Add(newLabel);
+                this.Controls.Add(_Labels_Waypoints[count_Labels_Waypoints]);
+                count_Labels_Waypoints++;
+            }
+
+            //Get lanes
+            string path2 = "MapPanel_Lanes.txt";
+            string[] txt_MapPanel2 = System.IO.File.ReadAllLines(path2);
+
+            for (int i = 0; i < txt_MapPanel2.Length; i = i + 2)
+            {
+                Label newLabel = new Label();
+                newLabel.Text = "   ";
+                newLabel.BackColor = Color.LightGray;
+                newLabel.Click += new EventHandler(Label_Options_Lanes);
+                string[] split1 = txt_MapPanel2[i + 1].Split(' ');
+                newLabel.Location = new Point(Int32.Parse(split1[0]), Int32.Parse(split1[1]));
+                newLabel.TextAlign = ContentAlignment.MiddleCenter;
+                string[] split2 = txt_MapPanel2[i].Split(' ');
+                newLabel.Size = new Size(Int32.Parse(split2[0]), Int32.Parse(split2[1]));
+                _Labels_Lanes.Add(newLabel);
+                this.Controls.Add(_Labels_Lanes[_Labels_Lanes.Count - 1]);
             }
         }
 
         private void UpdatePoints(object sender, EventArgs e)
         {
-            for(int i = 0; i < _Labels.Count; i++)
+            for(int i = 0; i < _Labels_Waypoints.Count; i++)
             {
-                if(_Labels[i].Text != "empty")
+                if(_Labels_Waypoints[i].Text != "empty")
                 {
-                    Waypoint wp = _WeaselMap.FindWayPoint(Int32.Parse(_Labels[i].Text));
+                    Waypoint wp = _WeaselMap.FindWayPoint(Int32.Parse(_Labels_Waypoints[i].Text));
 
                     if(wp._Reserved == true)
                     {
-                        _Labels[i].BackColor = Color.LightBlue;
+                        _Labels_Waypoints[i].BackColor = Color.LightBlue;
                     }
                     else
                     {
-                        _Labels[i].BackColor = Color.LightGreen;
+                        _Labels_Waypoints[i].BackColor = Color.LightGreen;
                     }
                 }
             }
@@ -177,6 +243,39 @@ namespace Weasel_Controller.NodeMap.MapPanel
         {
             //Otherwise it will drop an reference error
             tmr.Stop();
+        }
+
+        private void btn_LaneAddHorizontal_Click(object sender, EventArgs e)
+        {
+            Label newLabel = new Label();
+            newLabel.Text = "   ";
+            newLabel.BackColor = Color.LightGray;
+            newLabel.Click += new EventHandler(Label_Options_Lanes);
+            newLabel.Location = new Point(this.Size.Width / 2 - 100, this.Size.Height / 2 - 100);
+            newLabel.TextAlign = ContentAlignment.MiddleCenter;
+            newLabel.Size = new Size(20, 5);
+            _Labels_Lanes.Add(newLabel);
+            this.Controls.Add(_Labels_Lanes[_Labels_Lanes.Count - 1]);
+        }
+
+        private void btn_LaneAddVertical_Click(object sender, EventArgs e)
+        {
+            Label newLabel = new Label();
+            newLabel.Text = "   ";
+            newLabel.BackColor = Color.LightGray;
+            newLabel.Click += new EventHandler(Label_Options_Lanes);
+            newLabel.Location = new Point(this.Size.Width / 2 - 100, this.Size.Height / 2 - 100);
+            newLabel.TextAlign = ContentAlignment.MiddleCenter;
+            newLabel.Size = new Size(5, 20);
+            _Labels_Lanes.Add(newLabel);
+            this.Controls.Add(_Labels_Lanes[_Labels_Lanes.Count - 1]);
+        }
+
+        private void Label_Options_Lanes(object sender, EventArgs e)
+        {
+            Label temp = (Label)sender;
+            LanesLabelEdit LE = new LanesLabelEdit(ref temp);
+            LE.ShowDialog();
         }
     }
 }
