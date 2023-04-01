@@ -74,8 +74,13 @@ namespace Weasel_Controller
             txtParser txtparse = new txtParser(_InputAddress);
             _WeaselMap = txtparse.ParseToWeaselMap();
 
+            _WeaselMap.CombineTwoReservedNodes(41, 42);
+            _WeaselMap.CombineTwoReservedNodes(42, 41);
+            _WeaselMap.CombineTwoReservedNodes(36, 2);
+            _WeaselMap.CombineTwoReservedNodes(2, 36);
+
             //Intialize for last position and reserve spot on which they are standing on
-            for(int i = 0; i < _Weasels.Length; i++) 
+            for (int i = 0; i < _Weasels.Length; i++) 
             {
                 SetBeforeLastPosition(i);
                 _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);

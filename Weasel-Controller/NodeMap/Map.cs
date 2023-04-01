@@ -11,6 +11,7 @@ namespace Weasel_Controller
     {
         //Head Node
         private Waypoint _Head;
+        private List<int[]> _CombinedNodes; 
         private Random _Random1;
 
         //Constructor
@@ -18,6 +19,7 @@ namespace Weasel_Controller
         {
             _Head = null;
             _Random1 = new Random();
+            _CombinedNodes = new List<int[]>();
         }
 
         public void AddNodeToNumber(Waypoint waypoint1, int id1)
@@ -227,6 +229,17 @@ namespace Weasel_Controller
             Waypoint temp = FindWayPoint(id);
             temp._Reserved = true;
             temp._Reserved_Color = color1;
+
+            //Check if it is an combined node
+            for(int i = 0; i < _CombinedNodes.Count; i++)
+            {
+                if(id == _CombinedNodes[i][0])
+                {
+                    Waypoint temp2 = FindWayPoint(_CombinedNodes[i][1]);
+                    temp2._Reserved = true;
+                    temp2._Reserved_Color = color1;
+                }
+            }
         }
 
         public void UnReserve(int id)
@@ -234,6 +247,17 @@ namespace Weasel_Controller
             Waypoint temp = FindWayPoint(id);
             temp._Reserved = false;
             temp._Reserved_Color = Color.LightGreen;
+
+            //When one field of the combined field is unreserved, unreserve both
+            for (int i = 0; i < _CombinedNodes.Count; i++)
+            {
+                if (id == _CombinedNodes[i][0])
+                {
+                    Waypoint temp2 = FindWayPoint(_CombinedNodes[i][1]);
+                    temp2._Reserved = false;
+                    temp2._Reserved_Color = Color.LightGreen;
+                }
+            }
         }
 
         public void ReserveArr(int[] arr, Color color1)
@@ -319,6 +343,14 @@ namespace Weasel_Controller
                 newroute[i] = liste[i];
             }
             return newroute;
+        }
+
+        public void CombineTwoReservedNodes(int number1, int number2)
+        {
+            int[] arr = new int[2];
+            arr[0] = number1;
+            arr[1] = number2;
+            _CombinedNodes.Add(arr);
         }
     }
 }
