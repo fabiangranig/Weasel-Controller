@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Weasel_Controller.NodeMap.MapPanel;
 
 namespace Weasel_Controller
 {
-    public partial class Form1 : Form
+    public partial class WeaselController : Form
     {
         //Public Variables
         private Map _WeaselMap;
@@ -38,7 +39,7 @@ namespace Weasel_Controller
             };
         }
 
-        public Form1()
+        public WeaselController()
         {
             //Standard VS Studio Forms Intialize
             InitializeComponent();
@@ -122,7 +123,13 @@ namespace Weasel_Controller
 
         private void btn_WeaselManipulator_Click(object sender, EventArgs e)
         {
-            WeaselManipulator WMP = new WeaselManipulator(ref _Weasels);
+            WeaselManipulatorPanel WMP = new WeaselManipulatorPanel(ref _Weasels);
+            WMP.Show();
+        }
+
+        private void btn_WeaselMap_Click(object sender, EventArgs e)
+        {
+            WeaselMapPanel WMP = new WeaselMapPanel(ref _WeaselMap);
             WMP.Show();
         }
     }

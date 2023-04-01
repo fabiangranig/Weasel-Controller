@@ -8,14 +8,14 @@ using System.Drawing;
 
 namespace Weasel_Controller
 {
-    class WeaselManipulator : Form
+    class WeaselManipulatorPanel : Form
     {
         private ComboBox _WeaselDropDown;
         private Weasel[] _weasels;
         private TextBox _txtBox_WeaselPosition;
         private Button _btn_Set;
 
-        public WeaselManipulator(ref Weasel[] weasels1)
+        public WeaselManipulatorPanel(ref Weasel[] weasels1)
         {
             _weasels = weasels1;
 

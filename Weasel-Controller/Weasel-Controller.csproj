@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{7F09876C-9FCD-445A-85DA-368E291D5957}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>Weasel_Controller</RootNamespace>
     <AssemblyName>Weasel-Controller</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -80,29 +80,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Map.cs" />
-    <Compile Include="Waypoint.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="NodeMap\Map.cs" />
+    <Compile Include="NodeMap\MapPanel\LabelEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="NodeMap\Waypoint.cs" />
+    <Compile Include="WeaselController.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WeaselController.Designer.cs">
+      <DependentUpon>WeaselController.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="txtParser.cs" />
-    <Compile Include="Weasel.cs" />
-    <Compile Include="WeaselControlPanel.cs">
+    <Compile Include="NodeMap\txtParser.cs" />
+    <Compile Include="Weasel\Weasel.cs" />
+    <Compile Include="Weasel\WeaselControlPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WeaselInformationPanel.cs">
+    <Compile Include="Weasel\WeaselInformationPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WeaselManipulator.cs">
+    <Compile Include="Weasel\WeaselManipulatorPanel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="NodeMap\MapPanel\WeaselMapPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="NodeMap\MapPanel\LabelEdit.resx">
+      <DependentUpon>LabelEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WeaselController.resx">
+      <DependentUpon>WeaselController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -113,8 +122,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="WeaselInformationPanel.resx">
+    <EmbeddedResource Include="Weasel\WeaselInformationPanel.resx">
       <DependentUpon>WeaselInformationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NodeMap\MapPanel\WeaselMapPanel.resx">
+      <DependentUpon>WeaselMapPanel.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -1,7 +1,7 @@
 ﻿
 namespace Weasel_Controller
 {
-    partial class Form1
+    partial class WeaselController
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -32,6 +32,7 @@ namespace Weasel_Controller
             this.btn_WeaselPanel = new System.Windows.Forms.Button();
             this.btn_WeaselControlPanel = new System.Windows.Forms.Button();
             this.btn_WeaselManipulator = new System.Windows.Forms.Button();
+            this.btn_WeaselMap = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_WeaselPanel
@@ -64,11 +65,22 @@ namespace Weasel_Controller
             this.btn_WeaselManipulator.UseVisualStyleBackColor = true;
             this.btn_WeaselManipulator.Click += new System.EventHandler(this.btn_WeaselManipulator_Click);
             // 
+            // btn_WeaselMap
+            // 
+            this.btn_WeaselMap.Location = new System.Drawing.Point(12, 99);
+            this.btn_WeaselMap.Name = "btn_WeaselMap";
+            this.btn_WeaselMap.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselMap.TabIndex = 6;
+            this.btn_WeaselMap.Text = "Weasel Map";
+            this.btn_WeaselMap.UseVisualStyleBackColor = true;
+            this.btn_WeaselMap.Click += new System.EventHandler(this.btn_WeaselMap_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(415, 305);
+            this.Controls.Add(this.btn_WeaselMap);
             this.Controls.Add(this.btn_WeaselManipulator);
             this.Controls.Add(this.btn_WeaselControlPanel);
             this.Controls.Add(this.btn_WeaselPanel);
@@ -83,6 +95,7 @@ namespace Weasel_Controller
         private System.Windows.Forms.Button btn_WeaselPanel;
         private System.Windows.Forms.Button btn_WeaselControlPanel;
         private System.Windows.Forms.Button btn_WeaselManipulator;
+        private System.Windows.Forms.Button btn_WeaselMap;
     }
 }
 
