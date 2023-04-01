@@ -68,7 +68,7 @@ namespace Weasel_Controller
             //When it is a free path
             if(path[0] != -1)
             {
-                _WeaselMap.ReserveArr(path);
+                _WeaselMap.ReserveArr(path, _Weasels[selected_weasel]._Colored);
                 _Weasels[selected_weasel].MoveThroughCordinates(path);
             }
         }
@@ -99,7 +99,7 @@ namespace Weasel_Controller
                     if(route2.Length > 1)
                     {
                         //Move to that position
-                        _WeaselMap.ReserveArr(route2);
+                        _WeaselMap.ReserveArr(route2, _Weasels[weasel]._Colored);
                         _Weasels[weasel].MoveThroughCordinates(route2);
                         last_goal = route2[route2.Length - 1];
                     }

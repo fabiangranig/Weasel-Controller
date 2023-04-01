@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Weasel_Controller
 {
@@ -221,23 +222,25 @@ namespace Weasel_Controller
             return FreePathBackendWithoutCheck(RandomWay, id, path + way._PointId + " ");
         }
 
-        public void Reserve(int id)
+        public void Reserve(int id, Color color1)
         {
             Waypoint temp = FindWayPoint(id);
             temp._Reserved = true;
+            temp._Reserved_Color = color1;
         }
 
         public void UnReserve(int id)
         {
             Waypoint temp = FindWayPoint(id);
             temp._Reserved = false;
+            temp._Reserved_Color = Color.LightGreen;
         }
 
-        public void ReserveArr(int[] arr)
+        public void ReserveArr(int[] arr, Color color1)
         {
             for(int i = 0; i < arr.Length; i++)
             {
-                Reserve(arr[i]);
+                Reserve(arr[i], color1);
             }
         }
 

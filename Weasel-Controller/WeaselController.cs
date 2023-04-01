@@ -33,9 +33,9 @@ namespace Weasel_Controller
             //how many and which weasel names
             _Weasels = new[]
             {
-                new Weasel("MC6", _AppOnline, 0, 39),
-                new Weasel("AV002", _AppOnline, 1, 48),
-                new Weasel("AV015", _AppOnline, 2, 46)
+                new Weasel("MC6", _AppOnline, 0, 39, Color.LightPink),
+                new Weasel("AV002", _AppOnline, 1, 48, Color.LightBlue),
+                new Weasel("AV015", _AppOnline, 2, 46, Color.LightYellow)
             };
         }
 
@@ -78,7 +78,7 @@ namespace Weasel_Controller
             for(int i = 0; i < _Weasels.Length; i++) 
             {
                 SetBeforeLastPosition(i);
-                _WeaselMap.Reserve(_Weasels[i]._LastPosition);
+                _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
             }
         }
 
@@ -91,7 +91,7 @@ namespace Weasel_Controller
                 {
                     _WeaselMap.UnReserve(_Weasels[i]._BeforeLastPosition);
                     SetBeforeLastPosition(i);
-                    _WeaselMap.Reserve(_Weasels[i]._LastPosition);
+                    _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
                 }
             }
         }

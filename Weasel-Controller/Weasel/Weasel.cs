@@ -8,6 +8,7 @@ using System.Net;
 using System.IO;
 using System.Text.Json;
 using System.Threading;
+using System.Drawing;
 
 namespace Weasel_Controller
 {
@@ -21,6 +22,7 @@ namespace Weasel_Controller
         public int _BeforeLastPosition;
         private bool _AppOnline;
         public int _HomePosition;
+        public Color _Colored;
 
         //encapsulation
         public string WeaselName
@@ -37,13 +39,14 @@ namespace Weasel_Controller
             get { return _AppOnline; }
         }
 
-        public Weasel(string weaselname, bool AppOnline1, int weaselId21, int HomePosition1)
+        public Weasel(string weaselname, bool AppOnline1, int weaselId21, int HomePosition1, Color color1)
         {
             _IpAddress = "http://10.0.9.22:4567";
             _WeaselName = weaselname;
             _AppOnline = AppOnline1;
             _WeaselId = weaselId21;
             _HomePosition = HomePosition1;
+            _Colored = color1;
             
             if(_AppOnline == true)
             {

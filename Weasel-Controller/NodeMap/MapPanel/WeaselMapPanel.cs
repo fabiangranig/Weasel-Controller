@@ -102,7 +102,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // WeaselMapPanel
             // 
-            this.ClientSize = new System.Drawing.Size(942, 493);
+            this.ClientSize = new System.Drawing.Size(946, 564);
             this.Controls.Add(this.btn_LaneAddVertical);
             this.Controls.Add(this.btn_LaneAddHorizontal);
             this.Controls.Add(this.btn_MapLoad);
@@ -226,15 +226,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
                 if(_Labels_Waypoints[i].Text != "empty")
                 {
                     Waypoint wp = _WeaselMap.FindWayPoint(Int32.Parse(_Labels_Waypoints[i].Text));
-
-                    if(wp._Reserved == true)
-                    {
-                        _Labels_Waypoints[i].BackColor = Color.LightBlue;
-                    }
-                    else
-                    {
-                        _Labels_Waypoints[i].BackColor = Color.LightGreen;
-                    }
+                    _Labels_Waypoints[i].BackColor = wp._Reserved_Color;
                 }
             }
         }

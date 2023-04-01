@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Weasel_Controller
 {
@@ -12,6 +13,7 @@ namespace Weasel_Controller
         public int _PointId;
         public List<Waypoint> _Next;
         public bool _Reserved;
+        public Color _Reserved_Color; 
 
         //Constructor
         public Waypoint(int number1)
@@ -19,6 +21,7 @@ namespace Weasel_Controller
             _PointId = number1;
             _Next = null;
             _Reserved = false;
+            _Reserved_Color = Color.LightGreen;
         }
     }
 }
