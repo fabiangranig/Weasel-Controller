@@ -16,6 +16,7 @@ namespace Weasel_Controller
         private ComboBox _WeaselDropDown;
         private TextBox _txtBox_Position;
         private Button _btn_SendWeasel;
+        private Button _btn_Home;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
         {
@@ -50,19 +51,24 @@ namespace Weasel_Controller
             _btn_SendWeasel.Location = new Point(10, 60);
             _btn_SendWeasel.Size = new Size(230, 25);
             _btn_SendWeasel.Text = "Send Weasel!";
-            _btn_SendWeasel.Click += new EventHandler(SendWeasel);
+            _btn_SendWeasel.Click += new EventHandler(btnClick_SendWeasel);
             this.Controls.Add(_btn_SendWeasel);
+            _btn_Home = new Button();
+            _btn_Home.Location = new Point(10, 120);
+            _btn_Home.Size = new Size(230, 25);
+            _btn_Home.Text = "Move Home!";
+            _btn_Home.Click += new EventHandler(btnClick_WeaselHome);
+            this.Controls.Add(_btn_Home);
         }
 
-        private void SendWeasel(object sender, EventArgs e)
+        private void SendWeasel(int selected_weasel, int position)
         {
-            int selected_weasel = _WeaselDropDown.SelectedIndex;
-            int[] path = _WeaselMap.FreePath(_Weasels[selected_weasel]._LastPosition, Int32.Parse(_txtBox_Position.Text));
+            int[] path = _WeaselMap.FreePath(_Weasels[selected_weasel]._LastPosition, position);
 
             //When the path is not free / Move to current free position
-            if(path[0] == -1)
+            if (path[0] == -1)
             {
-                MovePartly(selected_weasel, Int32.Parse(_txtBox_Position.Text));
+                MovePartly(selected_weasel, position);
             }
 
             //When it is a free path
@@ -70,6 +76,19 @@ namespace Weasel_Controller
             {
                 _WeaselMap.ReserveArr(path, _Weasels[selected_weasel]._Colored);
                 _Weasels[selected_weasel].MoveThroughCordinates(path);
+            }
+        }
+
+        private void btnClick_SendWeasel(object sender, EventArgs e)
+        {
+            SendWeasel(_WeaselDropDown.SelectedIndex, Int32.Parse(_txtBox_Position.Text));
+        }
+
+        private void btnClick_WeaselHome(object sender, EventArgs e)
+        {
+            for(int i = 0; i < _Weasels.Length; i++)
+            {
+                SendWeasel(i, _Weasels[i]._HomePosition);
             }
         }
 
