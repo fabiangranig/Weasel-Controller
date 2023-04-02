@@ -11,17 +11,18 @@ namespace Weasel_Controller
     {
         //Head Node
         private Waypoint _Head;
-        private List<int[]> _CombinedNodes; 
-        private Random _Random1;
+        private List<int[]> _CombinedNodes;
 
         //Constructor
         public Map()
         {
             _Head = null;
-            _Random1 = new Random();
             _CombinedNodes = new List<int[]>();
         }
 
+        //Waypoint related
+        //Waypoint related
+        //Waypoint related
         public void AddNodeToNumber(Waypoint waypoint1, int id1)
         {
             if (_Head == null)
@@ -103,127 +104,12 @@ namespace Weasel_Controller
             waypoint._Next.Add(FindWayPointBackend(_Head, end_point));
         }
 
-        public int[] FreePath(int start, int end)
+        public void CombineTwoReservedNodes(int number1, int number2)
         {
-            Waypoint start_position = FindWayPoint(start);
-
-            List<string> routes = new List<string>();
-            for (int i = 0; i < 100; i++)
-            {
-                string path = FreePathBackend(start_position, end, "");
-
-                if(path != null)
-                {
-                    routes.Add(path);
-                }
-            }
-
-            if(routes.Count == 0)
-            {
-                return new int[] { -1 };
-            }
-
-            //Get the shortest route
-            string shortest_route = routes[0];
-            for (int i = 1; i < routes.Count; i++)
-            {
-                if (routes[i].Length < shortest_route.Length)
-                {
-                    shortest_route = routes[i];
-                }
-            }
-
-            string[] split = shortest_route.Split(' ');
-            int[] arr = new int[split.Length];
-            for(int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = Int32.Parse(split[i]);
-            }
-
-            return arr;
-        }
-
-        private string FreePathBackend(Waypoint way, int id, string path)
-        {
-            if(way._Next == null && way._PointId != id && _Head._Reserved == false)
-            {
-                return FreePathBackend(_Head, id, path + way._PointId + " ");
-            }
-
-            if(way._Next == null)
-            {
-                return null;
-            }
-
-            if(way._PointId == id && way._Reserved == false)
-            {
-                return path + way._PointId;
-            }
-
-            int rnd = _Random1.Next(0, way._Next.Count);
-            if(way._Next[rnd]._Reserved == false)
-            {
-                Waypoint RandomWay = way._Next[rnd];
-                return FreePathBackend(RandomWay, id, path + way._PointId + " ");
-            }
-
-            return null;
-        }
-
-        public int[] FreePathWithoutCheck(int start, int end)
-        {
-            Waypoint start_position = FindWayPoint(start);
-
-            List<string> routes = new List<string>();
-            FreePathBackendWithoutCheckBackend(start_position, end, "", ref routes);
-
-            if (routes.Count == 0)
-            {
-                return new int[] { -1 };
-            }
-
-            //Get the shortest route
-            string shortest_route = routes[0];
-            for (int i = 1; i < routes.Count; i++)
-            {
-                if(routes[i].Length < shortest_route.Length)
-                {
-                    shortest_route = routes[i];
-                }
-            }
-
-            string[] split = shortest_route.Split(' ');
-            int[] arr = new int[split.Length];
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[i] = Int32.Parse(split[i]);
-            }
-
-            return arr;
-        }
-
-        private void FreePathBackendWithoutCheckBackend(Waypoint way, int id, string path, ref List<string> routes)
-        {
-            if (way._Next == null && way._PointId != id)
-            {
-                FreePathBackendWithoutCheckBackend(_Head, id, path + way._PointId + " ", ref routes);
-            }
-
-            if (way._Next == null || path.Contains(Convert.ToString(way._PointId)))
-            {
-                return;
-            }
-
-            if (way._PointId == id)
-            {
-                routes.Add(path + way._PointId);
-            }
-
-            for(int i = 0; i < way._Next.Count; i++)
-            {
-                Waypoint RandomWay = way._Next[i];
-                FreePathBackendWithoutCheckBackend(RandomWay, id, path + way._PointId + " ", ref routes);
-            }
+            int[] arr = new int[2];
+            arr[0] = number1;
+            arr[1] = number2;
+            _CombinedNodes.Add(arr);
         }
 
         public void Reserve(int id, Color color1)
@@ -233,9 +119,9 @@ namespace Weasel_Controller
             temp._Reserved_Color = color1;
 
             //Check if it is an combined node
-            for(int i = 0; i < _CombinedNodes.Count; i++)
+            for (int i = 0; i < _CombinedNodes.Count; i++)
             {
-                if(id == _CombinedNodes[i][0])
+                if (id == _CombinedNodes[i][0])
                 {
                     Waypoint temp2 = FindWayPoint(_CombinedNodes[i][1]);
                     temp2._Reserved = true;
@@ -264,7 +150,7 @@ namespace Weasel_Controller
 
         public void ReserveArr(int[] arr, Color color1)
         {
-            for(int i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 Reserve(arr[i], color1);
             }
@@ -290,9 +176,9 @@ namespace Weasel_Controller
         private void ShowMapBackend(Waypoint way, ref List<string> points)
         {
             string toAdd = way._PointId + " " + way._Reserved;
-            if(way._Next == null)
+            if (way._Next == null)
             {
-                if(!points.Contains(toAdd))
+                if (!points.Contains(toAdd))
                 {
                     points.Add(toAdd);
                 }
@@ -322,6 +208,101 @@ namespace Weasel_Controller
             return MapInString;
         }
 
+        //Pathfindig related
+        //Pathfindig related
+        //Pathfindig related
+        public int[] FreePath(int start, int end)
+        {
+            Waypoint start_position = FindWayPoint(start);
+
+            List<string> routes = new List<string>();
+            FreePathBackend(start_position, end, "", ref routes);
+
+            if(routes.Count == 0)
+            {
+                FreePathBackendWithoutCheckBackend(start_position, end, "", ref routes);
+            }
+
+            if(routes.Count == 0)
+            {
+                return new int[] { -1 };
+            }
+
+            //Get the shortest route
+            string shortest_route = routes[0];
+            for (int i = 1; i < routes.Count; i++)
+            {
+                if (routes[i].Length < shortest_route.Length)
+                {
+                    shortest_route = routes[i];
+                }
+            }
+
+            string[] split = shortest_route.Split(' ');
+            int[] arr = new int[split.Length];
+            for(int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = Int32.Parse(split[i]);
+            }
+
+            //Check if the route is actually possible
+            arr = possibleRoute(arr);
+
+            return arr;
+        }
+
+        private void FreePathBackend(Waypoint way, int id, string path, ref List<string> routes)
+        {
+            if(way._Next == null && way._PointId != id && _Head._Reserved == false)
+            {
+                FreePathBackend(_Head, id, path + way._PointId + " ", ref routes);
+            }
+
+            if(way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
+            {
+                return;
+            }
+
+            if(way._PointId == id && way._Reserved == false)
+            {
+                routes.Add(path + way._PointId);
+                return;
+            }
+
+            for(int i = 0; i < way._Next.Count; i++)
+            {
+                if (way._Next[i]._Reserved == false)
+                {
+                    Waypoint RandomWay = way._Next[i];
+                    FreePathBackend(RandomWay, id, path + way._PointId + " ", ref routes);
+                }
+            }
+        }
+
+        private void FreePathBackendWithoutCheckBackend(Waypoint way, int id, string path, ref List<string> routes)
+        {
+            if (way._Next == null && way._PointId != id)
+            {
+                FreePathBackendWithoutCheckBackend(_Head, id, path + way._PointId + " ", ref routes);
+            }
+
+            if (way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
+            {
+                return;
+            }
+
+            if (way._PointId == id)
+            {
+                routes.Add(path + way._PointId);
+            }
+
+            for(int i = 0; i < way._Next.Count; i++)
+            {
+                Waypoint RandomWay = way._Next[i];
+                FreePathBackendWithoutCheckBackend(RandomWay, id, path + way._PointId + " ", ref routes);
+            }
+        }
+
         //Shrink the route to the possible route
         public int[] possibleRoute(int[] route)
         {
@@ -345,14 +326,6 @@ namespace Weasel_Controller
                 newroute[i] = liste[i];
             }
             return newroute;
-        }
-
-        public void CombineTwoReservedNodes(int number1, int number2)
-        {
-            int[] arr = new int[2];
-            arr[0] = number1;
-            arr[1] = number2;
-            _CombinedNodes.Add(arr);
         }
     }
 }

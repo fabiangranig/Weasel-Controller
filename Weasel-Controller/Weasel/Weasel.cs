@@ -23,6 +23,8 @@ namespace Weasel_Controller
         private bool _AppOnline;
         public int _HomePosition;
         public Color _Colored;
+        public int _Destination;
+        public List<int> _Destinations;
 
         //encapsulation
         public string WeaselName
@@ -47,6 +49,8 @@ namespace Weasel_Controller
             _WeaselId = weaselId21;
             _HomePosition = HomePosition1;
             _Colored = color1;
+            _Destination = -1;
+            _Destinations = new List<int>();
             
             if(_AppOnline == true)
             {
@@ -60,7 +64,6 @@ namespace Weasel_Controller
 
         public void SetPosition(int waypoint)
         {
-            Console.WriteLine(_WeaselName + ": gesetzte Position: " + waypoint);
             if(_AppOnline == true)
             {
                 var address = _IpAddress + "/controller/move/" + _WeaselName + "/" + waypoint;
@@ -76,40 +79,6 @@ namespace Weasel_Controller
                 return;
             }
         }
-
-        public void MoveThroughCordinates(int[] input)
-        {
-            Thread t1 = new Thread(() => MoveThroughCordinatesBackend(input));
-            t1.Start();
-        }
-
-        private void MoveThroughCordinatesBackend(int[] path)
-        {
-            //When there is only one or two cordinates
-            if(path.Length < 3)
-            {
-                SetPosition(path[path.Length-1]);
-                return;
-            }
-
-            int o = 0;
-            while(_LastPosition != path[path.Length - 1])
-            {
-                if(_LastPosition == path[o])
-                {
-                    SetPosition(path[o+2]);
-
-                    if (path[o + 2] == path[path.Length - 1])
-                    {
-                        break;
-                    }
-                    o++;
-                }
-
-                //To not overuse processing units
-                Thread.Sleep(100);
-            }
-        } 
 
         public int GetPosition()
         {

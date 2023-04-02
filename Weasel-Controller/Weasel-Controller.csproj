@@ -128,6 +128,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Weasel\WeaselControlPanel.resx">
+      <DependentUpon>WeaselControlPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Weasel\WeaselInformationPanel.resx">
       <DependentUpon>WeaselInformationPanel.cs</DependentUpon>
     </EmbeddedResource>
