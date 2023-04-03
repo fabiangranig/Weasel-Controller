@@ -46,6 +46,12 @@ namespace Weasel_Controller
                     //Check how much of the route is possible
                     int[] route2 = _Map.possibleRoute(route);
 
+                    //Shrink the route to prevent interception from other weasels
+                    if(route2.Length > 5)
+                    {
+                        route2 = _Map.radiusRoute(route2);
+                    }
+
                     //When is is not the same position move
                     if (route2.Length > 1)
                     {
@@ -111,22 +117,33 @@ namespace Weasel_Controller
             }
         }
 
-        public void StopMovement(int destination)
+        public void StopMovement(int index)
         {
-            //Kill the threads
-            _Mover.Abort();
-            _OfflineMover.Abort();
-
-            //Remove the destination
-            _Weasel._Destinations.Remove(destination);
-
-            //Unreserve nodes which where occupied
-            for(int i = 0; i < _current_path.Length; i++)
+            if(index == 0)
             {
-                if(_Map.FindWayPoint(_current_path[i])._Reserved_Color == _Weasel._Colored)
+                //Kill the threads
+                _Mover.Abort();
+                _OfflineMover.Abort();
+
+                //Remove the destination
+                _Weasel._Destinations.RemoveAt(index);
+
+                //Unreserve nodes which where occupied
+                for (int i = 0; i < _current_path.Length; i++)
                 {
-                    _Map.UnReserve(_current_path[i]);
+                    if (_Map.FindWayPoint(_current_path[i])._Reserved_Color == _Weasel._Colored)
+                    {
+                        if (_Weasel._LastPosition != _Map.FindWayPoint(_current_path[i])._PointId)
+                        {
+                            _Map.UnReserve(_current_path[i]);
+                        }
+                    }
                 }
+            }
+            else
+            {
+                //Remove the destination
+                _Weasel._Destinations.RemoveAt(index);
             }
         }
     }

@@ -20,6 +20,7 @@ namespace Weasel_Controller
         private Label _label_Destinations;
         private Weasel[] _Weasels;
         private Button btn_StopMove;
+        private Button btn_RandomPosition;
         private WeaselMovementHandler[] _WeaselMovementHandlers;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
@@ -99,6 +100,16 @@ namespace Weasel_Controller
             _Weasels[_WeaselDropDown.SelectedIndex]._Destinations.Add(Int32.Parse(_txtBox_Position.Text));
         }
 
+        private void btn_RandomPosition_Click(object sender, EventArgs e)
+        {
+            Random Filler = new Random();
+            for(int i = 0; i < 30; i++)
+            {
+                int id = _WeaselMap.FindWayPoint(Filler.Next(1,50))._PointId;
+                _Weasels[_WeaselDropDown.SelectedIndex]._Destinations.Add(id);
+            }
+        }
+
         private void btnClick_WeaselHome(object sender, EventArgs e)
         {
             for (int i = 0; i < _Weasels.Length; i++)
@@ -109,9 +120,8 @@ namespace Weasel_Controller
 
         private void btn_StopMove_Click(object sender, EventArgs e)
         {
-            object remove_object = _listBox_Destinations.Items[Int32.Parse(_txtBox_Position.Text)];
-            int remove = Convert.ToInt32(remove_object);
-            _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].StopMovement(remove);
+            int remove_at_index = Convert.ToInt32(_txtBox_Position.Text);
+            _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].StopMovement(remove_at_index);
         }
 
         private void InitializeComponent()
@@ -123,6 +133,7 @@ namespace Weasel_Controller
             this._listBox_Destinations = new System.Windows.Forms.ListBox();
             this._label_Destinations = new System.Windows.Forms.Label();
             this.btn_StopMove = new System.Windows.Forms.Button();
+            this.btn_RandomPosition = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // _WeaselDropDown
@@ -152,7 +163,7 @@ namespace Weasel_Controller
             // 
             // btn_SendHome
             // 
-            this.btn_SendHome.Location = new System.Drawing.Point(21, 102);
+            this.btn_SendHome.Location = new System.Drawing.Point(21, 163);
             this.btn_SendHome.Name = "btn_SendHome";
             this.btn_SendHome.Size = new System.Drawing.Size(209, 23);
             this.btn_SendHome.TabIndex = 4;
@@ -187,9 +198,20 @@ namespace Weasel_Controller
             this.btn_StopMove.UseVisualStyleBackColor = true;
             this.btn_StopMove.Click += new System.EventHandler(this.btn_StopMove_Click);
             // 
+            // btn_RandomPosition
+            // 
+            this.btn_RandomPosition.Location = new System.Drawing.Point(21, 68);
+            this.btn_RandomPosition.Name = "btn_RandomPosition";
+            this.btn_RandomPosition.Size = new System.Drawing.Size(209, 23);
+            this.btn_RandomPosition.TabIndex = 8;
+            this.btn_RandomPosition.Text = "Send to Random Position!";
+            this.btn_RandomPosition.UseVisualStyleBackColor = true;
+            this.btn_RandomPosition.Click += new System.EventHandler(this.btn_RandomPosition_Click);
+            // 
             // WeaselControlPanel
             // 
             this.ClientSize = new System.Drawing.Size(664, 214);
+            this.Controls.Add(this.btn_RandomPosition);
             this.Controls.Add(this.btn_StopMove);
             this.Controls.Add(this._label_Destinations);
             this.Controls.Add(this._listBox_Destinations);

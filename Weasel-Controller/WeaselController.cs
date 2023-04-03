@@ -74,7 +74,6 @@ namespace Weasel_Controller
             txtParser txtparse = new txtParser(_InputAddress);
             _WeaselMap = txtparse.ParseToWeaselMap();
 
-            _WeaselMap.CombineTwoReservedNodes(41, 42);
             _WeaselMap.CombineTwoReservedNodes(42, 41);
             _WeaselMap.CombineTwoReservedNodes(36, 2);
             _WeaselMap.CombineTwoReservedNodes(2, 36);

@@ -253,19 +253,19 @@ namespace Weasel_Controller
 
         private void FreePathBackend(Waypoint way, int id, string path, ref List<string> routes)
         {
-            if(way._Next == null && way._PointId != id && _Head._Reserved == false)
+            if (way._PointId == id && way._Reserved == false)
+            {
+                routes.Add(path + way._PointId);
+                return;
+            }
+
+            if (way._Next == null && way._PointId != id && _Head._Reserved == false)
             {
                 FreePathBackend(_Head, id, path + way._PointId + " ", ref routes);
             }
 
-            if(way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
+            if (way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
             {
-                return;
-            }
-
-            if(way._PointId == id && way._Reserved == false)
-            {
-                routes.Add(path + way._PointId);
                 return;
             }
 
@@ -281,6 +281,11 @@ namespace Weasel_Controller
 
         private void FreePathBackendWithoutCheckBackend(Waypoint way, int id, string path, ref List<string> routes)
         {
+            if (way._PointId == id)
+            {
+                routes.Add(path + way._PointId);
+            }
+
             if (way._Next == null && way._PointId != id)
             {
                 FreePathBackendWithoutCheckBackend(_Head, id, path + way._PointId + " ", ref routes);
@@ -289,11 +294,6 @@ namespace Weasel_Controller
             if (way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
             {
                 return;
-            }
-
-            if (way._PointId == id)
-            {
-                routes.Add(path + way._PointId);
             }
 
             for(int i = 0; i < way._Next.Count; i++)
@@ -326,6 +326,17 @@ namespace Weasel_Controller
                 newroute[i] = liste[i];
             }
             return newroute;
+        }
+
+        //Shrink route to an specific radius
+        public int[] radiusRoute(int[] route)
+        {
+            int[] new_route = new int[5];
+            for(int i = 0; i < new_route.Length; i++)
+            {
+                new_route[i] = route[i];
+            }
+            return new_route;
         }
     }
 }

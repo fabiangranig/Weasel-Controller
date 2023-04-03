@@ -37,9 +37,10 @@ namespace Weasel_Controller
             // 
             // btn_WeaselPanel
             // 
-            this.btn_WeaselPanel.Location = new System.Drawing.Point(12, 12);
+            this.btn_WeaselPanel.Location = new System.Drawing.Point(11, 195);
+            this.btn_WeaselPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_WeaselPanel.Name = "btn_WeaselPanel";
-            this.btn_WeaselPanel.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselPanel.Size = new System.Drawing.Size(293, 19);
             this.btn_WeaselPanel.TabIndex = 3;
             this.btn_WeaselPanel.Text = "Weasel Information Panel";
             this.btn_WeaselPanel.UseVisualStyleBackColor = true;
@@ -47,9 +48,10 @@ namespace Weasel_Controller
             // 
             // btn_WeaselControlPanel
             // 
-            this.btn_WeaselControlPanel.Location = new System.Drawing.Point(12, 41);
+            this.btn_WeaselControlPanel.Location = new System.Drawing.Point(11, 11);
+            this.btn_WeaselControlPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_WeaselControlPanel.Name = "btn_WeaselControlPanel";
-            this.btn_WeaselControlPanel.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselControlPanel.Size = new System.Drawing.Size(293, 19);
             this.btn_WeaselControlPanel.TabIndex = 4;
             this.btn_WeaselControlPanel.Text = "Weasel Control Panel";
             this.btn_WeaselControlPanel.UseVisualStyleBackColor = true;
@@ -57,9 +59,10 @@ namespace Weasel_Controller
             // 
             // btn_WeaselManipulator
             // 
-            this.btn_WeaselManipulator.Location = new System.Drawing.Point(12, 70);
+            this.btn_WeaselManipulator.Location = new System.Drawing.Point(11, 218);
+            this.btn_WeaselManipulator.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_WeaselManipulator.Name = "btn_WeaselManipulator";
-            this.btn_WeaselManipulator.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselManipulator.Size = new System.Drawing.Size(293, 19);
             this.btn_WeaselManipulator.TabIndex = 5;
             this.btn_WeaselManipulator.Text = "Weasel Manipulator";
             this.btn_WeaselManipulator.UseVisualStyleBackColor = true;
@@ -67,24 +70,26 @@ namespace Weasel_Controller
             // 
             // btn_WeaselMap
             // 
-            this.btn_WeaselMap.Location = new System.Drawing.Point(12, 99);
+            this.btn_WeaselMap.Location = new System.Drawing.Point(11, 34);
+            this.btn_WeaselMap.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_WeaselMap.Name = "btn_WeaselMap";
-            this.btn_WeaselMap.Size = new System.Drawing.Size(391, 23);
+            this.btn_WeaselMap.Size = new System.Drawing.Size(293, 19);
             this.btn_WeaselMap.TabIndex = 6;
             this.btn_WeaselMap.Text = "Weasel Map";
             this.btn_WeaselMap.UseVisualStyleBackColor = true;
             this.btn_WeaselMap.Click += new System.EventHandler(this.btn_WeaselMap_Click);
             // 
-            // Form1
+            // WeaselController
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(415, 305);
+            this.ClientSize = new System.Drawing.Size(311, 248);
             this.Controls.Add(this.btn_WeaselMap);
             this.Controls.Add(this.btn_WeaselManipulator);
             this.Controls.Add(this.btn_WeaselControlPanel);
             this.Controls.Add(this.btn_WeaselPanel);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "WeaselController";
             this.Text = "Weasel Controller";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
