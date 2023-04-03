@@ -87,7 +87,7 @@ namespace Weasel_Controller
             }
         }
 
-        //Unreserve nodes when Weasel changes position. Has to be used in an Update function
+        //Unreserve nodes when Weasel changes position. Has to be used in an Timer Class
         private void UnreserveNodes()
         {
             for (int i = 0; i < _Weasels.Length; i++)
@@ -96,6 +96,12 @@ namespace Weasel_Controller
                 {
                     _WeaselMap.UnReserve(_Weasels[i]._BeforeLastPosition);
                     SetBeforeLastPosition(i);
+                    _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
+                }
+
+                Waypoint temp = _WeaselMap.FindWayPoint(_Weasels[i]._LastPosition);
+                if(temp._Reserved_Color != _Weasels[i]._Colored)
+                {
                     _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
                 }
             }
@@ -134,7 +140,7 @@ namespace Weasel_Controller
 
         private void btn_WeaselMap_Click(object sender, EventArgs e)
         {
-            WeaselMapPanel WMP = new WeaselMapPanel(ref _WeaselMap);
+            WeaselMapPanel WMP = new WeaselMapPanel(ref _WeaselMap, ref _Weasels);
             WMP.Show();
         }
     }

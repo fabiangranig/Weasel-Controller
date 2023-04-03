@@ -12,6 +12,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
     class WeaselMapPanel : Form
     {
         private Map _WeaselMap;
+        private Weasel[] _Weasels;
         private Button btn_AddPoint;
         private Button btn_SaveMap;
         private Button btn_MapLoad;
@@ -21,10 +22,11 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private Button btn_LaneAddVertical;
         private Timer tmr;
 
-        public WeaselMapPanel(ref Map WeaselMap1)
+        public WeaselMapPanel(ref Map WeaselMap1, ref Weasel[] Weasels1)
         {
-            //Get Map
+            //Get Map and Weasels
             _WeaselMap = WeaselMap1;
+            _Weasels = Weasels1;
 
             //Intialise lists
             _Labels_Waypoints = new List<Label>();
@@ -223,10 +225,25 @@ namespace Weasel_Controller.NodeMap.MapPanel
         {
             for(int i = 0; i < _Labels_Waypoints.Count; i++)
             {
+                //Update waypoints colour accourding to current status
                 if(_Labels_Waypoints[i].Text != "empty")
                 {
                     Waypoint wp = _WeaselMap.FindWayPoint(Int32.Parse(_Labels_Waypoints[i].Text));
                     _Labels_Waypoints[i].BackColor = wp._Reserved_Color;
+
+                    //When an weasel is on the node make the text of the node red
+                    for(int u = 0; u < _Weasels.Length; u++)
+                    {
+                        if(_Weasels[u]._LastPosition == Int32.Parse(_Labels_Waypoints[i].Text))
+                        {
+                            _Labels_Waypoints[i].ForeColor = Color.Red;
+                            break;
+                        }
+                        else
+                        {
+                            _Labels_Waypoints[i].ForeColor = Color.Black;
+                        }
+                    }
                 }
             }
         }

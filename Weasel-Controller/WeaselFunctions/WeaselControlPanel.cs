@@ -16,7 +16,11 @@ namespace Weasel_Controller
         private TextBox _txtBox_Position;
         private Button btn_SendWeasel;
         private Button btn_SendHome;
+        private ListBox _listBox_Destinations;
+        private Label _label_Destinations;
         private Weasel[] _Weasels;
+        private Button btn_StopMove;
+        private WeaselMovementHandler[] _WeaselMovementHandlers;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
         {
@@ -27,10 +31,12 @@ namespace Weasel_Controller
             //Get the controls from the editor
             InitializeComponent();
 
-            //Get the weasels into the dropdown
+            //Get the weasels into the dropdown and create Handlers
+            _WeaselMovementHandlers = new WeaselMovementHandler[_Weasels.Length];
             for (int i = 0; i < _Weasels.Length; i++)
             {
                 _WeaselDropDown.Items.Add(_Weasels[i].WeaselName);
+                _WeaselMovementHandlers[i] = new WeaselMovementHandler(ref _Weasels[i], ref _WeaselMap);
             }
 
             //Create a Timer which is working on next paths
@@ -70,11 +76,22 @@ namespace Weasel_Controller
                     }
                 }
             }
+
+            //Get the destination table
+            _listBox_Destinations.Items.Clear();
+            if(_WeaselDropDown.SelectedIndex != -1)
+            {
+                for (int i = 0; i < _Weasels[_WeaselDropDown.SelectedIndex]._Destinations.Count; i++)
+                {
+                    _listBox_Destinations.Items.Add(_Weasels[_WeaselDropDown.SelectedIndex]._Destinations[i]);
+                }
+            }
+
         }
 
-        private void SendWeasel(int selected_weasel, int position)
+        private void SendWeasel(int selected_weasel, int goal)
         {
-            MovePartly(selected_weasel, position);
+            _WeaselMovementHandlers[selected_weasel].MoveWeasel(goal);
         }
 
         private void btnClick_SendWeasel(object sender, EventArgs e)
@@ -82,101 +99,19 @@ namespace Weasel_Controller
             _Weasels[_WeaselDropDown.SelectedIndex]._Destinations.Add(Int32.Parse(_txtBox_Position.Text));
         }
 
-
         private void btnClick_WeaselHome(object sender, EventArgs e)
         {
-            for(int i = 0; i < _Weasels.Length; i++)
+            for (int i = 0; i < _Weasels.Length; i++)
             {
                 _Weasels[i]._Destinations.Add(_Weasels[i]._HomePosition);
             }
         }
 
-        private void MovePartly(int selected_weasel, int goal)
+        private void btn_StopMove_Click(object sender, EventArgs e)
         {
-            Thread t1 = new Thread(() => MovePartlyBackend(selected_weasel, goal));
-            t1.Start();
-        }
-
-        private void MovePartlyBackend(int weasel, int goal)
-        {
-            //Set goal to find if the right parts where found
-            int last_goal = _Weasels[weasel]._LastPosition;
-
-            while (_Weasels[weasel]._LastPosition != goal)
-            {
-                //Get the new route to the goal
-                int[] route = _WeaselMap.FreePath(_Weasels[weasel]._LastPosition, goal);
-                
-                //Check if there is an route and if last goal was reached
-                if(route[0] != -1 && _Weasels[weasel]._LastPosition == last_goal)
-                {
-                    //Check how much of the route is possible
-                    int[] route2 = _WeaselMap.possibleRoute(route);
-
-                    //When is is not the same position move
-                    if(route2.Length > 1)
-                    {
-                        //Move to that position
-                        _WeaselMap.ReserveArr(route2, _Weasels[weasel]._Colored);
-                        MoveThroughCordinates(route2, weasel);
-                        last_goal = route2[route2.Length - 1];
-                    }
-                }
-
-                //Not overusing processing units
-                Thread.Sleep(100);
-            }
-        }
-
-        public void MoveThroughCordinates(int[] input, int weasel)
-        {
-            //Move weasel through set of cordinates
-            Thread t1 = new Thread(() => MoveThroughCordinatesBackend(input, weasel));
-            t1.Start();
-
-            //When the weasels are not connected, simulate movement
-            if(_Weasels[weasel].AppOnline == false)
-            {
-                Thread t2 = new Thread(() => OfflineMover(weasel, input));
-                t2.Start();
-            }
-        }
-
-        private void MoveThroughCordinatesBackend(int[] path, int weasel)
-        {
-            //When there is only one or two cordinates
-            if (path.Length < 3)
-            {
-                _Weasels[weasel].SetPosition(path[path.Length - 1]);
-                return;
-            }
-
-            int o = 0;
-            while (_Weasels[weasel]._LastPosition != path[path.Length - 1])
-            {
-                if (_Weasels[weasel]._LastPosition == path[o])
-                {
-                    _Weasels[weasel].SetPosition(path[o + 2]);
-
-                    if (path[o + 2] == path[path.Length - 1])
-                    {
-                        break;
-                    }
-                    o++;
-                }
-
-                //To not overuse processing units
-                Thread.Sleep(100);
-            }
-        }
-
-        private void OfflineMover(int weasel, int[] path)
-        {
-            for(int i = 0; i < path.Length; i++)
-            {
-                Thread.Sleep(1000);
-                _Weasels[weasel]._LastPosition = path[i];
-            }
+            object remove_object = _listBox_Destinations.Items[Int32.Parse(_txtBox_Position.Text)];
+            int remove = Convert.ToInt32(remove_object);
+            _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].StopMovement(remove);
         }
 
         private void InitializeComponent()
@@ -185,6 +120,9 @@ namespace Weasel_Controller
             this._txtBox_Position = new System.Windows.Forms.TextBox();
             this.btn_SendWeasel = new System.Windows.Forms.Button();
             this.btn_SendHome = new System.Windows.Forms.Button();
+            this._listBox_Destinations = new System.Windows.Forms.ListBox();
+            this._label_Destinations = new System.Windows.Forms.Label();
+            this.btn_StopMove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // _WeaselDropDown
@@ -222,9 +160,39 @@ namespace Weasel_Controller
             this.btn_SendHome.UseVisualStyleBackColor = true;
             this.btn_SendHome.Click += new System.EventHandler(this.btnClick_WeaselHome);
             // 
+            // _listBox_Destinations
+            // 
+            this._listBox_Destinations.FormattingEnabled = true;
+            this._listBox_Destinations.Location = new System.Drawing.Point(297, 39);
+            this._listBox_Destinations.Name = "_listBox_Destinations";
+            this._listBox_Destinations.Size = new System.Drawing.Size(144, 147);
+            this._listBox_Destinations.TabIndex = 5;
+            // 
+            // _label_Destinations
+            // 
+            this._label_Destinations.AutoSize = true;
+            this._label_Destinations.Location = new System.Drawing.Point(294, 15);
+            this._label_Destinations.Name = "_label_Destinations";
+            this._label_Destinations.Size = new System.Drawing.Size(68, 13);
+            this._label_Destinations.TabIndex = 6;
+            this._label_Destinations.Text = "Destinations:";
+            // 
+            // btn_StopMove
+            // 
+            this.btn_StopMove.Location = new System.Drawing.Point(460, 39);
+            this.btn_StopMove.Name = "btn_StopMove";
+            this.btn_StopMove.Size = new System.Drawing.Size(135, 23);
+            this.btn_StopMove.TabIndex = 7;
+            this.btn_StopMove.Text = "Stop Movement!";
+            this.btn_StopMove.UseVisualStyleBackColor = true;
+            this.btn_StopMove.Click += new System.EventHandler(this.btn_StopMove_Click);
+            // 
             // WeaselControlPanel
             // 
-            this.ClientSize = new System.Drawing.Size(274, 236);
+            this.ClientSize = new System.Drawing.Size(664, 214);
+            this.Controls.Add(this.btn_StopMove);
+            this.Controls.Add(this._label_Destinations);
+            this.Controls.Add(this._listBox_Destinations);
             this.Controls.Add(this.btn_SendHome);
             this.Controls.Add(this.btn_SendWeasel);
             this.Controls.Add(this._txtBox_Position);
