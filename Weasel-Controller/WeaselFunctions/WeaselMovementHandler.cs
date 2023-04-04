@@ -13,6 +13,7 @@ namespace Weasel_Controller
         private Weasel _Weasel;
         private Map _Map;
         private Thread _Mover;
+        private int[] _LastKnownRoute;
 
         public WeaselMovementHandler(ref Weasel weasel1, ref Map map1)
         {
@@ -34,6 +35,7 @@ namespace Weasel_Controller
                 //Get the best possible path
                 int[] Path = _Map.FreePath(_Weasel._LastPosition, goal, _Weasel._Colored);
                 Path = _Map.RadiusRoute(Path);
+                _LastKnownRoute = Path;
 
                 //Check if there is an Path
                 if(Path.Length > 1)
@@ -52,6 +54,7 @@ namespace Weasel_Controller
                             if (Path[0] != path_temp[0])
                             {
                                 Path = path_temp;
+                                _LastKnownRoute = Path;
                                 _Map.ReserveArr(Path, _Weasel._Colored);
                                 u = 0;
                                 switcher = true;
@@ -91,6 +94,18 @@ namespace Weasel_Controller
             }
 
             Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + goal + "}");
+        }
+
+        public void DestroyAction()
+        {
+            //Remove the thread
+            _Mover.Abort();
+
+            //Unreserve the route it was taking
+            _Map.UnReserveArr(_LastKnownRoute);
+
+            //Make the destination to something notable
+            _Weasel._Destination = -1;
         }
     }
 }

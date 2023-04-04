@@ -64,7 +64,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_SaveMap
             // 
-            this.btn_SaveMap.Location = new System.Drawing.Point(676, 12);
+            this.btn_SaveMap.Location = new System.Drawing.Point(619, 12);
             this.btn_SaveMap.Name = "btn_SaveMap";
             this.btn_SaveMap.Size = new System.Drawing.Size(124, 25);
             this.btn_SaveMap.TabIndex = 1;
@@ -74,7 +74,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_MapLoad
             // 
-            this.btn_MapLoad.Location = new System.Drawing.Point(806, 12);
+            this.btn_MapLoad.Location = new System.Drawing.Point(749, 12);
             this.btn_MapLoad.Name = "btn_MapLoad";
             this.btn_MapLoad.Size = new System.Drawing.Size(124, 25);
             this.btn_MapLoad.TabIndex = 2;
@@ -104,13 +104,18 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // WeaselMapPanel
             // 
-            this.ClientSize = new System.Drawing.Size(946, 564);
+            this.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.ClientSize = new System.Drawing.Size(882, 557);
             this.Controls.Add(this.btn_LaneAddVertical);
             this.Controls.Add(this.btn_LaneAddHorizontal);
             this.Controls.Add(this.btn_MapLoad);
             this.Controls.Add(this.btn_SaveMap);
             this.Controls.Add(this.btn_AddPoint);
+            this.MaximumSize = new System.Drawing.Size(898, 596);
+            this.MinimumSize = new System.Drawing.Size(898, 596);
             this.Name = "WeaselMapPanel";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Weasel Map Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WeaselMapPanel_FormClosing);
             this.ResumeLayout(false);
 
