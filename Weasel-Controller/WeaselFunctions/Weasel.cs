@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using System.Text.Json;
-using System.Threading;
 using System.Drawing;
 
 namespace Weasel_Controller
@@ -25,6 +25,7 @@ namespace Weasel_Controller
         public Color _Colored;
         public int _Destination;
         public List<int> _Destinations;
+        private List<int> _OfflineMover;
 
         //encapsulation
         public string WeaselName
@@ -59,11 +60,23 @@ namespace Weasel_Controller
             if(_AppOnline == false)
             {
                 _LastPosition = _HomePosition;
+
+                //Create Thread for moving weasel
+                _OfflineMover = new List<int>();
+                Thread OfflinerMover = new Thread(VirtualSetPosition);
+                OfflinerMover.Start();
             }
         }
 
         public void SetPosition(int waypoint)
         {
+            //Just for testing!
+            Console.WriteLine(WeaselName + ": gesetzte Position " + waypoint);
+            if(_AppOnline == false)
+            {
+                _OfflineMover.Add(waypoint);
+            }
+
             if(_AppOnline == true)
             {
                 var address = _IpAddress + "/controller/move/" + _WeaselName + "/" + waypoint;
@@ -77,6 +90,20 @@ namespace Weasel_Controller
                 var reader = new StreamReader(webStream);
                 string temp = reader.ReadToEnd();
                 return;
+            }
+        }
+
+        private void VirtualSetPosition()
+        {
+            Random r1 = new Random();
+            while (_AppOnline == false)
+            {
+                Thread.Sleep(r1.Next(250, 400));
+                if(_OfflineMover.Count > 0)
+                {
+                    _LastPosition = _OfflineMover[0];
+                    _OfflineMover.RemoveAt(0);
+                }
             }
         }
 

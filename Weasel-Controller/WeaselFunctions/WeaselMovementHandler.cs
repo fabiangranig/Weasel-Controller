@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Drawing;
 
 namespace Weasel_Controller
 {
@@ -12,10 +13,6 @@ namespace Weasel_Controller
         private Weasel _Weasel;
         private Map _Map;
         private Thread _Mover;
-        private int[] _current_path;
-
-        //for testing only -> don't remove
-        private Thread _OfflineMover;
 
         public WeaselMovementHandler(ref Weasel weasel1, ref Map map1)
         {
@@ -32,119 +29,68 @@ namespace Weasel_Controller
 
         private void MovePartlyBackend(int goal)
         {
-            //Set goal to find if the right parts where found
-            int last_goal = _Weasel._LastPosition;
-
-            while (_Weasel._LastPosition != goal)
+            while(_Weasel._LastPosition != goal)
             {
-                //Get the new route to the goal
-                int[] route = _Map.FreePath(_Weasel._LastPosition, goal);
+                //Get the best possible path
+                int[] Path = _Map.FreePath(_Weasel._LastPosition, goal, _Weasel._Colored);
+                Path = _Map.RadiusRoute(Path);
 
-                //Check if there is an route and if last goal was reached
-                if (route[0] != -1 && _Weasel._LastPosition == last_goal)
+                //Check if there is an Path
+                if(Path.Length > 1)
                 {
-                    //Check how much of the route is possible
-                    int[] route2 = _Map.possibleRoute(route);
-
-                    //Shrink the route to prevent interception from other weasels
-                    if(route2.Length > 5)
+                    //When there is an longer path to travel
+                    _Map.ReserveArr(Path, _Weasel._Colored);
+                    int u = 0;
+                    while (_Weasel._LastPosition != Path[Path.Length - 1])
                     {
-                        route2 = _Map.radiusRoute(route2);
-                    }
-
-                    //When is is not the same position move
-                    if (route2.Length > 1)
-                    {
-                        //Move to that position
-                        //Reserve the nodes
-                        _Map.ReserveArr(route2, _Weasel._Colored);
-
-                        //Start Thread for offline testing
-                        if (_Weasel.AppOnline == false)
+                        if (_Weasel._LastPosition == Path[u] && u + 2 < Path.Length)
                         {
-                            _OfflineMover = new Thread(() => OfflineMover(route2));
-                            _OfflineMover.Start();
+                            //Discover new paths
+                            int[] path_temp = _Map.FreePath(_Weasel._LastPosition, goal, _Weasel._Colored);
+                            path_temp = _Map.RadiusRoute(path_temp);
+                            bool switcher = false;
+                            if (Path[0] != path_temp[0])
+                            {
+                                Path = path_temp;
+                                _Map.ReserveArr(Path, _Weasel._Colored);
+                                u = 0;
+                                switcher = true;
+                            }
+
+                            if(switcher == false && u + 2 < Path.Length)
+                            {
+                                _Weasel.SetPosition(Path[u + 1]);
+                                _Weasel.SetPosition(Path[u + 2]);
+                            }
+                            
+                            if(switcher == true && u + 2 < Path.Length)
+                            {
+                                _Weasel.SetPosition(Path[u + 2]);
+                            }
+
+                            //Get to the next position
+                            u++;
                         }
 
-                        //Move through nodes and tell if the last goal has been reached
-                        _current_path = route2;
-                        MoveThroughCordinatesBackend(route2);
-                        last_goal = route2[route2.Length - 1];
-                    }
-                }
-
-                //Not overusing processing units
-                Thread.Sleep(100);
-            }
-        }
-
-        private void MoveThroughCordinatesBackend(int[] path)
-        {
-            //When there is only one or two cordinates, in which case there is no skipping required
-            if (path.Length < 3)
-            {
-                _Weasel.SetPosition(path[path.Length - 1]);
-                return;
-            }
-
-            //Move through the path with the 2 step method
-            int o = 0;
-            while (_Weasel._LastPosition != path[path.Length - 1])
-            {
-                if (_Weasel._LastPosition == path[o])
-                {
-                    _Weasel.SetPosition(path[o + 2]);
-
-                    if (path[o + 2] == path[path.Length - 1])
-                    {
-                        break;
-                    }
-                    o++;
-                }
-
-                //To not overuse processing units
-                Thread.Sleep(100);
-            }
-        }
-
-        //Move through path without actually weasels driving
-        private void OfflineMover(int[] path)
-        {
-            for (int i = 0; i < path.Length; i++)
-            {
-                Thread.Sleep(1000);
-                _Weasel._LastPosition = path[i];
-            }
-        }
-
-        public void StopMovement(int index)
-        {
-            if(index == 0)
-            {
-                //Kill the threads
-                _Mover.Abort();
-                _OfflineMover.Abort();
-
-                //Remove the destination
-                _Weasel._Destinations.RemoveAt(index);
-
-                //Unreserve nodes which where occupied
-                for (int i = 0; i < _current_path.Length; i++)
-                {
-                    if (_Map.FindWayPoint(_current_path[i])._Reserved_Color == _Weasel._Colored)
-                    {
-                        if (_Weasel._LastPosition != _Map.FindWayPoint(_current_path[i])._PointId)
+                        if(_Weasel._LastPosition == Path[u] && 3 > Path.Length && Path.Length > 1)
                         {
-                            _Map.UnReserve(_current_path[i]);
+                            _Weasel.SetPosition(Path[u]);
+                            _Weasel.SetPosition(Path[u + 1]);
+
+                            //Get to the next position
+                            u++;
                         }
+
+                        //Reduce processing usage
+                        Thread.Sleep(100);
                     }
                 }
+
+                //When send let the Thread sleep for a short amount of time
+                Thread.Sleep(100);
             }
-            else
-            {
-                //Remove the destination
-                _Weasel._Destinations.RemoveAt(index);
-            }
+
+            Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + goal + "}");
         }
     }
 }

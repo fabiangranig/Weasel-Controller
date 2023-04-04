@@ -211,21 +211,16 @@ namespace Weasel_Controller
         //Pathfindig related
         //Pathfindig related
         //Pathfindig related
-        public int[] FreePath(int start, int end)
+        public int[] FreePath(int start, int end, Color weasel_color)
         {
             Waypoint start_position = FindWayPoint(start);
 
             List<string> routes = new List<string>();
-            FreePathBackend(start_position, end, "", ref routes);
+            FreePathBackend(start_position, end, "", ref routes, weasel_color);
 
             if(routes.Count == 0)
             {
                 FreePathBackendWithoutCheckBackend(start_position, end, "", ref routes);
-            }
-
-            if(routes.Count == 0)
-            {
-                return new int[] { -1 };
             }
 
             //Get the shortest route
@@ -246,22 +241,22 @@ namespace Weasel_Controller
             }
 
             //Check if the route is actually possible
-            arr = possibleRoute(arr);
+            arr = possibleRoute(arr, weasel_color);
 
             return arr;
         }
 
-        private void FreePathBackend(Waypoint way, int id, string path, ref List<string> routes)
+        private void FreePathBackend(Waypoint way, int id, string path, ref List<string> routes, Color weasel_color)
         {
-            if (way._PointId == id && way._Reserved == false)
+            if (way._PointId == id && (way._Reserved == false || weasel_color == way._Reserved_Color))
             {
                 routes.Add(path + way._PointId);
                 return;
             }
 
-            if (way._Next == null && way._PointId != id && _Head._Reserved == false)
+            if (way._Next == null && way._PointId != id && (_Head._Reserved == false || weasel_color == _Head._Reserved_Color))
             {
-                FreePathBackend(_Head, id, path + way._PointId + " ", ref routes);
+                FreePathBackend(_Head, id, path + way._PointId + " ", ref routes, weasel_color);
             }
 
             if (way._Next == null || path.Contains(" " + Convert.ToString(way._PointId) + " "))
@@ -271,10 +266,10 @@ namespace Weasel_Controller
 
             for(int i = 0; i < way._Next.Count; i++)
             {
-                if (way._Next[i]._Reserved == false)
+                if (way._Next[i]._Reserved == false || weasel_color == way._Next[i]._Reserved_Color)
                 {
                     Waypoint RandomWay = way._Next[i];
-                    FreePathBackend(RandomWay, id, path + way._PointId + " ", ref routes);
+                    FreePathBackend(RandomWay, id, path + way._PointId + " ", ref routes, weasel_color);
                 }
             }
         }
@@ -304,7 +299,7 @@ namespace Weasel_Controller
         }
 
         //Shrink the route to the possible route
-        public int[] possibleRoute(int[] route)
+        public int[] possibleRoute(int[] route, Color weasel_color)
         {
             List<int> liste = new List<int>();
             liste.Add(route[0]);
@@ -312,7 +307,7 @@ namespace Weasel_Controller
             {
                 Waypoint temp = FindWayPoint(route[i]);
                 
-                if(temp._Reserved == true)
+                if(temp._Reserved == true && weasel_color != temp._Reserved_Color)
                 {
                     break;
                 }
@@ -328,15 +323,20 @@ namespace Weasel_Controller
             return newroute;
         }
 
-        //Shrink route to an specific radius
-        public int[] radiusRoute(int[] route)
+        //Shrink the route to radius route
+        public int[] RadiusRoute(int[] arr)
         {
-            int[] new_route = new int[5];
-            for(int i = 0; i < new_route.Length; i++)
+            if(arr.Length < 6)
             {
-                new_route[i] = route[i];
+                return arr;
             }
-            return new_route;
+
+            int[] arr2 = new int[5];
+            for(int i = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = arr[i];
+            }
+            return arr2;
         }
     }
 }

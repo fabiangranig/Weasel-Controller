@@ -71,7 +71,7 @@ namespace Weasel_Controller
                         //Set position if not set
                         if (_Weasels[i]._Destinations[0] != _Weasels[i]._Destination)
                         {
-                            SendWeasel(i, _Weasels[i]._Destinations[0]);
+                            _WeaselMovementHandlers[i].MoveWeasel(_Weasels[i]._Destinations[0]);
                             _Weasels[i]._Destination = _Weasels[i]._Destinations[0];
                         }
                     }
@@ -88,11 +88,6 @@ namespace Weasel_Controller
                 }
             }
 
-        }
-
-        private void SendWeasel(int selected_weasel, int goal)
-        {
-            _WeaselMovementHandlers[selected_weasel].MoveWeasel(goal);
         }
 
         private void btnClick_SendWeasel(object sender, EventArgs e)
@@ -120,8 +115,7 @@ namespace Weasel_Controller
 
         private void btn_StopMove_Click(object sender, EventArgs e)
         {
-            int remove_at_index = Convert.ToInt32(_txtBox_Position.Text);
-            _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].StopMovement(remove_at_index);
+            
         }
 
         private void InitializeComponent()
