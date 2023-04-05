@@ -21,19 +21,23 @@ namespace Weasel_Controller
             _Map = map1;
         }
 
-        public void MoveWeasel(int goal)
+        public void MoveWeasel(DestinationwithSleep DWS)
         {
             //Move to the designated position
-            _Mover = new Thread(() => MovePartlyBackend(goal));
+            _Mover = new Thread(() => MovePartlyBackend(DWS));
             _Mover.Start();
         }
 
-        private void MovePartlyBackend(int goal)
+        private void MovePartlyBackend(DestinationwithSleep DWS)
         {
-            while(_Weasel._LastPosition != goal)
+            //Get the sleep time before moving
+            Thread.Sleep(DWS.SleepBefore);
+
+            //Move
+            while(_Weasel._LastPosition != DWS.Destination)
             {
                 //Get the best possible path
-                int[] Path = _Map.FreePath(_Weasel._LastPosition, goal, _Weasel._Colored);
+                int[] Path = _Map.FreePath(_Weasel._LastPosition, DWS.Destination, _Weasel._Colored);
                 Path = _Map.RadiusRoute(Path);
                 _LastKnownRoute = Path;
 
@@ -48,7 +52,7 @@ namespace Weasel_Controller
                         if (_Weasel._LastPosition == Path[u] && u + 2 < Path.Length)
                         {
                             //Discover new paths
-                            int[] path_temp = _Map.FreePath(_Weasel._LastPosition, goal, _Weasel._Colored);
+                            int[] path_temp = _Map.FreePath(_Weasel._LastPosition, DWS.Destination, _Weasel._Colored);
                             path_temp = _Map.RadiusRoute(path_temp);
                             bool switcher = false;
                             if (Path[0] != path_temp[0])
@@ -93,7 +97,7 @@ namespace Weasel_Controller
                 Thread.Sleep(100);
             }
 
-            Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + goal + "}");
+            Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + DWS.Destination + "}");
         }
 
         public void DestroyAction()

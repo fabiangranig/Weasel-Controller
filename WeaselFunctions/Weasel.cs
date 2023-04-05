@@ -24,7 +24,7 @@ namespace Weasel_Controller
         public int _HomePosition;
         public Color _Colored;
         public int _Destination;
-        public List<int> _Destinations;
+        public List<DestinationwithSleep> _DestinationsWithSleep;
         private List<int> _OfflineMover;
 
         //encapsulation
@@ -51,7 +51,7 @@ namespace Weasel_Controller
             _HomePosition = HomePosition1;
             _Colored = color1;
             _Destination = -1;
-            _Destinations = new List<int>();
+            _DestinationsWithSleep = new List<DestinationwithSleep>();
             
             if(_AppOnline == true)
             {
@@ -98,7 +98,7 @@ namespace Weasel_Controller
             Random r1 = new Random();
             while (_AppOnline == false)
             {
-                Thread.Sleep(r1.Next(250, 400));
+                Thread.Sleep(r1.Next(1000, 2000));
                 if(_OfflineMover.Count > 0)
                 {
                     _LastPosition = _OfflineMover[0];
