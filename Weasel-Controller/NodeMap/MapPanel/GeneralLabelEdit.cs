@@ -8,10 +8,9 @@ using System.Drawing;
 
 namespace Weasel_Controller.NodeMap.MapPanel
 {
-    class WayPointLabelEdit : Form
+    class GeneralLabelEdit : Form
     {
         private Button btn_Ok;
-        private Button btn_Cancel;
         private TextBox txtBox_Position;
         private Label label_Correct;
         private Button btn_Up;
@@ -19,71 +18,70 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private Button btn_Left;
         private Button btn_Down;
         private Label _MainLabel;
+        private Button btn_Remove;
         private Map _WeaselMap;
 
-        public WayPointLabelEdit(ref Label label1, ref Map WeaselMap1)
+        public GeneralLabelEdit(ref Label label1, ref Map WeaselMap1, string Type1)
         {
             _MainLabel = label1;
             _WeaselMap = WeaselMap1;
 
             InitializeComponent();
 
-            txtBox_Position.Text = _MainLabel.Text;
+            if(Type1 == "WayPointEdit")
+            {
+                txtBox_Position.Text = _MainLabel.Text;
+            }
+            if(Type1 == "LaneEdit")
+            {
+                txtBox_Position.Enabled = false;
+            }
         }
 
         private void InitializeComponent()
         {
             this.btn_Ok = new System.Windows.Forms.Button();
-            this.btn_Cancel = new System.Windows.Forms.Button();
             this.txtBox_Position = new System.Windows.Forms.TextBox();
             this.label_Correct = new System.Windows.Forms.Label();
             this.btn_Up = new System.Windows.Forms.Button();
             this.btn_Right = new System.Windows.Forms.Button();
             this.btn_Left = new System.Windows.Forms.Button();
             this.btn_Down = new System.Windows.Forms.Button();
+            this.btn_Remove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_Ok
             // 
-            this.btn_Ok.Location = new System.Drawing.Point(93, 147);
+            this.btn_Ok.Location = new System.Drawing.Point(12, 177);
             this.btn_Ok.Name = "btn_Ok";
-            this.btn_Ok.Size = new System.Drawing.Size(75, 23);
+            this.btn_Ok.Size = new System.Drawing.Size(227, 23);
             this.btn_Ok.TabIndex = 0;
             this.btn_Ok.Text = "Ok";
             this.btn_Ok.UseVisualStyleBackColor = true;
             this.btn_Ok.Click += new System.EventHandler(this.btn_Ok_Click);
             // 
-            // btn_Cancel
-            // 
-            this.btn_Cancel.Location = new System.Drawing.Point(12, 147);
-            this.btn_Cancel.Name = "btn_Cancel";
-            this.btn_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.btn_Cancel.TabIndex = 1;
-            this.btn_Cancel.Text = "Cancel";
-            this.btn_Cancel.UseVisualStyleBackColor = true;
-            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
-            // 
             // txtBox_Position
             // 
-            this.txtBox_Position.Location = new System.Drawing.Point(12, 12);
+            this.txtBox_Position.Location = new System.Drawing.Point(68, 12);
             this.txtBox_Position.Name = "txtBox_Position";
-            this.txtBox_Position.Size = new System.Drawing.Size(100, 20);
+            this.txtBox_Position.Size = new System.Drawing.Size(100, 22);
             this.txtBox_Position.TabIndex = 2;
             this.txtBox_Position.TextChanged += new System.EventHandler(this.txtBox_Position_TextChanged);
+            this.txtBox_Position.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBox_Position_KeyPress);
             // 
             // label_Correct
             // 
             this.label_Correct.AutoSize = true;
             this.label_Correct.BackColor = System.Drawing.Color.Red;
-            this.label_Correct.Location = new System.Drawing.Point(118, 15);
+            this.label_Correct.Location = new System.Drawing.Point(102, 69);
             this.label_Correct.Name = "label_Correct";
-            this.label_Correct.Size = new System.Drawing.Size(31, 13);
+            this.label_Correct.Size = new System.Drawing.Size(40, 17);
             this.label_Correct.TabIndex = 3;
             this.label_Correct.Text = "        ";
             // 
             // btn_Up
             // 
-            this.btn_Up.Location = new System.Drawing.Point(37, 38);
+            this.btn_Up.Location = new System.Drawing.Point(83, 40);
             this.btn_Up.Name = "btn_Up";
             this.btn_Up.Size = new System.Drawing.Size(75, 23);
             this.btn_Up.TabIndex = 4;
@@ -93,7 +91,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_Right
             // 
-            this.btn_Right.Location = new System.Drawing.Point(84, 67);
+            this.btn_Right.Location = new System.Drawing.Point(159, 69);
             this.btn_Right.Name = "btn_Right";
             this.btn_Right.Size = new System.Drawing.Size(75, 23);
             this.btn_Right.TabIndex = 5;
@@ -103,7 +101,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_Left
             // 
-            this.btn_Left.Location = new System.Drawing.Point(3, 67);
+            this.btn_Left.Location = new System.Drawing.Point(12, 69);
             this.btn_Left.Name = "btn_Left";
             this.btn_Left.Size = new System.Drawing.Size(75, 23);
             this.btn_Left.TabIndex = 6;
@@ -113,7 +111,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_Down
             // 
-            this.btn_Down.Location = new System.Drawing.Point(37, 96);
+            this.btn_Down.Location = new System.Drawing.Point(83, 98);
             this.btn_Down.Name = "btn_Down";
             this.btn_Down.Size = new System.Drawing.Size(75, 23);
             this.btn_Down.TabIndex = 7;
@@ -121,18 +119,33 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.btn_Down.UseVisualStyleBackColor = true;
             this.btn_Down.Click += new System.EventHandler(this.btn_Down_Click);
             // 
-            // LabelEdit
+            // btn_Remove
             // 
-            this.ClientSize = new System.Drawing.Size(184, 185);
+            this.btn_Remove.Location = new System.Drawing.Point(12, 148);
+            this.btn_Remove.Name = "btn_Remove";
+            this.btn_Remove.Size = new System.Drawing.Size(225, 23);
+            this.btn_Remove.TabIndex = 8;
+            this.btn_Remove.Text = "Remove";
+            this.btn_Remove.UseVisualStyleBackColor = true;
+            this.btn_Remove.Click += new System.EventHandler(this.btn_Remove_Click);
+            // 
+            // GeneralLabelEdit
+            // 
+            this.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.ClientSize = new System.Drawing.Size(251, 221);
+            this.Controls.Add(this.btn_Remove);
             this.Controls.Add(this.btn_Down);
             this.Controls.Add(this.btn_Left);
             this.Controls.Add(this.btn_Right);
             this.Controls.Add(this.btn_Up);
             this.Controls.Add(this.label_Correct);
             this.Controls.Add(this.txtBox_Position);
-            this.Controls.Add(this.btn_Cancel);
             this.Controls.Add(this.btn_Ok);
-            this.Name = "LabelEdit";
+            this.MaximumSize = new System.Drawing.Size(269, 268);
+            this.MinimumSize = new System.Drawing.Size(269, 268);
+            this.Name = "GeneralLabelEdit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Edit";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -182,17 +195,29 @@ namespace Weasel_Controller.NodeMap.MapPanel
             _MainLabel.Location = new Point(_MainLabel.Location.X, _MainLabel.Location.Y + 10);
         }
 
-        private void btn_Cancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void btn_Ok_Click(object sender, EventArgs e)
         {
             if(label_Correct.BackColor == Color.LightGreen)
             {
                 _MainLabel.Text = txtBox_Position.Text;
                 this.Close();
+            }
+        }
+
+        private void btn_Remove_Click(object sender, EventArgs e)
+        {
+            _MainLabel.Visible = false;
+            this.Close();
+        }
+
+        private void txtBox_Position_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            int temp;
+            bool switcher = Int32.TryParse(Convert.ToString(e.KeyChar), out temp);
+
+            if(switcher == false && Convert.ToInt32(e.KeyChar) != 8)
+            {
+                e.KeyChar = '\0';
             }
         }
     }

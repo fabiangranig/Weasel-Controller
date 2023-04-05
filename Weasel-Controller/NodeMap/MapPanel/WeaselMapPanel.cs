@@ -20,6 +20,8 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private List<Label> _Labels_Lanes;
         private Button btn_LaneAddHorizontal;
         private Button btn_LaneAddVertical;
+        private GroupBox groupBox_Builder;
+        private GroupBox groupBox_Savestate;
         private Timer tmr;
 
         public WeaselMapPanel(ref Map WeaselMap1, ref Weasel[] Weasels1)
@@ -41,6 +43,9 @@ namespace Weasel_Controller.NodeMap.MapPanel
 
             tmr.Tick += UpdatePoints;
             tmr.Start();
+
+            //Load the map on startup
+            btn_MapLoad_Click(new Object(), new EventArgs());
         }
 
         private void InitializeComponent()
@@ -50,11 +55,15 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.btn_MapLoad = new System.Windows.Forms.Button();
             this.btn_LaneAddHorizontal = new System.Windows.Forms.Button();
             this.btn_LaneAddVertical = new System.Windows.Forms.Button();
+            this.groupBox_Builder = new System.Windows.Forms.GroupBox();
+            this.groupBox_Savestate = new System.Windows.Forms.GroupBox();
+            this.groupBox_Builder.SuspendLayout();
+            this.groupBox_Savestate.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_AddPoint
             // 
-            this.btn_AddPoint.Location = new System.Drawing.Point(12, 12);
+            this.btn_AddPoint.Location = new System.Drawing.Point(6, 21);
             this.btn_AddPoint.Name = "btn_AddPoint";
             this.btn_AddPoint.Size = new System.Drawing.Size(124, 27);
             this.btn_AddPoint.TabIndex = 0;
@@ -64,7 +73,8 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_SaveMap
             // 
-            this.btn_SaveMap.Location = new System.Drawing.Point(619, 12);
+            this.btn_SaveMap.Enabled = false;
+            this.btn_SaveMap.Location = new System.Drawing.Point(6, 23);
             this.btn_SaveMap.Name = "btn_SaveMap";
             this.btn_SaveMap.Size = new System.Drawing.Size(124, 25);
             this.btn_SaveMap.TabIndex = 1;
@@ -74,7 +84,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_MapLoad
             // 
-            this.btn_MapLoad.Location = new System.Drawing.Point(749, 12);
+            this.btn_MapLoad.Location = new System.Drawing.Point(136, 23);
             this.btn_MapLoad.Name = "btn_MapLoad";
             this.btn_MapLoad.Size = new System.Drawing.Size(124, 25);
             this.btn_MapLoad.TabIndex = 2;
@@ -84,7 +94,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_LaneAddHorizontal
             // 
-            this.btn_LaneAddHorizontal.Location = new System.Drawing.Point(142, 12);
+            this.btn_LaneAddHorizontal.Location = new System.Drawing.Point(136, 21);
             this.btn_LaneAddHorizontal.Name = "btn_LaneAddHorizontal";
             this.btn_LaneAddHorizontal.Size = new System.Drawing.Size(124, 27);
             this.btn_LaneAddHorizontal.TabIndex = 3;
@@ -94,7 +104,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             // 
             // btn_LaneAddVertical
             // 
-            this.btn_LaneAddVertical.Location = new System.Drawing.Point(272, 12);
+            this.btn_LaneAddVertical.Location = new System.Drawing.Point(266, 21);
             this.btn_LaneAddVertical.Name = "btn_LaneAddVertical";
             this.btn_LaneAddVertical.Size = new System.Drawing.Size(124, 27);
             this.btn_LaneAddVertical.TabIndex = 4;
@@ -102,21 +112,45 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.btn_LaneAddVertical.UseVisualStyleBackColor = true;
             this.btn_LaneAddVertical.Click += new System.EventHandler(this.btn_LaneAddVertical_Click);
             // 
+            // groupBox_Builder
+            // 
+            this.groupBox_Builder.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_Builder.Controls.Add(this.btn_AddPoint);
+            this.groupBox_Builder.Controls.Add(this.btn_LaneAddVertical);
+            this.groupBox_Builder.Controls.Add(this.btn_LaneAddHorizontal);
+            this.groupBox_Builder.Location = new System.Drawing.Point(12, 12);
+            this.groupBox_Builder.Name = "groupBox_Builder";
+            this.groupBox_Builder.Size = new System.Drawing.Size(402, 71);
+            this.groupBox_Builder.TabIndex = 5;
+            this.groupBox_Builder.TabStop = false;
+            this.groupBox_Builder.Text = "Builder";
+            // 
+            // groupBox_Savestate
+            // 
+            this.groupBox_Savestate.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_Savestate.Controls.Add(this.btn_SaveMap);
+            this.groupBox_Savestate.Controls.Add(this.btn_MapLoad);
+            this.groupBox_Savestate.Location = new System.Drawing.Point(420, 12);
+            this.groupBox_Savestate.Name = "groupBox_Savestate";
+            this.groupBox_Savestate.Size = new System.Drawing.Size(270, 71);
+            this.groupBox_Savestate.TabIndex = 6;
+            this.groupBox_Savestate.TabStop = false;
+            this.groupBox_Savestate.Text = "Savestate";
+            // 
             // WeaselMapPanel
             // 
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(882, 557);
-            this.Controls.Add(this.btn_LaneAddVertical);
-            this.Controls.Add(this.btn_LaneAddHorizontal);
-            this.Controls.Add(this.btn_MapLoad);
-            this.Controls.Add(this.btn_SaveMap);
-            this.Controls.Add(this.btn_AddPoint);
+            this.ClientSize = new System.Drawing.Size(880, 549);
+            this.Controls.Add(this.groupBox_Savestate);
+            this.Controls.Add(this.groupBox_Builder);
             this.MaximumSize = new System.Drawing.Size(898, 596);
             this.MinimumSize = new System.Drawing.Size(898, 596);
             this.Name = "WeaselMapPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Weasel Map Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.WeaselMapPanel_FormClosing);
+            this.groupBox_Builder.ResumeLayout(false);
+            this.groupBox_Savestate.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -131,6 +165,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             temp.BackColor = Color.LightGreen;
             temp.TextAlign = ContentAlignment.MiddleCenter;
             temp.Click += new EventHandler(Label_Options);
+            temp.AccessibleDescription = "WayPointEdit";
             _Labels_Waypoints.Add(temp);
             this.Controls.Add(temp);
         }
@@ -138,7 +173,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private void Label_Options(object sender, EventArgs e)
         {
             Label temp = (Label)sender;
-            WayPointLabelEdit LE = new WayPointLabelEdit(ref temp, ref _WeaselMap);
+            GeneralLabelEdit LE = new GeneralLabelEdit(ref temp, ref _WeaselMap, temp.AccessibleDescription);
             LE.ShowDialog();
         }
 
@@ -150,8 +185,11 @@ namespace Weasel_Controller.NodeMap.MapPanel
             //Write all important label properties to the file
             for(int i = 0; i < _Labels_Waypoints.Count; i++)
             {
-                sw.WriteLine(_Labels_Waypoints[i].Text);
-                sw.WriteLine(_Labels_Waypoints[i].Location.X + " " + _Labels_Waypoints[i].Location.Y);
+                if(_Labels_Waypoints[i].Visible == true)
+                {
+                    sw.WriteLine(_Labels_Waypoints[i].Text);
+                    sw.WriteLine(_Labels_Waypoints[i].Location.X + " " + _Labels_Waypoints[i].Location.Y);
+                }
             }
 
             sw.Close();
@@ -163,8 +201,11 @@ namespace Weasel_Controller.NodeMap.MapPanel
             //Write all important label properties to the file
             for (int i = 0; i < _Labels_Lanes.Count; i++)
             {
-                sw2.WriteLine(_Labels_Lanes[i].Size.Width + " " + _Labels_Lanes[i].Size.Height);
-                sw2.WriteLine(_Labels_Lanes[i].Location.X + " " + _Labels_Lanes[i].Location.Y);
+                if(_Labels_Lanes[i].Visible == true)
+                {
+                    sw2.WriteLine(_Labels_Lanes[i].Size.Width + " " + _Labels_Lanes[i].Size.Height);
+                    sw2.WriteLine(_Labels_Lanes[i].Location.X + " " + _Labels_Lanes[i].Location.Y);
+                }
             }
 
             sw2.Close();
@@ -198,6 +239,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
                 string[] split = txt_MapPanel[i + 1].Split(' ');
                 newLabel.Location = new Point(Int32.Parse(split[0]), Int32.Parse(split[1]));
                 newLabel.BackColor = Color.LightGreen;
+                newLabel.AccessibleDescription = "WayPointEdit";
                 newLabel.Size = new Size(40, 15);
                 newLabel.TextAlign = ContentAlignment.MiddleCenter;
                 newLabel.Click += new EventHandler(Label_Options);
@@ -215,6 +257,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
                 Label newLabel = new Label();
                 newLabel.Text = "   ";
                 newLabel.BackColor = Color.LightGray;
+                newLabel.AccessibleDescription = "LaneEdit";
                 newLabel.Click += new EventHandler(Label_Options_Lanes);
                 string[] split1 = txt_MapPanel2[i + 1].Split(' ');
                 newLabel.Location = new Point(Int32.Parse(split1[0]), Int32.Parse(split1[1]));
@@ -268,6 +311,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             newLabel.Location = new Point(this.Size.Width / 2 - 100, this.Size.Height / 2 - 100);
             newLabel.TextAlign = ContentAlignment.MiddleCenter;
             newLabel.Size = new Size(20, 5);
+            newLabel.AccessibleDescription = "LaneEdit";
             _Labels_Lanes.Add(newLabel);
             this.Controls.Add(_Labels_Lanes[_Labels_Lanes.Count - 1]);
         }
@@ -281,6 +325,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             newLabel.Location = new Point(this.Size.Width / 2 - 100, this.Size.Height / 2 - 100);
             newLabel.TextAlign = ContentAlignment.MiddleCenter;
             newLabel.Size = new Size(5, 20);
+            newLabel.AccessibleDescription = "LaneEdit";
             _Labels_Lanes.Add(newLabel);
             this.Controls.Add(_Labels_Lanes[_Labels_Lanes.Count - 1]);
         }
@@ -288,7 +333,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private void Label_Options_Lanes(object sender, EventArgs e)
         {
             Label temp = (Label)sender;
-            LanesLabelEdit LE = new LanesLabelEdit(ref temp);
+            GeneralLabelEdit LE = new GeneralLabelEdit(ref temp, ref _WeaselMap, temp.AccessibleDescription);
             LE.ShowDialog();
         }
     }

@@ -81,10 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NodeMap\Map.cs" />
-    <Compile Include="NodeMap\MapPanel\LanesLabelEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="NodeMap\MapPanel\WayPointLabelEdit.cs">
+    <Compile Include="NodeMap\MapPanel\GeneralLabelEdit.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NodeMap\Waypoint.cs" />
@@ -111,11 +108,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WeaselFunctions\WeaselMovementHandler.cs" />
-    <EmbeddedResource Include="NodeMap\MapPanel\LanesLabelEdit.resx">
-      <DependentUpon>LanesLabelEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="NodeMap\MapPanel\WayPointLabelEdit.resx">
-      <DependentUpon>WayPointLabelEdit.cs</DependentUpon>
+    <EmbeddedResource Include="NodeMap\MapPanel\GeneralLabelEdit.resx">
+      <DependentUpon>GeneralLabelEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="WeaselController.resx">
       <DependentUpon>WeaselController.cs</DependentUpon>
