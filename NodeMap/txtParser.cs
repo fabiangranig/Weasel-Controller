@@ -49,6 +49,16 @@ namespace Weasel_Controller
                     {
                         if (_GoodBlob[u] == "---")
                         {
+                            for (int z = u + 1; z < _GoodBlob.Count; z++)
+                            {
+                                if (_GoodBlob[z] == "---")
+                                {
+                                    break;
+                                }
+
+                                string[] split3 = _GoodBlob[z].Split('-');
+                                weasel_map.CombineTwoReservedNodes(Int32.Parse(split3[0]), Int32.Parse(split3[1]));
+                            }
                             break;
                         }
 

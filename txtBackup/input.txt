@@ -53,10 +53,17 @@
 34-35
 ---
 # Add connections between two existing points  
-# Add these before the --- line
-#Pattern for x -> y is x-y
+# Add these before the next --- line
+# Pattern for x -> y is x-y
 46-49
 49-40
 27-44
 35-36
+---
+# Connections between nodes which are connected
+# That means when one point is reserved the next is aswell
+# Pattern for x -> y is x-y
+42-41
+36-2
+2-36
 ---
