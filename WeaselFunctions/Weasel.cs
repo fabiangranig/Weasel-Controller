@@ -98,7 +98,7 @@ namespace Weasel_Controller
             Random r1 = new Random();
             while (_AppOnline == false)
             {
-                Thread.Sleep(r1.Next(1000, 2000));
+                Thread.Sleep(r1.Next(250, 400));
                 if(_OfflineMover.Count > 0)
                 {
                     _LastPosition = _OfflineMover[0];

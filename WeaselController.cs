@@ -138,5 +138,11 @@ namespace Weasel_Controller
             WeaselMapPanel WMP = new WeaselMapPanel(ref _WeaselMap, ref _Weasels);
             WMP.Show();
         }
+
+        private void btn_ServerMode_Click(object sender, EventArgs e)
+        {
+            ServerWindow SW = new ServerWindow(ref _Weasels);
+            SW.Show();
+        }
     }
 }
