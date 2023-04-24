@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeaselApp.MainPage">
+
+    <StackLayout>
+        <Label Text="IP-Adress:" />
+        <Entry x:Name="IP_TextBox" />
+        <Button Text="Set IP!" Clicked="SetIP" />
+        <Label Text="Enter next position:" />
+        <Entry x:Name="PositionToSendTo" />
+        <Button Text="Send Weasel!" Clicked="SendWeaselToPosition" />
+        <Label Text="empty" x:Name="EnteredPosition"/>
+    </StackLayout>
+</ContentPage>
