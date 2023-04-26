@@ -20,7 +20,7 @@ namespace Weasel_Controller
             StringToDestinations STD = new StringToDestinations(input);
             for(int i = 0; i < STD.Destinations.Count; i++)
             {
-                _Weasels[0]._DestinationsWithSleep.Add(STD.Destinations[i]);
+                _Weasels[0]._DestinationsWithInformation.Add(STD.Destinations[i]);
             }
         }
     }

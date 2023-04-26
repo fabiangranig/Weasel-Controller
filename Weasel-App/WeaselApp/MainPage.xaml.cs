@@ -18,16 +18,16 @@ namespace WeaselApp
         public MainPage()
         {
             InitializeComponent();
-            Client = new TcpClient();
-            Client.Connect(PublicVariables._IP, 26000);
         }
 
         public void SendWeaselToPosition(object sender, EventArgs e)
         {
+            Client = new TcpClient();
+            Client.Connect(PublicVariables._IP, 26000);
             Entry PositionToSendTo = (Entry)FindByName("PositionToSendTo");
             Stream MessageStream = Client.GetStream();
             ASCIIEncoding encoder = new ASCIIEncoding();
-            var input = Convert.ToString(txtBox_WeaselName.Text) + ":" + Convert.ToString(Int32.Parse(PositionToSendTo.Text));
+            var input = Convert.ToString(txtBox_WeaselName.Text) + ":" + Convert.ToString(Int32.Parse(PositionToSendTo.Text)) + ":" + PublicVariables._CurrentUsername + ":" + PublicVariables._UserHash;
             if (input != null)
             {
                 byte[] buffer = encoder.GetBytes(input);

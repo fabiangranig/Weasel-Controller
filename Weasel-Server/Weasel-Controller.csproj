@@ -97,7 +97,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NodeMap\txtParser.cs" />
-    <Compile Include="WeaselFunctions\DestinationwithSleep.cs" />
+    <Compile Include="WeaselFunctions\DestinationwithInformation.cs" />
     <Compile Include="WeaselFunctions\StringToDestinations.cs" />
     <Compile Include="WeaselFunctions\Weasel.cs" />
     <Compile Include="WeaselFunctions\WeaselControlPanel.cs">

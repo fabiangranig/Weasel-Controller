@@ -21,14 +21,14 @@ namespace Weasel_Controller
             _Map = map1;
         }
 
-        public void MoveWeasel(DestinationwithSleep DWS)
+        public void MoveWeasel(DestinationwithInformation DWS)
         {
             //Move to the designated position
             _Mover = new Thread(() => MovePartlyBackend(DWS));
             _Mover.Start();
         }
 
-        private void MovePartlyBackend(DestinationwithSleep DWS)
+        private void MovePartlyBackend(DestinationwithInformation DWS)
         {
             //Get the sleep time before moving
             Thread.Sleep(DWS.SleepBefore);

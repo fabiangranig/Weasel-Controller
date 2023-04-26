@@ -15,6 +15,7 @@ namespace Weasel_Controller
     {
         private ListBox _listbox_Console;
         private List<string> _Protocol;
+        private List<string> _Hashes;
         private Thread _DestinationsRequestChecker;
         private Weasel[] _Weasels;
 
@@ -23,19 +24,40 @@ namespace Weasel_Controller
             InitializeComponent();
             _Weasels = weasels;
             _Protocol = new List<string>();
+            _Hashes = new List<string>();
+
+            //Add all hashes from the .txt
+            string[] hashes_array = System.IO.File.ReadAllLines(@"hashes.txt");
+            for(int i = 0; i < hashes_array.Length; i++)
+            {
+                _Hashes.Add(hashes_array[i]);
+            }
+
             _DestinationsRequestChecker = new Thread(DestinationRequestRuntime);
             _DestinationsRequestChecker.Start();
         }
 
+        public bool IsInHashesList(string hash)
+        {
+            for(int i = 0; i < _Hashes.Count; i++)
+            {
+                if(_Hashes[i] == hash)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void DestinationRequestRuntime()
         {
-            TcpListener Server = new TcpListener(IPAddress.Any, 26000);
-            Server.Start();
-            TcpClient Client = Server.AcceptTcpClient();
-            Stream MessageStream = Client.GetStream();
-
-            while (true)
+            while(1 == 1)
             {
+                TcpListener Server = new TcpListener(IPAddress.Any, 26000);
+                Server.Start();
+                TcpClient Client = Server.AcceptTcpClient();
+                Stream MessageStream = Client.GetStream();
+
                 byte[] message = new byte[4096];
                 int bytesRead;
 
@@ -48,24 +70,29 @@ namespace Weasel_Controller
 
                     //Add destination to corresponding weasel
                     string[] split = encoded_piece.Split(':');
-                    for(int i = 0; i < _Weasels.Length; i++)
+                    for (int i = 0; i < _Weasels.Length; i++)
                     {
+                        if(!IsInHashesList(split[3]))
+                        {
+                            break;
+                        }
+
                         if (_Weasels[i].WeaselName == split[0])
                         {
-                            _Weasels[i]._DestinationsWithSleep.Add(new DestinationwithSleep(Int32.Parse(split[1])));
+                            _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(0, Int32.Parse(split[1]), split[2]));
                         }
                     }
                 }
                 catch (IOException)
                 {
-                    break;
+
                 }
+
+                Client.Close();
+                Server.Stop();
 
                 Thread.Sleep(100);
             }
-
-            Client.Close();
-            Server.Stop();
         }
 
         private void InitializeComponent()

@@ -4,6 +4,6 @@
              x:Class="WeaselApp.FlyoutPageMainDetail"
              Title="Detail">
   <StackLayout Padding="10">
-    <Label Text="This is a detail page. To get the 'triple' line icon on each platform add a icon to each platform and update the 'Flyout' page with an Icon that references it."/>
+    <Label Text="This is the start page. Click on the top left to progress."/>
   </StackLayout>
 </ContentPage>

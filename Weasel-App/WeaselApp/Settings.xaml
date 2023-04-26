@@ -6,5 +6,12 @@
         <Label Text="IP-Adress:" />
         <Entry x:Name="IP_TextBox" />
         <Button Text="Set IP!" Clicked="SetIP" />
+
+        <Label Text="Username:" />
+        <Entry x:Name="Username_TextBox" />
+
+        <Label Text="Password:" />
+        <Entry x:Name="Password_TextBox" IsPassword="True"/>
+        <Button Text="Set Credentials!" Clicked="SetCredentials" />
     </StackLayout>
 </ContentPage>

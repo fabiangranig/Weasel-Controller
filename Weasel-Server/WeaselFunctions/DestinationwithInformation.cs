@@ -6,22 +6,32 @@ using System.Threading.Tasks;
 
 namespace Weasel_Controller
 {
-    class DestinationwithSleep
+    class DestinationwithInformation
     {
         private int _SleepBefore;
         private int _Destination;
+        private string _SendBy;
 
         //constructors
-        public DestinationwithSleep(int Destination1)
+        public DestinationwithInformation(int Destination1)
         {
             _SleepBefore = 0;
             _Destination = Destination1;
+            _SendBy = "no_onwer";
         }
 
-        public DestinationwithSleep(int SleepBefore1, int Destination1)
+        public DestinationwithInformation(int SleepBefore1, int Destination1)
         {
             _SleepBefore = SleepBefore1;
             _Destination = Destination1;
+            _SendBy = "no_owner";
+        }
+
+        public DestinationwithInformation(int SleepBefore1, int Destination1, string Owner1)
+        {
+            _SleepBefore = SleepBefore1;
+            _Destination = Destination1;
+            _SendBy = Owner1;
         }
 
         //encapsulation
@@ -33,6 +43,11 @@ namespace Weasel_Controller
         public int Destination
         {
             get { return _Destination; }
+        }
+
+        public string SendBy
+        {
+            get { return _SendBy; }
         }
     }
 }
