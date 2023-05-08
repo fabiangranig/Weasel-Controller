@@ -25,7 +25,14 @@ namespace Weasel_Controller
         private Label _lbl_Online;
         private Button btn_AdvancedMovement;
         private Button btn_RandomPositionSPL;
+        private Button btn_CollectBox;
+        private Label lbl_RoboDKControls;
         private WeaselMovementHandler[] _WeaselMovementHandlers;
+        private Button btn_RobotRealRobot;
+        private Button btn_RobotSimulation;
+        private Button btn_AllWeaselsRandomPositionSPL;
+        private Label lbl_AllWeaselsAction;
+        private KukaRoboter _KukaRobot;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
         {
@@ -36,12 +43,18 @@ namespace Weasel_Controller
             //Get the controls from the editor
             InitializeComponent();
 
+            //Everything for the Kuka Roboter
+            MessageBox.Show("Geschwindigkeit des Kuka Roboters muss auf 10% eingestellt werden!", "WARNUNG!", MessageBoxButtons.OK);
+
+            //Start the Kuka Robot
+            _KukaRobot = new KukaRoboter();
+
             //Get the weasels into the dropdown and create Handlers
             _WeaselMovementHandlers = new WeaselMovementHandler[_Weasels.Length];
             for (int i = 0; i < _Weasels.Length; i++)
             {
                 _WeaselDropDown.Items.Add(_Weasels[i].WeaselName);
-                _WeaselMovementHandlers[i] = new WeaselMovementHandler(ref _Weasels[i], ref _WeaselMap);
+                _WeaselMovementHandlers[i] = new WeaselMovementHandler(ref _Weasels[i], ref _WeaselMap, ref _KukaRobot);
             }
 
             //Select the first weasel into the combobox
@@ -73,17 +86,6 @@ namespace Weasel_Controller
             {
                 if(_Weasels[i]._DestinationsWithInformation.Count > 0)
                 {
-                    //When position is reached remove the goal
-                    while(_Weasels[i]._DestinationsWithInformation[0].Destination == _Weasels[i]._LastPosition)
-                    {
-                        _Weasels[i]._DestinationsWithInformation.RemoveAt(0);
-
-                        if (!(_Weasels[i]._DestinationsWithInformation.Count > 0))
-                        {
-                            break;
-                        }
-                    }
-
                     //Safety check to reduce crashes
                     if(_Weasels[i]._DestinationsWithInformation.Count > 0)
                     {
@@ -203,9 +205,15 @@ namespace Weasel_Controller
             this.btn_StopMove = new System.Windows.Forms.Button();
             this.btn_RandomPosition = new System.Windows.Forms.Button();
             this.groupBox_MoveWeasel = new System.Windows.Forms.GroupBox();
+            this.btn_RobotRealRobot = new System.Windows.Forms.Button();
+            this.btn_RobotSimulation = new System.Windows.Forms.Button();
+            this.btn_CollectBox = new System.Windows.Forms.Button();
+            this.lbl_RoboDKControls = new System.Windows.Forms.Label();
+            this.btn_RandomPositionSPL = new System.Windows.Forms.Button();
             this.btn_AdvancedMovement = new System.Windows.Forms.Button();
             this._lbl_Online = new System.Windows.Forms.Label();
-            this.btn_RandomPositionSPL = new System.Windows.Forms.Button();
+            this.lbl_AllWeaselsAction = new System.Windows.Forms.Label();
+            this.btn_AllWeaselsRandomPositionSPL = new System.Windows.Forms.Button();
             this.groupBox_MoveWeasel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -215,7 +223,7 @@ namespace Weasel_Controller
             this._WeaselDropDown.FormattingEnabled = true;
             this._WeaselDropDown.Location = new System.Drawing.Point(6, 19);
             this._WeaselDropDown.Name = "_WeaselDropDown";
-            this._WeaselDropDown.Size = new System.Drawing.Size(95, 24);
+            this._WeaselDropDown.Size = new System.Drawing.Size(95, 21);
             this._WeaselDropDown.TabIndex = 1;
             this._WeaselDropDown.SelectionChangeCommitted += new System.EventHandler(this._WeaselDropDown_SelectionChangeCommitted);
             this._WeaselDropDown.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._WeaselDropDown_KeyPress);
@@ -224,7 +232,7 @@ namespace Weasel_Controller
             // 
             this._txtBox_Position.Location = new System.Drawing.Point(107, 19);
             this._txtBox_Position.Name = "_txtBox_Position";
-            this._txtBox_Position.Size = new System.Drawing.Size(89, 22);
+            this._txtBox_Position.Size = new System.Drawing.Size(89, 20);
             this._txtBox_Position.TabIndex = 2;
             this._txtBox_Position.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._txtBox_Position_KeyPress);
             // 
@@ -251,10 +259,9 @@ namespace Weasel_Controller
             // _listBox_Destinations
             // 
             this._listBox_Destinations.FormattingEnabled = true;
-            this._listBox_Destinations.ItemHeight = 16;
             this._listBox_Destinations.Location = new System.Drawing.Point(242, 39);
             this._listBox_Destinations.Name = "_listBox_Destinations";
-            this._listBox_Destinations.Size = new System.Drawing.Size(237, 132);
+            this._listBox_Destinations.Size = new System.Drawing.Size(237, 121);
             this._listBox_Destinations.TabIndex = 5;
             // 
             // _label_Destinations
@@ -263,7 +270,7 @@ namespace Weasel_Controller
             this._label_Destinations.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._label_Destinations.Location = new System.Drawing.Point(239, 19);
             this._label_Destinations.Name = "_label_Destinations";
-            this._label_Destinations.Size = new System.Drawing.Size(262, 17);
+            this._label_Destinations.Size = new System.Drawing.Size(206, 13);
             this._label_Destinations.TabIndex = 6;
             this._label_Destinations.Text = "Wait Time | Destinations | Send by:";
             // 
@@ -290,6 +297,12 @@ namespace Weasel_Controller
             // groupBox_MoveWeasel
             // 
             this.groupBox_MoveWeasel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_AllWeaselsRandomPositionSPL);
+            this.groupBox_MoveWeasel.Controls.Add(this.lbl_AllWeaselsAction);
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_RobotRealRobot);
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_RobotSimulation);
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_CollectBox);
+            this.groupBox_MoveWeasel.Controls.Add(this.lbl_RoboDKControls);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_RandomPositionSPL);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_AdvancedMovement);
             this.groupBox_MoveWeasel.Controls.Add(this._lbl_Online);
@@ -303,10 +316,60 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel.Controls.Add(this.btn_SendHome);
             this.groupBox_MoveWeasel.Location = new System.Drawing.Point(21, 12);
             this.groupBox_MoveWeasel.Name = "groupBox_MoveWeasel";
-            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(505, 221);
+            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(736, 228);
             this.groupBox_MoveWeasel.TabIndex = 9;
             this.groupBox_MoveWeasel.TabStop = false;
             this.groupBox_MoveWeasel.Text = "Move Weasel";
+            // 
+            // btn_RobotRealRobot
+            // 
+            this.btn_RobotRealRobot.Location = new System.Drawing.Point(598, 39);
+            this.btn_RobotRealRobot.Name = "btn_RobotRealRobot";
+            this.btn_RobotRealRobot.Size = new System.Drawing.Size(114, 23);
+            this.btn_RobotRealRobot.TabIndex = 15;
+            this.btn_RobotRealRobot.Text = "Real Robot";
+            this.btn_RobotRealRobot.UseVisualStyleBackColor = true;
+            this.btn_RobotRealRobot.Click += new System.EventHandler(this.btn_RobotRealRobot_Click);
+            // 
+            // btn_RobotSimulation
+            // 
+            this.btn_RobotSimulation.Location = new System.Drawing.Point(485, 39);
+            this.btn_RobotSimulation.Name = "btn_RobotSimulation";
+            this.btn_RobotSimulation.Size = new System.Drawing.Size(114, 23);
+            this.btn_RobotSimulation.TabIndex = 14;
+            this.btn_RobotSimulation.Text = "Simulation";
+            this.btn_RobotSimulation.UseVisualStyleBackColor = true;
+            this.btn_RobotSimulation.Click += new System.EventHandler(this.btn_RobotSimulation_Click);
+            // 
+            // btn_CollectBox
+            // 
+            this.btn_CollectBox.Location = new System.Drawing.Point(485, 68);
+            this.btn_CollectBox.Name = "btn_CollectBox";
+            this.btn_CollectBox.Size = new System.Drawing.Size(227, 23);
+            this.btn_CollectBox.TabIndex = 13;
+            this.btn_CollectBox.Text = "Collect Box";
+            this.btn_CollectBox.UseVisualStyleBackColor = true;
+            this.btn_CollectBox.Click += new System.EventHandler(this.btn_MoveRoboToPosition_Click);
+            // 
+            // lbl_RoboDKControls
+            // 
+            this.lbl_RoboDKControls.AutoSize = true;
+            this.lbl_RoboDKControls.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RoboDKControls.Location = new System.Drawing.Point(482, 19);
+            this.lbl_RoboDKControls.Name = "lbl_RoboDKControls";
+            this.lbl_RoboDKControls.Size = new System.Drawing.Size(108, 13);
+            this.lbl_RoboDKControls.TabIndex = 12;
+            this.lbl_RoboDKControls.Text = "RoboDK Controls:";
+            // 
+            // btn_RandomPositionSPL
+            // 
+            this.btn_RandomPositionSPL.Location = new System.Drawing.Point(7, 129);
+            this.btn_RandomPositionSPL.Name = "btn_RandomPositionSPL";
+            this.btn_RandomPositionSPL.Size = new System.Drawing.Size(227, 23);
+            this.btn_RandomPositionSPL.TabIndex = 11;
+            this.btn_RandomPositionSPL.Text = "Send to Random Position! (SPL)";
+            this.btn_RandomPositionSPL.UseVisualStyleBackColor = true;
+            this.btn_RandomPositionSPL.Click += new System.EventHandler(this.btn_RandomPositionSPL_Click);
             // 
             // btn_AdvancedMovement
             // 
@@ -326,24 +389,34 @@ namespace Weasel_Controller
             this._lbl_Online.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this._lbl_Online.Location = new System.Drawing.Point(202, 22);
             this._lbl_Online.Name = "_lbl_Online";
-            this._lbl_Online.Size = new System.Drawing.Size(32, 17);
+            this._lbl_Online.Size = new System.Drawing.Size(25, 13);
             this._lbl_Online.TabIndex = 9;
             this._lbl_Online.Text = "      ";
             // 
-            // btn_RandomPositionSPL
+            // lbl_AllWeaselsAction
             // 
-            this.btn_RandomPositionSPL.Location = new System.Drawing.Point(7, 129);
-            this.btn_RandomPositionSPL.Name = "btn_RandomPositionSPL";
-            this.btn_RandomPositionSPL.Size = new System.Drawing.Size(227, 23);
-            this.btn_RandomPositionSPL.TabIndex = 11;
-            this.btn_RandomPositionSPL.Text = "Send to Random Postion! (SPL)";
-            this.btn_RandomPositionSPL.UseVisualStyleBackColor = true;
-            this.btn_RandomPositionSPL.Click += new System.EventHandler(this.btn_RandomPositionSPL_Click);
+            this.lbl_AllWeaselsAction.AutoSize = true;
+            this.lbl_AllWeaselsAction.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_AllWeaselsAction.Location = new System.Drawing.Point(482, 105);
+            this.lbl_AllWeaselsAction.Name = "lbl_AllWeaselsAction";
+            this.lbl_AllWeaselsAction.Size = new System.Drawing.Size(73, 13);
+            this.lbl_AllWeaselsAction.TabIndex = 16;
+            this.lbl_AllWeaselsAction.Text = "All Weasels";
+            // 
+            // btn_AllWeaselsRandomPositionSPL
+            // 
+            this.btn_AllWeaselsRandomPositionSPL.Location = new System.Drawing.Point(485, 121);
+            this.btn_AllWeaselsRandomPositionSPL.Name = "btn_AllWeaselsRandomPositionSPL";
+            this.btn_AllWeaselsRandomPositionSPL.Size = new System.Drawing.Size(227, 23);
+            this.btn_AllWeaselsRandomPositionSPL.TabIndex = 17;
+            this.btn_AllWeaselsRandomPositionSPL.Text = "Send to Random Position! (SPL)";
+            this.btn_AllWeaselsRandomPositionSPL.UseVisualStyleBackColor = true;
+            this.btn_AllWeaselsRandomPositionSPL.Click += new System.EventHandler(this.btn_AllWeaselsRandomPositionSPL_Click);
             // 
             // WeaselControlPanel
             // 
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(538, 245);
+            this.ClientSize = new System.Drawing.Size(772, 260);
             this.Controls.Add(this.groupBox_MoveWeasel);
             this.Name = "WeaselControlPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -356,17 +429,22 @@ namespace Weasel_Controller
 
         private void btn_RandomPositionSPL_Click(object sender, EventArgs e)
         {
+            SetRandomPositionSPL(_WeaselDropDown.SelectedIndex);
+        }
+
+        private void SetRandomPositionSPL(int selected_weasel)
+        {
             Random Filler = new Random();
             for (int i = 0; i < 30; i++)
             {
                 int id = _WeaselMap.FindWayPoint(Filler.Next(1, 50))._PointId;
 
                 //Check of that waypoint is outside of the SPL Labor
-                int[] route = _WeaselMap.FreePath(_Weasels[_WeaselDropDown.SelectedIndex]._LastPosition, id, Color.Empty);
+                int[] route = _WeaselMap.FreePath(_Weasels[selected_weasel]._LastPosition, id, Color.Empty);
                 bool schalter = false;
-                for(int u = 0; u < route.Length; u++)
+                for (int u = 0; u < route.Length; u++)
                 {
-                    if(route[u] == 1)
+                    if (route[u] == 1)
                     {
                         schalter = true;
                     }
@@ -374,8 +452,39 @@ namespace Weasel_Controller
 
                 if (schalter == false)
                 {
-                    _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.Add(new DestinationwithInformation(0, id));
+                    _Weasels[selected_weasel]._DestinationsWithInformation.Add(new DestinationwithInformation(0, id));
                 }
+            }
+        }
+
+        private void btn_MoveRoboToPosition_Click(object sender, EventArgs e)
+        {
+            //Let the not occupied weasel get the box
+            for(int i = 0; i < _Weasels.Length; i++)
+            {
+                if(_Weasels[i]._DestinationsWithInformation.Count == 0)
+                {
+                    _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(41, "Kuka1", "Server"));
+                    break;
+                }
+            }
+        }
+
+        private void btn_RobotSimulation_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.SwitchSimulationMode();
+        }
+
+        private void btn_RobotRealRobot_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.SwitchRealMode();
+        }
+
+        private void btn_AllWeaselsRandomPositionSPL_Click(object sender, EventArgs e)
+        {
+            for(int i = 0; i < _Weasels.Length; i++)
+            {
+                SetRandomPositionSPL(i);
             }
         }
     }

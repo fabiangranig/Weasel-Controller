@@ -25,6 +25,7 @@ namespace Weasel_Controller
         public Color _Colored;
         public int _Destination;
         public List<DestinationwithInformation> _DestinationsWithInformation;
+        public bool _LastDestinationReached;
         private List<int> _OfflineMover;
 
         //encapsulation
@@ -51,6 +52,7 @@ namespace Weasel_Controller
             _HomePosition = HomePosition1;
             _Colored = color1;
             _Destination = -1;
+            _LastDestinationReached = true;
             _DestinationsWithInformation = new List<DestinationwithInformation>();
             
             if(_AppOnline == true)

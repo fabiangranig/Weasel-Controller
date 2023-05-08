@@ -10,6 +10,7 @@ namespace Weasel_Controller
     {
         private int _SleepBefore;
         private int _Destination;
+        private string _ActionAfterMovement;
         private string _SendBy;
 
         //constructors
@@ -17,6 +18,7 @@ namespace Weasel_Controller
         {
             _SleepBefore = 0;
             _Destination = Destination1;
+            _ActionAfterMovement = "none";
             _SendBy = "no_onwer";
         }
 
@@ -24,6 +26,7 @@ namespace Weasel_Controller
         {
             _SleepBefore = SleepBefore1;
             _Destination = Destination1;
+            _ActionAfterMovement = "none";
             _SendBy = "no_owner";
         }
 
@@ -31,6 +34,15 @@ namespace Weasel_Controller
         {
             _SleepBefore = SleepBefore1;
             _Destination = Destination1;
+            _ActionAfterMovement = "none";
+            _SendBy = Owner1;
+        }
+
+        public DestinationwithInformation(int Destination1, string ActionAfterMovement1, string Owner1)
+        {
+            _SleepBefore = 0;
+            _Destination = Destination1;
+            _ActionAfterMovement = ActionAfterMovement1;
             _SendBy = Owner1;
         }
 
@@ -48,6 +60,11 @@ namespace Weasel_Controller
         public string SendBy
         {
             get { return _SendBy; }
+        }
+
+        public string ActionAfterMovement
+        {
+            get { return _ActionAfterMovement; }
         }
     }
 }

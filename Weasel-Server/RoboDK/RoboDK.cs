@@ -1788,7 +1788,7 @@ public class RoboDK
                 }
                 catch (Exception e)
                 {
-                    //connected = false;
+                    Console.WriteLine(e.ToString());
                 }
             }
             if (connected)

@@ -12,13 +12,15 @@ namespace Weasel_Controller
     {
         private Weasel _Weasel;
         private Map _Map;
+        private KukaRoboter _KukaRobot;
         private Thread _Mover;
         private int[] _LastKnownRoute;
 
-        public WeaselMovementHandler(ref Weasel weasel1, ref Map map1)
+        public WeaselMovementHandler(ref Weasel weasel1, ref Map map1, ref KukaRoboter KukaRobot1)
         {
             _Weasel = weasel1;
             _Map = map1;
+            _KukaRobot = KukaRobot1;
         }
 
         public void MoveWeasel(DestinationwithInformation DWS)
@@ -97,6 +99,19 @@ namespace Weasel_Controller
                 Thread.Sleep(100);
             }
 
+            //Action when there is an action
+            if(_Weasel._DestinationsWithInformation[0].ActionAfterMovement == "Kuka1")
+            {
+                _KukaRobot.AllMovements();
+            }
+
+            //Remove the position and if the next is also the same remove that also
+            while(_Weasel._DestinationsWithInformation.Count > 0 && _Weasel._LastPosition == _Weasel._DestinationsWithInformation[0].Destination)
+            {
+                _Weasel._DestinationsWithInformation.RemoveAt(0);
+            }
+
+            //Output finish
             Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + DWS.Destination + "}");
         }
 
