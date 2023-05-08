@@ -24,6 +24,7 @@ namespace Weasel_Controller
         private GroupBox groupBox_MoveWeasel;
         private Label _lbl_Online;
         private Button btn_AdvancedMovement;
+        private Button btn_RandomPositionSPL;
         private WeaselMovementHandler[] _WeaselMovementHandlers;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
@@ -202,6 +203,7 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel = new System.Windows.Forms.GroupBox();
             this.btn_AdvancedMovement = new System.Windows.Forms.Button();
             this._lbl_Online = new System.Windows.Forms.Label();
+            this.btn_RandomPositionSPL = new System.Windows.Forms.Button();
             this.groupBox_MoveWeasel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -265,7 +267,7 @@ namespace Weasel_Controller
             // 
             // btn_StopMove
             // 
-            this.btn_StopMove.Location = new System.Drawing.Point(6, 129);
+            this.btn_StopMove.Location = new System.Drawing.Point(6, 158);
             this.btn_StopMove.Name = "btn_StopMove";
             this.btn_StopMove.Size = new System.Drawing.Size(227, 23);
             this.btn_StopMove.TabIndex = 7;
@@ -275,7 +277,7 @@ namespace Weasel_Controller
             // 
             // btn_RandomPosition
             // 
-            this.btn_RandomPosition.Location = new System.Drawing.Point(6, 100);
+            this.btn_RandomPosition.Location = new System.Drawing.Point(7, 100);
             this.btn_RandomPosition.Name = "btn_RandomPosition";
             this.btn_RandomPosition.Size = new System.Drawing.Size(227, 23);
             this.btn_RandomPosition.TabIndex = 8;
@@ -286,6 +288,7 @@ namespace Weasel_Controller
             // groupBox_MoveWeasel
             // 
             this.groupBox_MoveWeasel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_RandomPositionSPL);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_AdvancedMovement);
             this.groupBox_MoveWeasel.Controls.Add(this._lbl_Online);
             this.groupBox_MoveWeasel.Controls.Add(this._WeaselDropDown);
@@ -298,7 +301,7 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel.Controls.Add(this.btn_SendHome);
             this.groupBox_MoveWeasel.Location = new System.Drawing.Point(21, 12);
             this.groupBox_MoveWeasel.Name = "groupBox_MoveWeasel";
-            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(499, 190);
+            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(505, 221);
             this.groupBox_MoveWeasel.TabIndex = 9;
             this.groupBox_MoveWeasel.TabStop = false;
             this.groupBox_MoveWeasel.Text = "Move Weasel";
@@ -307,7 +310,7 @@ namespace Weasel_Controller
             // 
             this.btn_AdvancedMovement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.btn_AdvancedMovement.Enabled = false;
-            this.btn_AdvancedMovement.Location = new System.Drawing.Point(6, 156);
+            this.btn_AdvancedMovement.Location = new System.Drawing.Point(6, 187);
             this.btn_AdvancedMovement.Name = "btn_AdvancedMovement";
             this.btn_AdvancedMovement.Size = new System.Drawing.Size(227, 23);
             this.btn_AdvancedMovement.TabIndex = 10;
@@ -325,13 +328,21 @@ namespace Weasel_Controller
             this._lbl_Online.TabIndex = 9;
             this._lbl_Online.Text = "      ";
             // 
+            // btn_RandomPositionSPL
+            // 
+            this.btn_RandomPositionSPL.Location = new System.Drawing.Point(7, 129);
+            this.btn_RandomPositionSPL.Name = "btn_RandomPositionSPL";
+            this.btn_RandomPositionSPL.Size = new System.Drawing.Size(227, 23);
+            this.btn_RandomPositionSPL.TabIndex = 11;
+            this.btn_RandomPositionSPL.Text = "Send to Random Postion! (SPL)";
+            this.btn_RandomPositionSPL.UseVisualStyleBackColor = true;
+            this.btn_RandomPositionSPL.Click += new System.EventHandler(this.btn_RandomPositionSPL_Click);
+            // 
             // WeaselControlPanel
             // 
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(532, 207);
+            this.ClientSize = new System.Drawing.Size(538, 245);
             this.Controls.Add(this.groupBox_MoveWeasel);
-            this.MaximumSize = new System.Drawing.Size(550, 254);
-            this.MinimumSize = new System.Drawing.Size(550, 254);
             this.Name = "WeaselControlPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Weasel Control Panel";
@@ -339,6 +350,31 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+
+        private void btn_RandomPositionSPL_Click(object sender, EventArgs e)
+        {
+            Random Filler = new Random();
+            for (int i = 0; i < 30; i++)
+            {
+                int id = _WeaselMap.FindWayPoint(Filler.Next(1, 50))._PointId;
+
+                //Check of that waypoint is outside of the SPL Labor
+                int[] route = _WeaselMap.FreePath(_Weasels[_WeaselDropDown.SelectedIndex]._LastPosition, id, Color.Empty);
+                bool schalter = false;
+                for(int u = 0; u < route.Length; u++)
+                {
+                    if(route[u] == 1)
+                    {
+                        schalter = true;
+                    }
+                }
+
+                if (schalter == false)
+                {
+                    _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.Add(new DestinationwithInformation(0, id));
+                }
+            }
         }
     }
 }

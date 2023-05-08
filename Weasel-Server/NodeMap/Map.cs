@@ -241,20 +241,23 @@ namespace Weasel_Controller
             }
 
             //Check if the route is actually possible
-            arr = possibleRoute(arr, weasel_color);
+            if(weasel_color != Color.Empty)
+            {
+                arr = possibleRoute(arr, weasel_color);
+            }
 
             return arr;
         }
 
         private void FreePathBackend(Waypoint way, int id, string path, ref List<string> routes, Color weasel_color)
         {
-            if (way._PointId == id && (way._Reserved == false || weasel_color == way._Reserved_Color))
+            if (way._PointId == id && (way._Reserved == false || weasel_color == way._Reserved_Color || weasel_color == Color.Empty))
             {
                 routes.Add(path + way._PointId);
                 return;
             }
 
-            if (way._Next == null && way._PointId != id && (_Head._Reserved == false || weasel_color == _Head._Reserved_Color))
+            if (way._Next == null && way._PointId != id && (_Head._Reserved == false || weasel_color == _Head._Reserved_Color || weasel_color == Color.Empty))
             {
                 FreePathBackend(_Head, id, path + way._PointId + " ", ref routes, weasel_color);
             }
@@ -266,7 +269,7 @@ namespace Weasel_Controller
 
             for(int i = 0; i < way._Next.Count; i++)
             {
-                if (way._Next[i]._Reserved == false || weasel_color == way._Next[i]._Reserved_Color)
+                if (way._Next[i]._Reserved == false || weasel_color == way._Next[i]._Reserved_Color || weasel_color == Color.Empty)
                 {
                     Waypoint RandomWay = way._Next[i];
                     FreePathBackend(RandomWay, id, path + way._PointId + " ", ref routes, weasel_color);
