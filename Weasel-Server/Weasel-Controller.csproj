@@ -85,6 +85,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="NodeMap\Waypoint.cs" />
+    <Compile Include="RoboDK.cs" />
     <Compile Include="Server\ServerWindow.cs">
       <SubType>Form</SubType>
     </Compile>

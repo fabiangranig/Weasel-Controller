@@ -48,6 +48,7 @@ namespace Weasel_Controller
             _WeaselDropDown.SelectedIndex = 0;
             btn_SendWeasel.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_RandomPosition.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
+            btn_RandomPositionSPL.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_SendHome.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_StopMove.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
 
@@ -180,6 +181,7 @@ namespace Weasel_Controller
         {
             btn_SendWeasel.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_RandomPosition.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
+            btn_RandomPositionSPL.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_SendHome.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_StopMove.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
         }
