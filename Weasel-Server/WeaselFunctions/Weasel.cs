@@ -26,7 +26,8 @@ namespace Weasel_Controller
         public int _Destination;
         public List<DestinationwithInformation> _DestinationsWithInformation;
         public bool _LastDestinationReached;
-        private List<int> _OfflineMover;
+        public List<int> _OfflineMover;
+        private int _HowManySetPositions;
 
         //encapsulation
         public string WeaselName
@@ -73,11 +74,8 @@ namespace Weasel_Controller
         public void SetPosition(int waypoint)
         {
             //Just for testing!
-            Console.WriteLine(WeaselName + ": gesetzte Position " + waypoint);
-            if(_AppOnline == false)
-            {
-                _OfflineMover.Add(waypoint);
-            }
+            _HowManySetPositions++;
+            Console.WriteLine(_HowManySetPositions + ": " + WeaselName + ": gesetzte Position " + waypoint + " | Position zu diesem Zeitpunkt: " + _LastPosition);
 
             if(_AppOnline == true)
             {
@@ -100,7 +98,7 @@ namespace Weasel_Controller
             Random r1 = new Random();
             while (_AppOnline == false)
             {
-                Thread.Sleep(r1.Next(1000, 2000));
+                Thread.Sleep(r1.Next(1000, 1500));
                 if(_OfflineMover.Count > 0)
                 {
                     _LastPosition = _OfflineMover[0];

@@ -43,15 +43,52 @@ namespace Weasel_Controller
                 Path = _Map.RadiusRoute(Path);
                 _LastKnownRoute = Path;
 
+                //When the whole way to the destination only takes 3 steps
+                if (Path.Length < 5 && Path[Path.Length - 1] == DWS.Destination)
+                {
+                    _Map.ReserveArr(Path, _Weasel._Colored);
+
+                    _Weasel.SetPosition(DWS.Destination);
+
+                    if (_Weasel.AppOnline == false)
+                    {
+                        bool schalter = false;
+                        for (int i = 0; i < Path.Length; i++)
+                        {
+                            if(_Weasel._OfflineMover.Count == 0)
+                            {
+                                schalter = true;
+                            }
+
+                            if(schalter == true)
+                            {
+                                _Weasel._OfflineMover.Add(Path[i]);
+                            }
+
+                            if (_Weasel._OfflineMover.Count > 0 && _Weasel._OfflineMover[0] == Path[i])
+                            {
+                                schalter = true;
+                            }
+                        }
+                    }
+
+                    while(DWS.Destination != _Weasel._LastPosition)
+                    {
+                        Thread.Sleep(500);
+                    }
+
+                    break;
+                }
+
                 //Check if there is an Path
-                if(Path.Length > 1)
+                if (Path.Length > 1)
                 {
                     //When there is an longer path to travel
                     _Map.ReserveArr(Path, _Weasel._Colored);
                     int u = 0;
-                    while (_Weasel._LastPosition != Path[Path.Length - 1])
+                    while (Path.Length > 2 &&  _Weasel._LastPosition != Path[Path.Length - 3])
                     {
-                        if (_Weasel._LastPosition == Path[u] && u + 2 < Path.Length)
+                        if (_Weasel._LastPosition == Path[u] && u + 3 < Path.Length)
                         {
                             //Discover new paths
                             int[] path_temp = _Map.FreePath(_Weasel._LastPosition, DWS.Destination, _Weasel._Colored);
@@ -66,37 +103,42 @@ namespace Weasel_Controller
                                 switcher = true;
                             }
 
-                            if(switcher == false && u + 2 < Path.Length)
+                            if(switcher == false && u + 3 < Path.Length)
                             {
-                                _Weasel.SetPosition(Path[u + 1]);
-                                _Weasel.SetPosition(Path[u + 2]);
+                                //_Weasel.SetPosition(Path[u + 1]);
+                                _Weasel.SetPosition(Path[u + 3]);
+
+                                if (_Weasel.AppOnline == false)
+                                {
+                                    _Weasel._OfflineMover.Add(Path[u + 1]);
+                                    _Weasel._OfflineMover.Add(Path[u + 2]);
+                                    _Weasel._OfflineMover.Add(Path[u + 3]);
+                                }
                             }
                             
                             if(switcher == true && u + 2 < Path.Length)
                             {
-                                _Weasel.SetPosition(Path[u + 2]);
+                                _Weasel.SetPosition(Path[u + 3]);
+
+                                if (_Weasel.AppOnline == false)
+                                {
+                                    _Weasel._OfflineMover.Add(Path[u + 1]);
+                                    _Weasel._OfflineMover.Add(Path[u + 2]);
+                                    _Weasel._OfflineMover.Add(Path[u + 3]);
+                                }
                             }
 
-                            //Get to the next position
-                            u++;
-                        }
-
-                        if(_Weasel._LastPosition == Path[u] && 3 > Path.Length && Path.Length > 1)
-                        {
-                            _Weasel.SetPosition(Path[u]);
-                            _Weasel.SetPosition(Path[u + 1]);
-
-                            //Get to the next position
-                            u++;
+                            //Get to the next position, when the weasel needs to be send
+                            u = u + 3;
                         }
 
                         //Reduce processing usage
-                        Thread.Sleep(100);
+                        Thread.Sleep(150);
                     }
                 }
 
                 //When send let the Thread sleep for a short amount of time
-                Thread.Sleep(100);
+                Thread.Sleep(150);
             }
 
             //Action when there is an action
