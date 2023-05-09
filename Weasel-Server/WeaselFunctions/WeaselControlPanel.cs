@@ -47,7 +47,7 @@ namespace Weasel_Controller
             MessageBox.Show("Geschwindigkeit des Kuka Roboters muss auf 10% eingestellt werden!", "WARNUNG!", MessageBoxButtons.OK);
 
             //Start the Kuka Robot
-            _KukaRobot = new KukaRoboter();
+            _KukaRobot = new KukaRoboter(_Weasels[0].AppOnline);
 
             //Get the weasels into the dropdown and create Handlers
             _WeaselMovementHandlers = new WeaselMovementHandler[_Weasels.Length];
