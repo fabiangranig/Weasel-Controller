@@ -55,12 +55,16 @@ namespace Weasel_Controller
             _Destination = -1;
             _LastDestinationReached = true;
             _DestinationsWithInformation = new List<DestinationwithInformation>();
-            
-            if(_AppOnline == true)
+            AppOnlineCheck();
+        }
+
+        private void AppOnlineCheck()
+        {
+            if (_AppOnline == true)
             {
                 _LastPosition = GetPosition();
             }
-            if(_AppOnline == false)
+            if (_AppOnline == false)
             {
                 _LastPosition = _HomePosition;
 
@@ -113,7 +117,17 @@ namespace Weasel_Controller
             {
                 WebClient wc = new WebClient();
 
-                byte[] raw = wc.DownloadData("http://10.0.9.22:4567/weasels");
+                byte[] raw = new byte[0];
+                try
+                {
+                    raw = wc.DownloadData("http://10.0.9.22:4567/weasels");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    _AppOnline = false;
+                    return _HomePosition;
+                }
 
                 //Convert in an string
                 string webData = System.Text.Encoding.UTF8.GetString(raw);
