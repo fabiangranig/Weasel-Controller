@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;       // For Socket communication
 using Microsoft.Win32;          // For registry keys
+using System.Threading;
 
 /// <summary>
 /// Matrix class for robotics. 
@@ -1848,7 +1849,24 @@ public class RoboDK
                     
 
                 }
-                PROCESS = System.Diagnostics.Process.Start(APPLICATION_DIR, arguments);
+
+                try
+                {
+                    PROCESS = System.Diagnostics.Process.Start(APPLICATION_DIR, arguments);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Please open RoboDK. App is closing in 5000ms...");
+                    Console.WriteLine("Please open RoboDK. App is closing in 5000ms...");
+                    Console.WriteLine("Please open RoboDK. App is closing in 5000ms...");
+                    Console.WriteLine("Please open RoboDK. App is closing in 5000ms...");
+                    Console.WriteLine("Please open RoboDK. App is closing in 5000ms...");
+                    Thread.Sleep(5000);
+                    Console.WriteLine(e.ToString());
+                    Environment.Exit(0);
+                }
+                
+
                 // wait for the process to get started
                 PROCESS.WaitForInputIdle(10000);
             }
