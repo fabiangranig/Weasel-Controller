@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Weasel_Controller.NodeMap.MapPanel;
+using EasyEncryption;
 
 namespace Weasel_Controller
 {
@@ -17,6 +18,7 @@ namespace Weasel_Controller
         //Public Variables
         private Map _WeaselMap;
         private Weasel[] _Weasels;
+        private KukaRoboter _KukaRobot;
         private bool _AppOnline;
         private string _InputAddress;
 
@@ -37,6 +39,8 @@ namespace Weasel_Controller
                 new Weasel("AV002", _AppOnline, 1, 48, Color.LightBlue),
                 new Weasel("AV015", _AppOnline, 2, 46, Color.LightYellow)
             };
+            //Start the Kuka Robot
+            _KukaRobot = new KukaRoboter(_AppOnline);
         }
 
         public WeaselController()
@@ -123,7 +127,7 @@ namespace Weasel_Controller
 
         private void btn_WeaselControlPanel_Click(object sender, EventArgs e)
         {
-            WeaselControlPanel WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels);
+            WeaselControlPanel WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels, ref _KukaRobot);
             WCP.Show();
         }
 
@@ -143,6 +147,19 @@ namespace Weasel_Controller
         {
             ServerWindow SW = new ServerWindow(ref _Weasels);
             SW.Show();
+        }
+
+        private void btn_RoboDKControlPanel_Click(object sender, EventArgs e)
+        {
+            if(SHA.ComputeSHA256Hash(SelfBuildDialogues.TextDialog("Passwort eingeben: ", "RobotDK öffnen")) == "37004bbd1a4089e6434721f151b4ae561996b160181f514ff2df4b53200b1c05")
+            {
+                RobotDKControlPanel RDKCP = new RobotDKControlPanel(_KukaRobot);
+                RDKCP.Show();
+            }
+            else
+            {
+                MessageBox.Show("falsches Passwort!");
+            }
         }
     }
 }

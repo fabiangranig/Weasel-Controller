@@ -34,20 +34,20 @@ namespace Weasel_Controller
         private Label lbl_AllWeaselsAction;
         private KukaRoboter _KukaRobot;
 
-        public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1)
+        public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1, ref KukaRoboter kukaRoboter1)
         {
             //Get weasels with map
             _WeaselMap = map1;
             _Weasels = weasels1;
+
+            //Set the KukaRobot
+            _KukaRobot = kukaRoboter1;
 
             //Get the controls from the editor
             InitializeComponent();
 
             //Everything for the Kuka Roboter
             MessageBox.Show("Geschwindigkeit des Kuka Roboters muss auf 10% eingestellt werden!", "WARNUNG!", MessageBoxButtons.OK);
-
-            //Start the Kuka Robot
-            _KukaRobot = new KukaRoboter(_Weasels[0].AppOnline);
 
             //Get the weasels into the dropdown and create Handlers
             _WeaselMovementHandlers = new WeaselMovementHandler[_Weasels.Length];
@@ -422,7 +422,6 @@ namespace Weasel_Controller
             this.Name = "WeaselControlPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Weasel Control Panel";
-            this.Load += new System.EventHandler(this.WeaselControlPanel_Load);
             this.groupBox_MoveWeasel.ResumeLayout(false);
             this.groupBox_MoveWeasel.PerformLayout();
             this.ResumeLayout(false);
@@ -490,11 +489,6 @@ namespace Weasel_Controller
             {
                 SetRandomPositionSPL(i);
             }
-        }
-
-        private void WeaselControlPanel_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

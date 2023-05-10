@@ -177,7 +177,7 @@ namespace Weasel_Controller
             return dvalues;
         }
 
-        public void AllMovements()
+        public void PickUp()
         {
             GreiferZu();
             GreiferAuf();
@@ -289,6 +289,177 @@ namespace Weasel_Controller
                     System.Threading.Thread.Sleep(1000);
                 }
             }
+        }
+
+        public void Incremental_Move(string button_name)
+        {
+            if (!Check_ROBOT()) { return; }
+
+            Console.WriteLine("Button selected: " + button_name);
+
+            if (button_name.Length < 3)
+            {
+                Console.WriteLine("Internal problem! Button name should be like +J1, -Tx, +Rz or similar");
+                return;
+            }
+
+            double move_step = 0.0;
+            if (button_name[0] == '+')
+            {
+                move_step = +Convert.ToDouble(10);
+            }
+            else if (button_name[0] == '-')
+            {
+                move_step = -Convert.ToDouble(10);
+            }
+            else
+            {
+                Console.WriteLine("Internal problem! Unexpected button name");
+                return;
+            }
+
+            if (1 != 1)
+            {
+                //This code is temporary and only required for other features
+                //This code is temporary and only required for other features
+                //This code is temporary and only required for other features
+                //double[] joints = ROBOT.Joints();
+
+                //int joint_id = Convert.ToInt32(button_name[2].ToString()) - 1;
+
+                //joints[joint_id] = joints[joint_id] + move_step;
+
+                //try
+                //{
+                //    ROBOT.MoveJ(joints, MOVE_BLOCKING);
+                //}
+                //catch (RoboDK.RDKException rdkex)
+                //{
+                //    Console.WriteLine("The robot can't move to the target joints: " + rdkex.Message);
+                //}
+            }
+            else
+            {
+                int move_id = 0;
+
+                string[] move_types = new string[6] { "Tx", "Ty", "Tz", "Rx", "Ry", "Rz" };
+
+                for (int i = 0; i < 6; i++)
+                {
+                    if (button_name.EndsWith(move_types[i]))
+                    {
+                        move_id = i;
+                        break;
+                    }
+                }
+                double[] move_xyzwpr = new double[6] { 0, 0, 0, 0, 0, 0 };
+                move_xyzwpr[move_id] = move_step;
+                Mat movement_pose = Mat.FromTxyzRxyz(move_xyzwpr);
+
+                Mat robot_pose = ROBOT.Pose();
+
+                Mat new_robot_pose;
+                bool is_TCP_relative_move = false;
+                if (is_TCP_relative_move)
+                {
+                    new_robot_pose = robot_pose * movement_pose;
+                }
+                else
+                {
+                    Mat transformation_axes = new Mat(robot_pose);
+                    transformation_axes.setPos(0, 0, 0);
+                    Mat movement_pose_aligned = transformation_axes.inv() * movement_pose * transformation_axes;
+                    new_robot_pose = robot_pose * movement_pose_aligned;
+                }
+
+                try
+                {
+                    ROBOT.MoveJ(new_robot_pose, MOVE_BLOCKING);
+                }
+                catch (RoboDK.RDKException rdkex)
+                {
+                    Console.WriteLine("The robot can't move to " + new_robot_pose.ToString() + " " + rdkex.ToString());
+                }
+            }
+        }
+
+       public void MoveToJoints(string postion_to_move_to)
+        {
+            //Convert string into joints
+            double[] joints = String_2_Values_NEU(postion_to_move_to);
+
+            //Make sure RoboDK Gui is running
+            if (!Check_ROBOT() || joints == null) { return; }
+
+            try
+            {
+                ROBOT.MoveJ(joints, MOVE_BLOCKING);
+            }
+            catch (RoboDK.RDKException rdkex)
+            {
+                Console.WriteLine("Problems moving the robot: " + rdkex.Message);
+            }
+        }
+
+        public void MoveToPose(string position_to_move_to)
+        {
+            //Convert the values to pos
+            double[] xyzwpr = String_2_Values_NEU(position_to_move_to);
+
+            //Make sure RoboDK is running
+            if (!Check_ROBOT() || xyzwpr == null) { return; }
+
+            //Move to that position
+            Mat pose = Mat.FromTxyzRxyz(xyzwpr);
+            try
+            {
+                ROBOT.MoveJ(pose, MOVE_BLOCKING);
+            }
+            catch (RoboDK.RDKException rdkex)
+            {
+                Console.WriteLine("Problems moving the robot: " + rdkex.Message);
+            }
+        }
+
+        public string GetJointsPosition()
+        {
+            if (!Check_ROBOT(true)) { return "Error!"; }
+            double[] joints = ROBOT.Joints();
+            string strjoints = Values_2_String(joints);
+            return strjoints;
+        }
+
+        public string GetPositionCordinates()
+        {
+            if (!Check_ROBOT(true)) { return "Error!"; }
+            Mat pose = ROBOT.Pose();
+            double[] xyzwpr = pose.ToTxyzRxyz();
+            string strpose = Values_2_String(xyzwpr);
+            return strpose;
+        }
+
+        public string Values_2_String(double[] dvalues)
+        {
+            if (dvalues == null || dvalues.Length < 1)
+            {
+                return "Invalid values";
+            }
+
+            string strvalues = dvalues[0].ToString();
+            for (int i = 1; i < dvalues.Length; i++)
+            {
+                strvalues += " ; " + dvalues[i].ToString();
+            }
+
+            return strvalues;
+        }
+
+        public void HomeRobot()
+        {
+            if (!Check_ROBOT()) { Console.WriteLine("Keine Verbindung zum Roboter"); return; }
+            
+            double[] joints_home = ROBOT.JointsHome();
+            ROBOT.MoveJ(joints_home);
         }
     }
 }

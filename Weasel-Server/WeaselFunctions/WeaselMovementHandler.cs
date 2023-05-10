@@ -144,7 +144,8 @@ namespace Weasel_Controller
             //Action when there is an action
             if(_Weasel._DestinationsWithInformation[0].ActionAfterMovement == "Kuka1")
             {
-                _KukaRobot.AllMovements();
+                _Weasel._DestinationsWithInformation.Add(new DestinationwithInformation(_Weasel._HomePosition));
+                _KukaRobot.PickUp();
             }
 
             //Remove the position and if the next is also the same remove that also
