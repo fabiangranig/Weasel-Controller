@@ -32,6 +32,7 @@ namespace Weasel_Controller
         private Button btn_RobotSimulation;
         private Button btn_AllWeaselsRandomPositionSPL;
         private Label lbl_AllWeaselsAction;
+        private Button btn_StopAllMovement;
         private KukaRoboter _KukaRobot;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1, ref KukaRoboter kukaRoboter1)
@@ -61,6 +62,7 @@ namespace Weasel_Controller
             btn_RandomPositionSPL.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_SendHome.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_StopMove.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
+            btn_StopAllMovement.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
 
             //Create a Timer which is working on next paths
             System.Windows.Forms.Timer tmr = new System.Windows.Forms.Timer();
@@ -183,6 +185,7 @@ namespace Weasel_Controller
             btn_RandomPositionSPL.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_SendHome.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
             btn_StopMove.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
+            btn_StopAllMovement.BackColor = _Weasels[_WeaselDropDown.SelectedIndex]._Colored;
         }
 
         private void btn_AdvancedMovement_Click(object sender, EventArgs e)
@@ -202,6 +205,7 @@ namespace Weasel_Controller
             this.btn_StopMove = new System.Windows.Forms.Button();
             this.btn_RandomPosition = new System.Windows.Forms.Button();
             this.groupBox_MoveWeasel = new System.Windows.Forms.GroupBox();
+            this.btn_StopAllMovement = new System.Windows.Forms.Button();
             this.btn_AllWeaselsRandomPositionSPL = new System.Windows.Forms.Button();
             this.lbl_AllWeaselsAction = new System.Windows.Forms.Label();
             this.btn_RobotRealRobot = new System.Windows.Forms.Button();
@@ -294,6 +298,7 @@ namespace Weasel_Controller
             // groupBox_MoveWeasel
             // 
             this.groupBox_MoveWeasel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_StopAllMovement);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_AllWeaselsRandomPositionSPL);
             this.groupBox_MoveWeasel.Controls.Add(this.lbl_AllWeaselsAction);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_RobotRealRobot);
@@ -311,12 +316,22 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel.Controls.Add(this._listBox_Destinations);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_SendWeasel);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_SendHome);
-            this.groupBox_MoveWeasel.Location = new System.Drawing.Point(21, 12);
+            this.groupBox_MoveWeasel.Location = new System.Drawing.Point(12, 12);
             this.groupBox_MoveWeasel.Name = "groupBox_MoveWeasel";
-            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(736, 228);
+            this.groupBox_MoveWeasel.Size = new System.Drawing.Size(740, 248);
             this.groupBox_MoveWeasel.TabIndex = 9;
             this.groupBox_MoveWeasel.TabStop = false;
             this.groupBox_MoveWeasel.Text = "Move Weasel";
+            // 
+            // btn_StopAllMovement
+            // 
+            this.btn_StopAllMovement.Location = new System.Drawing.Point(7, 187);
+            this.btn_StopAllMovement.Name = "btn_StopAllMovement";
+            this.btn_StopAllMovement.Size = new System.Drawing.Size(227, 23);
+            this.btn_StopAllMovement.TabIndex = 18;
+            this.btn_StopAllMovement.Text = "Stop every Movement!";
+            this.btn_StopAllMovement.UseVisualStyleBackColor = true;
+            this.btn_StopAllMovement.Click += new System.EventHandler(this.btn_StopAllMovement_Click);
             // 
             // btn_AllWeaselsRandomPositionSPL
             // 
@@ -392,7 +407,7 @@ namespace Weasel_Controller
             // 
             this.btn_AdvancedMovement.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.btn_AdvancedMovement.Enabled = false;
-            this.btn_AdvancedMovement.Location = new System.Drawing.Point(6, 187);
+            this.btn_AdvancedMovement.Location = new System.Drawing.Point(6, 216);
             this.btn_AdvancedMovement.Name = "btn_AdvancedMovement";
             this.btn_AdvancedMovement.Size = new System.Drawing.Size(227, 23);
             this.btn_AdvancedMovement.TabIndex = 10;
@@ -413,12 +428,11 @@ namespace Weasel_Controller
             // WeaselControlPanel
             // 
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.ClientSize = new System.Drawing.Size(772, 260);
+            this.ClientSize = new System.Drawing.Size(765, 264);
             this.Controls.Add(this.groupBox_MoveWeasel);
             this.Name = "WeaselControlPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Weasel Control Panel";
-            this.Load += new System.EventHandler(this.WeaselControlPanel_Load);
             this.Shown += new System.EventHandler(this.WeaselControlPanel_Shown);
             this.groupBox_MoveWeasel.ResumeLayout(false);
             this.groupBox_MoveWeasel.PerformLayout();
@@ -489,15 +503,19 @@ namespace Weasel_Controller
             }
         }
 
-        private void WeaselControlPanel_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void WeaselControlPanel_Shown(object sender, EventArgs e)
         {
             //Everything for the Kuka Roboter
             MessageBox.Show("Geschwindigkeit des Kuka Roboters muss auf 25% eingestellt werden!", "WARNUNG!", MessageBoxButtons.OK);
+        }
+
+        private void btn_StopAllMovement_Click(object sender, EventArgs e)
+        {
+            if (_listBox_Destinations.Items.Count > 0)
+            {
+                _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.Clear();
+                _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].DestroyAction();
+            }
         }
     }
 }

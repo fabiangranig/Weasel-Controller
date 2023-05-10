@@ -15,18 +15,21 @@ namespace Weasel_Controller
         private KukaRoboter _KukaRobot;
         private Thread _Mover;
         private int[] _LastKnownRoute;
+        private int _LastSetPosition;
 
         public WeaselMovementHandler(ref Weasel weasel1, ref Map map1, ref KukaRoboter KukaRobot1)
         {
             _Weasel = weasel1;
             _Map = map1;
             _KukaRobot = KukaRobot1;
+            _LastSetPosition = -1;
         }
 
         public void MoveWeasel(DestinationwithInformation DWS)
         {
             //Move to the designated position
             _Mover = new Thread(() => MovePartlyBackend(DWS));
+            _Mover.Name = "Mover: " + _Weasel.WeaselName;
             _Mover.Start();
         }
 
@@ -36,109 +39,103 @@ namespace Weasel_Controller
             Thread.Sleep(DWS.SleepBefore);
 
             //Move
-            while(_Weasel._LastPosition != DWS.Destination)
+            int timeout_count = 0;
+            int targeted_position = -1;
+            while (_Weasel._LastPosition != DWS.Destination)
             {
+                //When one or two step are called to often
+                if(timeout_count > 2)
+                {
+                    Console.WriteLine(_Weasel.WeaselName + " : Timeout");
+                    Thread.Sleep(3000);
+                    timeout_count = 0;
+                }
+
                 //Get the best possible path
                 int[] Path = _Map.FreePath(_Weasel._LastPosition, DWS.Destination, _Weasel._Colored);
                 Path = _Map.RadiusRoute(Path);
+                _Map.ReserveArr(Path, _Weasel._Colored);
                 _LastKnownRoute = Path;
 
-                //When the whole way to the destination only takes 3 steps
-                if (Path.Length < 5 && Path[Path.Length - 1] == DWS.Destination)
+                //Path Modes for all possible Path prompts
+                if(Path.Length == 0)
                 {
-                    _Map.ReserveArr(Path, _Weasel._Colored);
+                    Thread.Sleep(150);
+                    targeted_position = _Weasel._LastPosition;
+                }
+                if (Path.Length == 1)
+                {
+                    Thread.Sleep(150);
+                    targeted_position = _Weasel._LastPosition;
+                }
+                if (Path.Length == 2)
+                {
+                    Console.WriteLine(_Weasel.WeaselName + " Movement Option 1-Step");
+                    _Weasel.SetPosition(Path[1]);
+                    targeted_position = Path[1];
 
-                    _Weasel.SetPosition(DWS.Destination);
+                    if(_Weasel.AppOnline == false)
+                    {
+                        AddToOfflineMovementHandler(Path[1]);
+                    }
+
+                    //Increase timeout count
+                    timeout_count++;
+                }
+                if (Path.Length == 3)
+                {
+                    Console.WriteLine(_Weasel.WeaselName + " Movement Option 2-Step");
+                    _Weasel.SetPosition(Path[2]);
+                    targeted_position = Path[1];
 
                     if (_Weasel.AppOnline == false)
                     {
-                        bool schalter = false;
-                        for (int i = 0; i < Path.Length; i++)
-                        {
-                            if(_Weasel._OfflineMover.Count == 0)
-                            {
-                                schalter = true;
-                            }
-
-                            if(schalter == true)
-                            {
-                                _Weasel._OfflineMover.Add(Path[i]);
-                            }
-
-                            if (_Weasel._OfflineMover.Count > 0 && _Weasel._OfflineMover[0] == Path[i])
-                            {
-                                schalter = true;
-                            }
-                        }
+                        AddToOfflineMovementHandler(Path[1]);
+                        AddToOfflineMovementHandler(Path[2]);
                     }
 
-                    while(DWS.Destination != _Weasel._LastPosition)
-                    {
-                        Thread.Sleep(500);
-                    }
-
-                    break;
+                    //Increase timeout count
+                    timeout_count++;
                 }
-
-                //Check if there is an Path
-                if (Path.Length > 1)
+                if (Path.Length == 4)
                 {
-                    //When there is an longer path to travel
-                    _Map.ReserveArr(Path, _Weasel._Colored);
-                    int u = 0;
-                    while (Path.Length > 2 &&  _Weasel._LastPosition != Path[Path.Length - 3])
+                    Console.WriteLine(_Weasel.WeaselName + " Movement Option 3-Step");
+                    _Weasel.SetPosition(Path[3]);
+                    targeted_position = Path[2];
+
+                    if (_Weasel.AppOnline == false)
                     {
-                        if (_Weasel._LastPosition == Path[u] && u + 3 < Path.Length)
-                        {
-                            //Discover new paths
-                            int[] path_temp = _Map.FreePath(_Weasel._LastPosition, DWS.Destination, _Weasel._Colored);
-                            path_temp = _Map.RadiusRoute(path_temp);
-                            bool switcher = false;
-                            if (Path[0] != path_temp[0])
-                            {
-                                Path = path_temp;
-                                _LastKnownRoute = Path;
-                                _Map.ReserveArr(Path, _Weasel._Colored);
-                                u = 0;
-                                switcher = true;
-                            }
-
-                            if(switcher == false && u + 3 < Path.Length)
-                            {
-                                //_Weasel.SetPosition(Path[u + 1]);
-                                _Weasel.SetPosition(Path[u + 3]);
-
-                                if (_Weasel.AppOnline == false)
-                                {
-                                    _Weasel._OfflineMover.Add(Path[u + 1]);
-                                    _Weasel._OfflineMover.Add(Path[u + 2]);
-                                    _Weasel._OfflineMover.Add(Path[u + 3]);
-                                }
-                            }
-                            
-                            if(switcher == true && u + 2 < Path.Length)
-                            {
-                                _Weasel.SetPosition(Path[u + 3]);
-
-                                if (_Weasel.AppOnline == false)
-                                {
-                                    _Weasel._OfflineMover.Add(Path[u + 1]);
-                                    _Weasel._OfflineMover.Add(Path[u + 2]);
-                                    _Weasel._OfflineMover.Add(Path[u + 3]);
-                                }
-                            }
-
-                            //Get to the next position, when the weasel needs to be send
-                            u = u + 3;
-                        }
-
-                        //Reduce processing usage
-                        Thread.Sleep(150);
+                        AddToOfflineMovementHandler(Path[1]);
+                        AddToOfflineMovementHandler(Path[2]);
+                        AddToOfflineMovementHandler(Path[3]);
                     }
+
+                    //Remove timeout count
+                    timeout_count = 0;
+                }
+                if (Path.Length == 5)
+                {
+                    Console.WriteLine(_Weasel.WeaselName + " Movement Option 4-Step");
+                    _Weasel.SetPosition(Path[4]);
+                    targeted_position = Path[3];
+
+                    if (_Weasel.AppOnline == false)
+                    {
+                        AddToOfflineMovementHandler(Path[1]);
+                        AddToOfflineMovementHandler(Path[2]);
+                        AddToOfflineMovementHandler(Path[3]);
+                        AddToOfflineMovementHandler(Path[4]);
+                    }
+
+                    //Remove timeout count
+                    timeout_count = 0;
                 }
 
-                //When send let the Thread sleep for a short amount of time
-                Thread.Sleep(150);
+                //Wait for the targeted set new position
+                while(targeted_position != _Weasel._LastPosition)
+                {
+                    Thread.Sleep(10);
+                }
             }
 
             //Action when there is an action
@@ -163,11 +160,33 @@ namespace Weasel_Controller
             //Remove the thread
             _Mover.Abort();
 
+            //Get the last known route and remove last position the unreserve it
+            int[] lastRoute = _LastKnownRoute;
+            int[] lastRoutewithoutLastPosition = new int[_LastKnownRoute.Length - 1];
+            int u = 0;
+            for(int i = 0; i < _LastKnownRoute.Length; i++)
+            {
+                if(lastRoute[i] != _Weasel._LastPosition)
+                {
+                    lastRoutewithoutLastPosition[u] = lastRoute[i];
+                    u++;
+                }
+            }
+
             //Unreserve the route it was taking
-            _Map.UnReserveArr(_LastKnownRoute);
+            _Map.UnReserveArr(lastRoutewithoutLastPosition);
 
             //Make the destination to something notable
             _Weasel._Destination = -1;
+        }
+
+        private void AddToOfflineMovementHandler(int number)
+        {
+            if(!_Weasel._OfflineMover.Contains(number))
+            {
+                Console.WriteLine(_Weasel.WeaselName + ": " + number + " added to OfflinerMove.");
+                _Weasel._OfflineMover.Add(number);
+            }
         }
     }
 }
