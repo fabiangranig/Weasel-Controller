@@ -9,6 +9,12 @@
         <Label Text="Enter next position:" />
         <Entry x:Name="PositionToSendTo" />
         <Button Text="Send Weasel!" Clicked="SendWeaselToPosition" />
+        
+        <Label Text="" />
+
+        <Label Text="Additional prompts:" />
+        <Button Text="Send Weasel Home!" Clicked="SendWeaselToHome" />
+        <Button Text="Send Weasel to Box!!" Clicked="SendWeaselToBox" />
         <ScrollView>
             <StackLayout>
                 <Image Source="WeaselMap" Aspect="AspectFit" />

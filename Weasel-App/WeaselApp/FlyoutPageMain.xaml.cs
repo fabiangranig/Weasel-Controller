@@ -15,6 +15,7 @@ namespace WeaselApp
         public FlyoutPageMain()
         {
             InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
             FlyoutPage.ListView.ItemSelected += ListView_ItemSelected;
         }
 

@@ -33,8 +33,7 @@ namespace WeaselApp
             {
                 MenuItems = new ObservableCollection<FlyoutPageMainFlyoutMenuItem>(new[]
                 {
-                    new FlyoutPageMainFlyoutMenuItem { Id = 0, Title = "WeaselControl", TargetType = typeof(MainPage) },
-                    new FlyoutPageMainFlyoutMenuItem { Id = 1, Title = "Settings", TargetType = typeof(Settings) },
+                    new FlyoutPageMainFlyoutMenuItem { Id = 0, Title = "WeaselControl", TargetType = typeof(MainPage) }
                 });
             }
 

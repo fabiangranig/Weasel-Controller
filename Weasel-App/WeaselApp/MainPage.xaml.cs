@@ -35,5 +35,35 @@ namespace WeaselApp
                 MessageStream.Flush();
             }
         }
+
+        public void SendWeaselToHome(object sender, EventArgs e)
+        {
+            Client = new TcpClient();
+            Client.Connect(PublicVariables._IP, 26000);
+            Stream MessageStream = Client.GetStream();
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            var input = Convert.ToString(txtBox_WeaselName.Text) + ":" + "Home" + ":" + PublicVariables._CurrentUsername + ":" + PublicVariables._UserHash;
+            if (input != null)
+            {
+                byte[] buffer = encoder.GetBytes(input);
+                MessageStream.Write(buffer, 0, buffer.Length);
+                MessageStream.Flush();
+            }
+        }
+
+        public void SendWeaselToBox(object sender, EventArgs e)
+        {
+            Client = new TcpClient();
+            Client.Connect(PublicVariables._IP, 26000);
+            Stream MessageStream = Client.GetStream();
+            ASCIIEncoding encoder = new ASCIIEncoding();
+            var input = Convert.ToString(txtBox_WeaselName.Text) + ":" + "Kuka1" + ":" + PublicVariables._CurrentUsername + ":" + PublicVariables._UserHash;
+            if (input != null)
+            {
+                byte[] buffer = encoder.GetBytes(input);
+                MessageStream.Write(buffer, 0, buffer.Length);
+                MessageStream.Flush();
+            }
+        }
     }
 }

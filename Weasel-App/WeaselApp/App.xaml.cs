@@ -9,7 +9,7 @@ namespace WeaselApp
         public App()
         {
             InitializeComponent();
-            MainPage = new FlyoutPageMain();
+            MainPage = new NavigationPage(new Settings());
         }
 
         protected override void OnStart()

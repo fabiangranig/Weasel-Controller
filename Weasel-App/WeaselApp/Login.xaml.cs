@@ -22,13 +22,17 @@ namespace WeaselApp
 
         public void SetIP(object sender, EventArgs e)
         {
-            PublicVariables._IP = IPAddress.Parse(IP_TextBox.Text);
+            
         }
 
-        public void SetCredentials(object sender, EventArgs e)
+        public async void SetCredentials(object sender, EventArgs e)
         {
+            PublicVariables._IP = IPAddress.Parse(IP_TextBox.Text);
             PublicVariables._CurrentUsername = Username_TextBox.Text;
             PublicVariables._UserHash = ConvertStringToSHA256String(Username_TextBox.Text + Password_TextBox.Text);
+
+            //Move to another main interface
+            await Navigation.PushAsync(new FlyoutPageMain());
         }
 
         public string ConvertStringToSHA256String(string value)

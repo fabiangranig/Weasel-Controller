@@ -77,9 +77,23 @@ namespace Weasel_Controller
                             break;
                         }
 
+                        //Get Weasel to send
                         if (_Weasels[i].WeaselName == split[0])
                         {
+                            if(split[1] == "Home")
+                            {
+                                _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(0, _Weasels[i]._HomePosition, split[2]));
+                                break;
+                            }
+                            if(split[1] == "Kuka1")
+                            {
+                                _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(41, "Kuka1", split[2]));
+                                break;
+                            }
+
+                            //When it is not an defined variable it should be a number
                             _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(0, Int32.Parse(split[1]), split[2]));
+                            break;
                         }
                     }
                 }
