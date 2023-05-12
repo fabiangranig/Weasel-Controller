@@ -179,6 +179,7 @@ namespace Weasel_Controller
 
         public void PickUp()
         {
+            //To test the SPS
             GreiferZu();
             GreiferAuf();
 
@@ -252,6 +253,91 @@ namespace Weasel_Controller
 
             // Step 13
             jointsNEU = String_2_Values_NEU("17,07 ; -20,82 ; 34,78 ; 0,56 ; 75,2 ; 83,81");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Home
+            jointsNEU = ROBOT.JointsHome();
+            ROBOT.MoveJ(jointsNEU);
+            ROBOT.WaitMove();
+        }
+
+        public void PutDown()
+        {
+            //To test the SPS
+            GreiferZu();
+            GreiferAuf();
+
+            // Home
+            jointsNEU = ROBOT.JointsHome();
+            ROBOT.MoveJ(jointsNEU);
+            ROBOT.WaitMove();
+
+            // Step 13
+            jointsNEU = String_2_Values_NEU("17,07 ; -20,82 ; 34,78 ; 0,56 ; 75,2 ; 83,81");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 12
+            jointsNEU = String_2_Values_NEU("17,07 ; -11 ; 35,6 ; 0,6 ; 64,56 ; 83,7");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+            GreiferZu();
+
+            // Step 11
+            jointsNEU = String_2_Values_NEU("17,07 ; -16,59 ; 36,76 ; 0,58 ; 68,98 ; 83,75");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 10
+            jointsNEU = String_2_Values_NEU("30,77 ; -69,06 ; 101,41 ; 1,17 ; 57,84 ; 16,04");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 9
+            jointsNEU = String_2_Values_NEU("87,8 ; -63,68 ; 93,39 ; 0,8 ; 59,55 ; 73,3");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 8
+            jointsNEU = String_2_Values_NEU("88,22 ; -33,98 ; 97,68 ; -0,86 ; 26,61 ; 75,7");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 7
+            jointsNEU = String_2_Values_NEU("88,15 ; -44 ; 99,12 ; -0,67 ; 35,19 ; 75,15");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 6
+            jointsNEU = String_2_Values_NEU("87,48 ; -50,58 ; 96,41 ; 4,33 ; 44,71 ; 70,63");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+            //GreiferAuf();
+
+            // Step 5
+            jointsNEU = String_2_Values_NEU("85,32 ; -51,53 ; 81,34 ; -21,95 ; 35,77 ; -3,43");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 4
+            jointsNEU = String_2_Values_NEU("85,32 ; -30,44 ; 84,34 ; -53,15 ; 15,84 ; 30,54");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 3
+            jointsNEU = String_2_Values_NEU("85,15 ; -32,34 ; 89,08 ; -62,02 ; 14,23 ; 39,59");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+            GreiferAuf();
+
+            // Step 2
+            jointsNEU = String_2_Values_NEU("83,53 ; -29,04 ; 78,49 ; -41,31 ; 18,07 ; 16,71");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 1
+            jointsNEU = String_2_Values_NEU("84,9 ; -57,14 ; 78,47 ; -18,18 ; 43,62 ; -8,54");
             ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
             ROBOT.WaitMove();
 

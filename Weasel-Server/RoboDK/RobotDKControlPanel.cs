@@ -32,6 +32,7 @@ namespace Weasel_Controller
         private Button btn_PickUp;
         private Button btn_Home;
         private Button btn_Step1;
+        private Button btn_PutDown;
         KukaRoboter _KukaRobot;
 
         public RobotDKControlPanel(KukaRoboter kukaRoboter1)
@@ -67,6 +68,7 @@ namespace Weasel_Controller
             this.btn_Step1 = new System.Windows.Forms.Button();
             this.btn_PickUp = new System.Windows.Forms.Button();
             this.btn_Home = new System.Windows.Forms.Button();
+            this.btn_PutDown = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
             this.groupBox_CordinatesMovement.SuspendLayout();
             this.groupBox_CustomMovement.SuspendLayout();
@@ -275,6 +277,7 @@ namespace Weasel_Controller
             // 
             // groupBox_CustomMovement
             // 
+            this.groupBox_CustomMovement.Controls.Add(this.btn_PutDown);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Step1);
             this.groupBox_CustomMovement.Controls.Add(this.btn_PickUp);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Home);
@@ -314,6 +317,16 @@ namespace Weasel_Controller
             this.btn_Home.Text = "Home";
             this.btn_Home.UseVisualStyleBackColor = true;
             this.btn_Home.Click += new System.EventHandler(this.btn_Home_Click);
+            // 
+            // btn_PutDown
+            // 
+            this.btn_PutDown.Location = new System.Drawing.Point(6, 120);
+            this.btn_PutDown.Name = "btn_PutDown";
+            this.btn_PutDown.Size = new System.Drawing.Size(109, 23);
+            this.btn_PutDown.TabIndex = 3;
+            this.btn_PutDown.Text = "Put Down";
+            this.btn_PutDown.UseVisualStyleBackColor = true;
+            this.btn_PutDown.Click += new System.EventHandler(this.btn_PutDown_Click);
             // 
             // RobotDKControlPanel
             // 
@@ -366,6 +379,11 @@ namespace Weasel_Controller
         private void btn_Step1_Click(object sender, EventArgs e)
         {
             _KukaRobot.Step1();
+        }
+
+        private void btn_PutDown_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.PutDown();
         }
     }
 }
