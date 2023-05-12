@@ -35,8 +35,12 @@ namespace Weasel_Controller
 
         private void MovePartlyBackend(DestinationwithInformation DWS)
         {
-            //Get the sleep time before moving
-            Thread.Sleep(DWS.SleepBefore);
+            //Get the action before moving
+            int result = -1;
+            if(Int32.TryParse(DWS.ActionBeforeMovement, out result))
+            {
+                Thread.Sleep(result);
+            }
 
             //Move
             int timeout_count = 0;
@@ -145,9 +149,14 @@ namespace Weasel_Controller
                 _KukaRobot.PickUp();
                 _Weasel._HasBox = true;
             }
+            result = -1;
+            if (Int32.TryParse(DWS.ActionBeforeMovement, out result))
+            {
+                Thread.Sleep(result);
+            }
 
             //Remove the position and if the next is also the same remove that also
-            while(_Weasel._DestinationsWithInformation.Count > 0 && _Weasel._LastPosition == _Weasel._DestinationsWithInformation[0].Destination)
+            while (_Weasel._DestinationsWithInformation.Count > 0 && _Weasel._LastPosition == _Weasel._DestinationsWithInformation[0].Destination)
             {
                 _Weasel._DestinationsWithInformation.RemoveAt(0);
             }
