@@ -261,6 +261,30 @@ namespace Weasel_Controller
             ROBOT.WaitMove();
         }
 
+        public void Step1()
+        {
+            if (!Check_ROBOT()) { Console.WriteLine("Keine Verbindung zum Roboter"); return; }
+
+            jointsNEU = new double[6];
+
+            //Import Joint values from step 1
+            jointsNEU = String_2_Values_NEU("84,9 ; -57,14 ; 78,47 ; -18,18 ; 43,62 ; -8,54");
+
+            //Make sure that RoboDK is running
+            if (!Check_ROBOT() || jointsNEU == null) { return; }
+
+            try
+            {
+                //Try to move the robot
+                ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+                ROBOT.WaitMove();
+            }
+            catch (RoboDK.RDKException rdkex)
+            {
+                Console.WriteLine("Problems moving the robot: " + rdkex.Message);
+            }
+        }
+
         public void GreiferZu()
         {
             if(_AppOnline == true)

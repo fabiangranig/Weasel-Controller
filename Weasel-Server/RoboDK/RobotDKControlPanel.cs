@@ -31,6 +31,7 @@ namespace Weasel_Controller
         private GroupBox groupBox_CustomMovement;
         private Button btn_PickUp;
         private Button btn_Home;
+        private Button btn_Step1;
         KukaRoboter _KukaRobot;
 
         public RobotDKControlPanel(KukaRoboter kukaRoboter1)
@@ -63,6 +64,7 @@ namespace Weasel_Controller
             this.txt_PositionMovement = new System.Windows.Forms.TextBox();
             this.txtBox_JointsMovement = new System.Windows.Forms.TextBox();
             this.groupBox_CustomMovement = new System.Windows.Forms.GroupBox();
+            this.btn_Step1 = new System.Windows.Forms.Button();
             this.btn_PickUp = new System.Windows.Forms.Button();
             this.btn_Home = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
@@ -259,7 +261,7 @@ namespace Weasel_Controller
             // 
             this.txt_PositionMovement.Location = new System.Drawing.Point(7, 91);
             this.txt_PositionMovement.Name = "txt_PositionMovement";
-            this.txt_PositionMovement.Size = new System.Drawing.Size(211, 20);
+            this.txt_PositionMovement.Size = new System.Drawing.Size(211, 22);
             this.txt_PositionMovement.TabIndex = 1;
             this.txt_PositionMovement.Text = "11; -338; 561; 116; 1; 142";
             // 
@@ -267,12 +269,13 @@ namespace Weasel_Controller
             // 
             this.txtBox_JointsMovement.Location = new System.Drawing.Point(6, 33);
             this.txtBox_JointsMovement.Name = "txtBox_JointsMovement";
-            this.txtBox_JointsMovement.Size = new System.Drawing.Size(211, 20);
+            this.txtBox_JointsMovement.Size = new System.Drawing.Size(211, 22);
             this.txtBox_JointsMovement.TabIndex = 0;
             this.txtBox_JointsMovement.Text = "87; -92; 98; 1; 19; 124";
             // 
             // groupBox_CustomMovement
             // 
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step1);
             this.groupBox_CustomMovement.Controls.Add(this.btn_PickUp);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Home);
             this.groupBox_CustomMovement.Location = new System.Drawing.Point(420, 12);
@@ -282,9 +285,19 @@ namespace Weasel_Controller
             this.groupBox_CustomMovement.TabStop = false;
             this.groupBox_CustomMovement.Text = "Custom Movement";
             // 
+            // btn_Step1
+            // 
+            this.btn_Step1.Location = new System.Drawing.Point(6, 32);
+            this.btn_Step1.Name = "btn_Step1";
+            this.btn_Step1.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step1.TabIndex = 2;
+            this.btn_Step1.Text = "Step1";
+            this.btn_Step1.UseVisualStyleBackColor = true;
+            this.btn_Step1.Click += new System.EventHandler(this.btn_Step1_Click);
+            // 
             // btn_PickUp
             // 
-            this.btn_PickUp.Location = new System.Drawing.Point(6, 48);
+            this.btn_PickUp.Location = new System.Drawing.Point(6, 91);
             this.btn_PickUp.Name = "btn_PickUp";
             this.btn_PickUp.Size = new System.Drawing.Size(109, 23);
             this.btn_PickUp.TabIndex = 1;
@@ -294,7 +307,7 @@ namespace Weasel_Controller
             // 
             // btn_Home
             // 
-            this.btn_Home.Location = new System.Drawing.Point(6, 19);
+            this.btn_Home.Location = new System.Drawing.Point(5, 61);
             this.btn_Home.Name = "btn_Home";
             this.btn_Home.Size = new System.Drawing.Size(109, 23);
             this.btn_Home.TabIndex = 0;
@@ -348,6 +361,11 @@ namespace Weasel_Controller
         private void btn_PickUp_Click(object sender, EventArgs e)
         {
             _KukaRobot.PickUp();
+        }
+
+        private void btn_Step1_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step1();
         }
     }
 }

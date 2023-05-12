@@ -51,7 +51,7 @@ namespace Weasel_Controller
                 if(timeout_count > 2)
                 {
                     Console.WriteLine(_Weasel.WeaselName + " : Timeout");
-                    Thread.Sleep(3000);
+                    Thread.Sleep(8000);
                     timeout_count = 0;
                 }
 
