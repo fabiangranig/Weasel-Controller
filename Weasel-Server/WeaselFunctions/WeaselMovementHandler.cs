@@ -143,6 +143,7 @@ namespace Weasel_Controller
             {
                 _Weasel._DestinationsWithInformation.Add(new DestinationwithInformation(_Weasel._HomePosition));
                 _KukaRobot.PickUp();
+                _Weasel._HasBox = true;
             }
 
             //Remove the position and if the next is also the same remove that also

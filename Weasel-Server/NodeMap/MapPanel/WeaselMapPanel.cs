@@ -282,9 +282,18 @@ namespace Weasel_Controller.NodeMap.MapPanel
                     //When an weasel is on the node make the text of the node red
                     for(int u = 0; u < _Weasels.Length; u++)
                     {
+                        //Set where the weasel is located
                         if(_Weasels[u]._LastPosition == Int32.Parse(_Labels_Waypoints[i].Text))
                         {
-                            _Labels_Waypoints[i].ForeColor = Color.Red;
+                            //When the weasel has a box on top
+                            if(_Weasels[u]._HasBox == true)
+                            {
+                                _Labels_Waypoints[i].ForeColor = Color.Red;
+                            }
+                            else
+                            {
+                                _Labels_Waypoints[i].ForeColor = Color.DarkGreen;
+                            }
                             break;
                         }
                         else

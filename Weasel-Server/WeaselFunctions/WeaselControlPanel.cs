@@ -475,7 +475,7 @@ namespace Weasel_Controller
             //Let the not occupied weasel get the box
             for(int i = 0; i < _Weasels.Length; i++)
             {
-                if(_Weasels[i]._DestinationsWithInformation.Count == 0)
+                if(_Weasels[i]._DestinationsWithInformation.Count == 0 && _Weasels[i]._HasBox == false)
                 {
                     _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(41, "Kuka1", "Server"));
                     break;

@@ -28,6 +28,7 @@ namespace Weasel_Controller
         public bool _LastDestinationReached;
         public List<int> _OfflineMover;
         private int _HowManySetPositions;
+        public bool _HasBox;
 
         //encapsulation
         public string WeaselName
@@ -53,6 +54,7 @@ namespace Weasel_Controller
             _HomePosition = HomePosition1;
             _Colored = color1;
             _Destination = -1;
+            _HasBox = false;
             _LastDestinationReached = true;
             _DestinationsWithInformation = new List<DestinationwithInformation>();
             AppOnlineCheck();
@@ -102,7 +104,7 @@ namespace Weasel_Controller
             Random r1 = new Random();
             while (_AppOnline == false)
             {
-                Thread.Sleep(r1.Next(1000, 1500));
+                Thread.Sleep(r1.Next(350, 500));
                 if(_OfflineMover.Count > 0)
                 {
                     _LastPosition = _OfflineMover[0];
