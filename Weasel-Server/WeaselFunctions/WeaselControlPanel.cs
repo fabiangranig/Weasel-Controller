@@ -159,8 +159,8 @@ namespace Weasel_Controller
         {
             if(_listBox_Destinations.Items.Count > 0)
             {
-                _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].DestroyAction();
                 _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.RemoveAt(0);
+                _WeaselMovementHandlers[_WeaselDropDown.SelectedIndex].DestroyAction();
             }
         }
 
