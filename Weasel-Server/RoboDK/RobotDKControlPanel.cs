@@ -33,6 +33,18 @@ namespace Weasel_Controller
         private Button btn_Home;
         private Button btn_Step1;
         private Button btn_PutDown;
+        private Button btn_Step13;
+        private Button btn_Step12;
+        private Button btn_Step11;
+        private Button btn_Step10;
+        private Button btn_Step9;
+        private Button btn_Step8;
+        private Button btn_Step6;
+        private Button btn_Step7;
+        private Button btn_Step3;
+        private Button btn_Step4;
+        private Button btn_Step5;
+        private Button btn_Step2;
         KukaRoboter _KukaRobot;
 
         public RobotDKControlPanel(KukaRoboter kukaRoboter1)
@@ -65,10 +77,22 @@ namespace Weasel_Controller
             this.txt_PositionMovement = new System.Windows.Forms.TextBox();
             this.txtBox_JointsMovement = new System.Windows.Forms.TextBox();
             this.groupBox_CustomMovement = new System.Windows.Forms.GroupBox();
+            this.btn_Step13 = new System.Windows.Forms.Button();
+            this.btn_Step12 = new System.Windows.Forms.Button();
+            this.btn_Step11 = new System.Windows.Forms.Button();
+            this.btn_Step10 = new System.Windows.Forms.Button();
+            this.btn_Step9 = new System.Windows.Forms.Button();
+            this.btn_Step8 = new System.Windows.Forms.Button();
+            this.btn_Step6 = new System.Windows.Forms.Button();
+            this.btn_Step7 = new System.Windows.Forms.Button();
+            this.btn_Step3 = new System.Windows.Forms.Button();
+            this.btn_Step4 = new System.Windows.Forms.Button();
+            this.btn_Step5 = new System.Windows.Forms.Button();
+            this.btn_Step2 = new System.Windows.Forms.Button();
+            this.btn_PutDown = new System.Windows.Forms.Button();
             this.btn_Step1 = new System.Windows.Forms.Button();
             this.btn_PickUp = new System.Windows.Forms.Button();
             this.btn_Home = new System.Windows.Forms.Button();
-            this.btn_PutDown = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
             this.groupBox_CordinatesMovement.SuspendLayout();
             this.groupBox_CustomMovement.SuspendLayout();
@@ -90,7 +114,7 @@ namespace Weasel_Controller
             this.groupBox_IncrementalMove.Controls.Add(this.btn_XMinus);
             this.groupBox_IncrementalMove.Location = new System.Drawing.Point(12, 12);
             this.groupBox_IncrementalMove.Name = "groupBox_IncrementalMove";
-            this.groupBox_IncrementalMove.Size = new System.Drawing.Size(172, 216);
+            this.groupBox_IncrementalMove.Size = new System.Drawing.Size(172, 234);
             this.groupBox_IncrementalMove.TabIndex = 0;
             this.groupBox_IncrementalMove.TabStop = false;
             this.groupBox_IncrementalMove.Text = "Incremental Move";
@@ -224,7 +248,7 @@ namespace Weasel_Controller
             this.groupBox_CordinatesMovement.Controls.Add(this.txtBox_JointsMovement);
             this.groupBox_CordinatesMovement.Location = new System.Drawing.Point(190, 12);
             this.groupBox_CordinatesMovement.Name = "groupBox_CordinatesMovement";
-            this.groupBox_CordinatesMovement.Size = new System.Drawing.Size(224, 216);
+            this.groupBox_CordinatesMovement.Size = new System.Drawing.Size(224, 234);
             this.groupBox_CordinatesMovement.TabIndex = 13;
             this.groupBox_CordinatesMovement.TabStop = false;
             this.groupBox_CordinatesMovement.Text = "Cordinates Movement";
@@ -277,20 +301,162 @@ namespace Weasel_Controller
             // 
             // groupBox_CustomMovement
             // 
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step13);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step12);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step11);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step10);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step9);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step8);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step6);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step7);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step3);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step4);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step5);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_Step2);
             this.groupBox_CustomMovement.Controls.Add(this.btn_PutDown);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Step1);
             this.groupBox_CustomMovement.Controls.Add(this.btn_PickUp);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Home);
             this.groupBox_CustomMovement.Location = new System.Drawing.Point(420, 12);
             this.groupBox_CustomMovement.Name = "groupBox_CustomMovement";
-            this.groupBox_CustomMovement.Size = new System.Drawing.Size(120, 216);
+            this.groupBox_CustomMovement.Size = new System.Drawing.Size(353, 234);
             this.groupBox_CustomMovement.TabIndex = 14;
             this.groupBox_CustomMovement.TabStop = false;
             this.groupBox_CustomMovement.Text = "Custom Movement";
             // 
+            // btn_Step13
+            // 
+            this.btn_Step13.Location = new System.Drawing.Point(121, 175);
+            this.btn_Step13.Name = "btn_Step13";
+            this.btn_Step13.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step13.TabIndex = 15;
+            this.btn_Step13.Text = "Step13";
+            this.btn_Step13.UseVisualStyleBackColor = true;
+            this.btn_Step13.Click += new System.EventHandler(this.btn_Step13_Click);
+            // 
+            // btn_Step12
+            // 
+            this.btn_Step12.Location = new System.Drawing.Point(121, 146);
+            this.btn_Step12.Name = "btn_Step12";
+            this.btn_Step12.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step12.TabIndex = 14;
+            this.btn_Step12.Text = "Step12";
+            this.btn_Step12.UseVisualStyleBackColor = true;
+            this.btn_Step12.Click += new System.EventHandler(this.btn_Step12_Click);
+            // 
+            // btn_Step11
+            // 
+            this.btn_Step11.Location = new System.Drawing.Point(121, 117);
+            this.btn_Step11.Name = "btn_Step11";
+            this.btn_Step11.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step11.TabIndex = 13;
+            this.btn_Step11.Text = "Step11";
+            this.btn_Step11.UseVisualStyleBackColor = true;
+            this.btn_Step11.Click += new System.EventHandler(this.btn_Step11_Click);
+            // 
+            // btn_Step10
+            // 
+            this.btn_Step10.Location = new System.Drawing.Point(121, 91);
+            this.btn_Step10.Name = "btn_Step10";
+            this.btn_Step10.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step10.TabIndex = 12;
+            this.btn_Step10.Text = "Step10";
+            this.btn_Step10.UseVisualStyleBackColor = true;
+            this.btn_Step10.Click += new System.EventHandler(this.btn_Step10_Click);
+            // 
+            // btn_Step9
+            // 
+            this.btn_Step9.Location = new System.Drawing.Point(121, 62);
+            this.btn_Step9.Name = "btn_Step9";
+            this.btn_Step9.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step9.TabIndex = 11;
+            this.btn_Step9.Text = "Step9";
+            this.btn_Step9.UseVisualStyleBackColor = true;
+            this.btn_Step9.Click += new System.EventHandler(this.btn_Step9_Click);
+            // 
+            // btn_Step8
+            // 
+            this.btn_Step8.Location = new System.Drawing.Point(121, 33);
+            this.btn_Step8.Name = "btn_Step8";
+            this.btn_Step8.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step8.TabIndex = 10;
+            this.btn_Step8.Text = "Step8";
+            this.btn_Step8.UseVisualStyleBackColor = true;
+            this.btn_Step8.Click += new System.EventHandler(this.btn_Step8_Click);
+            // 
+            // btn_Step6
+            // 
+            this.btn_Step6.Location = new System.Drawing.Point(6, 175);
+            this.btn_Step6.Name = "btn_Step6";
+            this.btn_Step6.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step6.TabIndex = 9;
+            this.btn_Step6.Text = "Step6";
+            this.btn_Step6.UseVisualStyleBackColor = true;
+            this.btn_Step6.Click += new System.EventHandler(this.btn_Step6_Click);
+            // 
+            // btn_Step7
+            // 
+            this.btn_Step7.Location = new System.Drawing.Point(6, 204);
+            this.btn_Step7.Name = "btn_Step7";
+            this.btn_Step7.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step7.TabIndex = 8;
+            this.btn_Step7.Text = "Step7";
+            this.btn_Step7.UseVisualStyleBackColor = true;
+            this.btn_Step7.Click += new System.EventHandler(this.btn_Step7_Click);
+            // 
+            // btn_Step3
+            // 
+            this.btn_Step3.Location = new System.Drawing.Point(6, 90);
+            this.btn_Step3.Name = "btn_Step3";
+            this.btn_Step3.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step3.TabIndex = 7;
+            this.btn_Step3.Text = "Step3";
+            this.btn_Step3.UseVisualStyleBackColor = true;
+            this.btn_Step3.Click += new System.EventHandler(this.btn_Step3_Click);
+            // 
+            // btn_Step4
+            // 
+            this.btn_Step4.Location = new System.Drawing.Point(6, 117);
+            this.btn_Step4.Name = "btn_Step4";
+            this.btn_Step4.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step4.TabIndex = 6;
+            this.btn_Step4.Text = "Step4";
+            this.btn_Step4.UseVisualStyleBackColor = true;
+            this.btn_Step4.Click += new System.EventHandler(this.btn_Step4_Click);
+            // 
+            // btn_Step5
+            // 
+            this.btn_Step5.Location = new System.Drawing.Point(6, 146);
+            this.btn_Step5.Name = "btn_Step5";
+            this.btn_Step5.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step5.TabIndex = 5;
+            this.btn_Step5.Text = "Step5";
+            this.btn_Step5.UseVisualStyleBackColor = true;
+            this.btn_Step5.Click += new System.EventHandler(this.btn_Step5_Click);
+            // 
+            // btn_Step2
+            // 
+            this.btn_Step2.Location = new System.Drawing.Point(6, 62);
+            this.btn_Step2.Name = "btn_Step2";
+            this.btn_Step2.Size = new System.Drawing.Size(109, 23);
+            this.btn_Step2.TabIndex = 4;
+            this.btn_Step2.Text = "Step2";
+            this.btn_Step2.UseVisualStyleBackColor = true;
+            this.btn_Step2.Click += new System.EventHandler(this.btn_Step2_Click);
+            // 
+            // btn_PutDown
+            // 
+            this.btn_PutDown.Location = new System.Drawing.Point(238, 90);
+            this.btn_PutDown.Name = "btn_PutDown";
+            this.btn_PutDown.Size = new System.Drawing.Size(109, 23);
+            this.btn_PutDown.TabIndex = 3;
+            this.btn_PutDown.Text = "Put Down";
+            this.btn_PutDown.UseVisualStyleBackColor = true;
+            this.btn_PutDown.Click += new System.EventHandler(this.btn_PutDown_Click);
+            // 
             // btn_Step1
             // 
-            this.btn_Step1.Location = new System.Drawing.Point(6, 32);
+            this.btn_Step1.Location = new System.Drawing.Point(6, 33);
             this.btn_Step1.Name = "btn_Step1";
             this.btn_Step1.Size = new System.Drawing.Size(109, 23);
             this.btn_Step1.TabIndex = 2;
@@ -300,7 +466,7 @@ namespace Weasel_Controller
             // 
             // btn_PickUp
             // 
-            this.btn_PickUp.Location = new System.Drawing.Point(6, 91);
+            this.btn_PickUp.Location = new System.Drawing.Point(238, 62);
             this.btn_PickUp.Name = "btn_PickUp";
             this.btn_PickUp.Size = new System.Drawing.Size(109, 23);
             this.btn_PickUp.TabIndex = 1;
@@ -310,7 +476,7 @@ namespace Weasel_Controller
             // 
             // btn_Home
             // 
-            this.btn_Home.Location = new System.Drawing.Point(5, 61);
+            this.btn_Home.Location = new System.Drawing.Point(238, 33);
             this.btn_Home.Name = "btn_Home";
             this.btn_Home.Size = new System.Drawing.Size(109, 23);
             this.btn_Home.TabIndex = 0;
@@ -318,19 +484,9 @@ namespace Weasel_Controller
             this.btn_Home.UseVisualStyleBackColor = true;
             this.btn_Home.Click += new System.EventHandler(this.btn_Home_Click);
             // 
-            // btn_PutDown
-            // 
-            this.btn_PutDown.Location = new System.Drawing.Point(6, 120);
-            this.btn_PutDown.Name = "btn_PutDown";
-            this.btn_PutDown.Size = new System.Drawing.Size(109, 23);
-            this.btn_PutDown.TabIndex = 3;
-            this.btn_PutDown.Text = "Put Down";
-            this.btn_PutDown.UseVisualStyleBackColor = true;
-            this.btn_PutDown.Click += new System.EventHandler(this.btn_PutDown_Click);
-            // 
             // RobotDKControlPanel
             // 
-            this.ClientSize = new System.Drawing.Size(554, 241);
+            this.ClientSize = new System.Drawing.Size(784, 258);
             this.Controls.Add(this.groupBox_CustomMovement);
             this.Controls.Add(this.groupBox_CordinatesMovement);
             this.Controls.Add(this.groupBox_IncrementalMove);
@@ -384,6 +540,66 @@ namespace Weasel_Controller
         private void btn_PutDown_Click(object sender, EventArgs e)
         {
             _KukaRobot.PutDown();
+        }
+
+        private void btn_Step2_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step2();
+        }
+
+        private void btn_Step3_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step3();
+        }
+
+        private void btn_Step4_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step4();
+        }
+
+        private void btn_Step5_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step5();
+        }
+
+        private void btn_Step6_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step6();
+        }
+
+        private void btn_Step7_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step7();
+        }
+
+        private void btn_Step8_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step8();
+        }
+
+        private void btn_Step9_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step9();
+        }
+
+        private void btn_Step10_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step10();
+        }
+
+        private void btn_Step11_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step11();
+        }
+
+        private void btn_Step12_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step12();
+        }
+
+        private void btn_Step13_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.Step13();
         }
     }
 }
