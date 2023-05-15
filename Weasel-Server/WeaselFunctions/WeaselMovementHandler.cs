@@ -45,6 +45,7 @@ namespace Weasel_Controller
             //Move
             int timeout_count = 0;
             int targeted_position = -1;
+            int set_position = -1;
             while (_Weasel._LastPosition != DWS.Destination)
             {
                 //When one or two step are called to often
@@ -76,6 +77,7 @@ namespace Weasel_Controller
                 {
                     Console.WriteLine(_Weasel.WeaselName + " Movement Option 1-Step");
                     _Weasel.SetPosition(Path[1]);
+                    set_position = Path[1];
                     targeted_position = Path[1];
 
                     if(_Weasel.AppOnline == false)
@@ -90,6 +92,7 @@ namespace Weasel_Controller
                 {
                     Console.WriteLine(_Weasel.WeaselName + " Movement Option 2-Step");
                     _Weasel.SetPosition(Path[2]);
+                    set_position = Path[2];
                     targeted_position = Path[1];
 
                     if (_Weasel.AppOnline == false)
@@ -105,6 +108,7 @@ namespace Weasel_Controller
                 {
                     Console.WriteLine(_Weasel.WeaselName + " Movement Option 3-Step");
                     _Weasel.SetPosition(Path[3]);
+                    set_position = Path[3];
                     targeted_position = Path[2];
 
                     if (_Weasel.AppOnline == false)
@@ -121,6 +125,7 @@ namespace Weasel_Controller
                 {
                     Console.WriteLine(_Weasel.WeaselName + " Movement Option 4-Step");
                     _Weasel.SetPosition(Path[4]);
+                    set_position = Path[4];
                     targeted_position = Path[3];
 
                     if (_Weasel.AppOnline == false)
@@ -136,7 +141,7 @@ namespace Weasel_Controller
                 }
 
                 //Wait for the targeted set new position
-                while(targeted_position != _Weasel._LastPosition)
+                while(targeted_position != _Weasel._LastPosition && _Weasel._LastPosition != set_position)
                 {
                     Thread.Sleep(10);
                 }

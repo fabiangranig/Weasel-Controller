@@ -63,13 +63,13 @@ namespace Weasel_Controller
 
             //Timer -> uses are stated below this command
             Timer tmr = new Timer();
-            tmr.Interval = 50;
+            tmr.Interval = 10;
 
-            tmr.Tick += Update100ms;
+            tmr.Tick += Update10ms;
             tmr.Start();
         }
 
-        private void Update100ms(object sender, EventArgs e)
+        private void Update10ms(object sender, EventArgs e)
         {
             //Unreserve past nodes with updating the weasels information
             if(_AppOnline == true)
@@ -106,6 +106,29 @@ namespace Weasel_Controller
                     _WeaselMap.UnReserve(_Weasels[i]._BeforeLastPosition);
                     SetBeforeLastPosition(i);
                     _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
+
+                    //Also take a look at the past four points
+                    Waypoint[] waypoints = new Waypoint[4];
+                    for(int u = 0; u < waypoints.Length; u++)
+                    {
+                        if(u == 0)
+                        {
+                            waypoints[u] = _WeaselMap.FindWayPointBeforeNumber(_Weasels[i]._LastPosition);
+                        }
+                        else
+                        {
+                            waypoints[u] = _WeaselMap.FindWayPointBeforeNumber(waypoints[u - 1]._PointId);
+                        }
+                    }
+
+                    //Check if the past four point were unreserved
+                    for(int u = 0; u < waypoints.Length; u++)
+                    {
+                        if (waypoints[u] != null && waypoints[u]._Reserved_Color == _Weasels[i]._Colored)
+                        {
+                            _WeaselMap.UnReserve(waypoints[u]._PointId);
+                        }
+                    }
                 }
 
                 Waypoint temp = _WeaselMap.FindWayPoint(_Weasels[i]._LastPosition);

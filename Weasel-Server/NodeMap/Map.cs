@@ -64,6 +64,11 @@ namespace Weasel_Controller
             return FindWayPointBackend(_Head, id1);
         }
 
+        public Waypoint FindWayPointBeforeNumber(int id1)
+        {
+            return FindWayPointBackendBeforeNumberBackend(_Head, id1);
+        }
+
         private Waypoint FindWayPointBackend(Waypoint header, int id1)
         {
             if (header != null && header._PointId == id1)
@@ -74,6 +79,40 @@ namespace Weasel_Controller
             if (header == null)
             {
                 return null;
+            }
+
+            if (header._Next != null)
+            {
+                Waypoint[] waypoints = new Waypoint[header._Next.Count];
+                for (int i = 0; i < waypoints.Length; i++)
+                {
+                    waypoints[i] = FindWayPointBackend(header._Next[i], id1);
+                    if (waypoints[i] != null)
+                    {
+                        return waypoints[i];
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private Waypoint FindWayPointBackendBeforeNumberBackend(Waypoint header, int id1)
+        {
+            for(int i = 0; i < header._Next.Count; i++)
+            {
+                if (header == null || header._Next[i] == null)
+                {
+                    return null;
+                }
+            }
+
+            for (int i = 0; i < header._Next.Count; i++)
+            {
+                if (header != null && header._Next[i]._PointId == id1)
+                {
+                    return header;
+                }
             }
 
             if (header._Next != null)
