@@ -111,20 +111,23 @@ namespace Weasel_Controller
                     Waypoint[] waypoints = new Waypoint[4];
                     for(int u = 0; u < waypoints.Length; u++)
                     {
-                        if(u == 0)
+                        if (u == 0)
                         {
                             waypoints[u] = _WeaselMap.FindWayPointBeforeNumber(_Weasels[i]._LastPosition);
                         }
                         else
                         {
-                            waypoints[u] = _WeaselMap.FindWayPointBeforeNumber(waypoints[u - 1]._PointId);
+                            if(waypoints[u - 1] != null)
+                            {
+                                waypoints[u] = _WeaselMap.FindWayPointBeforeNumber(waypoints[u - 1]._PointId);
+                            }
                         }
                     }
 
                     //Check if the past four point were unreserved
                     for(int u = 0; u < waypoints.Length; u++)
                     {
-                        if (waypoints[u] != null && waypoints[u]._Reserved_Color == _Weasels[i]._Colored)
+                        if (waypoints[u] != null && waypoints[u]._Reserved_Color == _Weasels[i]._Colored && waypoints[u]._PointId != _Weasels[i]._LastPosition)
                         {
                             _WeaselMap.UnReserve(waypoints[u]._PointId);
                         }

@@ -20,6 +20,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
         private Label _MainLabel;
         private Button btn_Remove;
         private Map _WeaselMap;
+        private int[] _CustomColors;
 
         public GeneralLabelEdit(ref Label label1, ref Map WeaselMap1, string Type1)
         {
@@ -78,6 +79,7 @@ namespace Weasel_Controller.NodeMap.MapPanel
             this.label_Correct.Size = new System.Drawing.Size(40, 17);
             this.label_Correct.TabIndex = 3;
             this.label_Correct.Text = "        ";
+            this.label_Correct.Click += new System.EventHandler(this.label_Correct_Click);
             // 
             // btn_Up
             // 
@@ -218,6 +220,33 @@ namespace Weasel_Controller.NodeMap.MapPanel
             if(switcher == false && Convert.ToInt32(e.KeyChar) != 8)
             {
                 e.KeyChar = '\0';
+            }
+        }
+
+        private void label_Correct_Click(object sender, EventArgs e)
+        {
+            //Get the waypoint
+            Waypoint searched = _WeaselMap.FindWayPoint(Int32.Parse(txtBox_Position.Text));
+
+            //Get the new color
+            ColorDialog CD = new ColorDialog();
+            CD.Color = searched._Reserved_Color;
+
+            //Get color palett
+            CD.CustomColors = _CustomColors;
+
+            DialogResult result = CD.ShowDialog();
+
+            //Set color palett
+            _CustomColors = CD.CustomColors;
+
+            if (result == DialogResult.OK)
+            {
+                searched._Reserved_Color = CD.Color;
+                if(searched._Reserved_Color != Color.LightGreen)
+                {
+                    searched._Reserved = true;
+                }
             }
         }
     }

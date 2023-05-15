@@ -99,6 +99,11 @@ namespace Weasel_Controller
 
         private Waypoint FindWayPointBackendBeforeNumberBackend(Waypoint header, int id1)
         {
+            if(header._Next == null)
+            {
+                return null;
+            }
+
             for(int i = 0; i < header._Next.Count; i++)
             {
                 if (header == null || header._Next[i] == null)
@@ -120,7 +125,7 @@ namespace Weasel_Controller
                 Waypoint[] waypoints = new Waypoint[header._Next.Count];
                 for (int i = 0; i < waypoints.Length; i++)
                 {
-                    waypoints[i] = FindWayPointBackend(header._Next[i], id1);
+                    waypoints[i] = FindWayPointBackendBeforeNumberBackend(header._Next[i], id1);
                     if (waypoints[i] != null)
                     {
                         return waypoints[i];
