@@ -81,7 +81,7 @@ namespace Weasel_Controller
         {
             //Just for testing!
             _HowManySetPositions++;
-            Console.WriteLine(_HowManySetPositions + ": " + WeaselName + ": gesetzte Position " + waypoint + " | Position zu diesem Zeitpunkt: " + _LastPosition);
+            Console.WriteLine(_HowManySetPositions + ": " + WeaselName + ": set position " + waypoint + " | position at this moment: " + _LastPosition);
 
             if(_AppOnline == true)
             {

@@ -167,7 +167,7 @@ namespace Weasel_Controller
             }
 
             //Output finish
-            Console.WriteLine(_Weasel.WeaselName + ": Ziel erreicht {" + DWS.Destination + "}");
+            Console.WriteLine(_Weasel.WeaselName + ": Goal reached {" + DWS.Destination + "}");
         }
 
         public void DestroyAction()
