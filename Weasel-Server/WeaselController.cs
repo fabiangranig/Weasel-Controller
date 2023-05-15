@@ -30,6 +30,16 @@ namespace Weasel_Controller
             //Values to set by user
             //if app is online
             _AppOnline = false;
+            DialogResult dialogResult = MessageBox.Show("Should the app be online?", "Online Status", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                _AppOnline = true;
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                _AppOnline = false;
+            }
+
             //where the input files of the map is located
             _InputAddress = @"input.txt";
             //how many and which weasel names
@@ -45,6 +55,9 @@ namespace Weasel_Controller
 
         public WeaselController()
         {
+            //Load the user input
+            InputtableInformations();
+
             //Standard VS Studio Forms Intialize
             InitializeComponent();
 
@@ -71,9 +84,6 @@ namespace Weasel_Controller
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Load the user input
-            InputtableInformations();
-            
             //Build the map through the .txt
             txtParser txtparse = new txtParser(_InputAddress);
             _WeaselMap = txtparse.ParseToWeaselMap();
