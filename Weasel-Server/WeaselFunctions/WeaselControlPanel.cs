@@ -114,6 +114,7 @@ namespace Weasel_Controller
 
         private void CheckOnlineStatus(object sender, EventArgs e)
         {
+            //Check if weasel is online
             if (_Weasels[_WeaselDropDown.SelectedIndex].AppOnline == true)
             {
                 _lbl_Online.BackColor = Color.Green;
@@ -122,6 +123,9 @@ namespace Weasel_Controller
             {
                 _lbl_Online.BackColor = Color.Red;
             }
+
+            //Show battery for the weasel
+            _lbl_Online.Text = Convert.ToString(_Weasels[_WeaselDropDown.SelectedIndex].BatteryPercentage) + "%";
         }
 
         private void btnClick_SendWeasel(object sender, EventArgs e)

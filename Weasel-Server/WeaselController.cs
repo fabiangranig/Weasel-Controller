@@ -72,10 +72,7 @@ namespace Weasel_Controller
         private void Update10ms(object sender, EventArgs e)
         {
             //Unreserve past nodes with updating the weasels information
-            if(_AppOnline == true)
-            {
-                UpdateWeaselInformation();
-            }
+            UpdateWeaselInformation();
             UnreserveNodes();
 
             //Write map to .txt
@@ -146,7 +143,11 @@ namespace Weasel_Controller
         {
             for(int i = 0; i < _Weasels.Length; i++)
             {
-                _Weasels[i].UpdateInfos();
+                if(_AppOnline == true)
+                {
+                    _Weasels[i].UpdateInfos();
+                }
+                _Weasels[i].UpdateBattery();
             }
         }
 

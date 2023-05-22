@@ -29,6 +29,7 @@ namespace Weasel_Controller
         public List<int> _OfflineMover;
         private int _HowManySetPositions;
         public bool _HasBox;
+        private int _BatteryProcentage;
 
         //encapsulation
         public string WeaselName
@@ -43,6 +44,10 @@ namespace Weasel_Controller
         public bool AppOnline
         {
             get { return _AppOnline; }
+        }
+        public int BatteryPercentage
+        {
+            get { return _BatteryProcentage; }
         }
 
         public Weasel(string weaselname, bool AppOnline1, int weaselId21, int HomePosition1, Color color1)
@@ -148,6 +153,47 @@ namespace Weasel_Controller
 
             //Offline Mode
             return _LastPosition;
+        }
+
+        public void UpdateBattery()
+        {
+            if (_AppOnline == true)
+            {
+                WebClient wc = new WebClient();
+
+                byte[] raw = new byte[0];
+                try
+                {
+                    raw = wc.DownloadData("http://10.0.9.22:4567/weasels");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    _AppOnline = false;
+                    _BatteryProcentage = 75;
+                }
+
+                //Convert in an string
+                string webData = System.Text.Encoding.UTF8.GetString(raw);
+
+                //Create the JSON Document
+                JsonDocument doc = JsonDocument.Parse(webData);
+                JsonElement root = doc.RootElement;
+
+                //Weasels aufteilen
+                var u1 = root[_WeaselId];
+
+                //Create string values
+                string test = u1.GetProperty("battery") + "";
+                _BatteryProcentage = Int32.Parse(test);
+            }
+
+            //Offline Mode
+            if(_BatteryProcentage == 0)
+            {
+                _BatteryProcentage = 75;
+            }
+            _BatteryProcentage = BatteryPercentage;
         }
 
         public void UpdateInfos()
