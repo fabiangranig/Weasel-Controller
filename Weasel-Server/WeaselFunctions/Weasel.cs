@@ -200,5 +200,10 @@ namespace Weasel_Controller
         {
             _LastPosition = GetPosition();
         }
+
+        public void ChangeBattery(int value)
+        {
+            _BatteryProcentage = value;
+        }
     }
 }

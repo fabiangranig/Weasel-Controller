@@ -188,7 +188,7 @@ namespace Weasel_Controller
 
         private void btn_RoboDKControlPanel_Click(object sender, EventArgs e)
         {
-            if(SHA.ComputeSHA256Hash(SelfBuildDialogues.TextDialog("Passwort eingeben: ", "RobotDK öffnen")) == "37004bbd1a4089e6434721f151b4ae561996b160181f514ff2df4b53200b1c05")
+            if(SHA.ComputeSHA256Hash(SelfBuildDialogues.TextDialog("Enter password: ", "Open RobotDK")) == "37004bbd1a4089e6434721f151b4ae561996b160181f514ff2df4b53200b1c05")
             {
                 RobotDKControlPanel RDKCP = new RobotDKControlPanel(_KukaRobot);
                 RDKCP.Show();

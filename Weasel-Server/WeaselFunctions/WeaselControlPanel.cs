@@ -280,7 +280,7 @@ namespace Weasel_Controller
             this._label_Destinations.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._label_Destinations.Location = new System.Drawing.Point(239, 19);
             this._label_Destinations.Name = "_label_Destinations";
-            this._label_Destinations.Size = new System.Drawing.Size(258, 16);
+            this._label_Destinations.Size = new System.Drawing.Size(238, 15);
             this._label_Destinations.TabIndex = 6;
             this._label_Destinations.Text = "Action | Movement | Action | Send by";
             // 
@@ -444,6 +444,7 @@ namespace Weasel_Controller
             this._lbl_Online.Size = new System.Drawing.Size(32, 17);
             this._lbl_Online.TabIndex = 9;
             this._lbl_Online.Text = "      ";
+            this._lbl_Online.Click += new System.EventHandler(this._lbl_Online_Click);
             // 
             // WeaselControlPanel
             // 
@@ -541,6 +542,18 @@ namespace Weasel_Controller
         private void btn_RemoveBox_Click(object sender, EventArgs e)
         {
             _Weasels[_WeaselDropDown.SelectedIndex]._HasBox = false;
+        }
+
+        private void _lbl_Online_Click(object sender, EventArgs e)
+        {
+            //Try to parse the result
+            string result = SelfBuildDialogues.TextDialog("Enter new value: ", "Change battery");
+            int value = -1;
+            bool switcher = Int32.TryParse(result, out value);
+            if(switcher == true)
+            {
+                _Weasels[_WeaselDropDown.SelectedIndex].ChangeBattery(value);
+            }
         }
     }
 }
