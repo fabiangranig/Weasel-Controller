@@ -34,7 +34,9 @@ namespace Weasel_Controller
         private Label lbl_AllWeaselsAction;
         private Button btn_StopAllMovement;
         private Button btn_RemoveBox;
+        private Button btn_ChargingActivation;
         private KukaRoboter _KukaRobot;
+        private bool _ChargingEnabled;
 
         public WeaselControlPanel(ref Map map1, ref Weasel[] weasels1, ref KukaRoboter kukaRoboter1)
         {
@@ -44,6 +46,9 @@ namespace Weasel_Controller
 
             //Set the KukaRobot
             _KukaRobot = kukaRoboter1;
+
+            //Set the charging to zero
+            this._ChargingEnabled = false;
 
             //Get the controls from the editor
             InitializeComponent();
@@ -68,7 +73,7 @@ namespace Weasel_Controller
 
             //Create a Timer which is working on next paths
             System.Windows.Forms.Timer tmr = new System.Windows.Forms.Timer();
-            tmr.Interval = 500;
+            tmr.Interval = 1000;
             tmr.Tick += PathWorker;
             tmr.Start();
 
@@ -77,6 +82,13 @@ namespace Weasel_Controller
             tmr2.Interval = 500;
             tmr2.Tick += CheckOnlineStatus;
             tmr2.Start();
+
+            //Check all weasels when the lowest weasels isn't driving, set him to the charging position
+            System.Windows.Forms.Timer tmr3 = new System.Windows.Forms.Timer();
+            //Normal time: 600000
+            tmr3.Interval = 600000;
+            tmr3.Tick += SendWeaselCharging;
+            tmr3.Start();
         }
 
         //Works through all Weasels and figures out which one needs to reposition
@@ -93,8 +105,8 @@ namespace Weasel_Controller
                         //Set position if not set
                         if (_Weasels[i]._DestinationsWithInformation[0].Destination != _Weasels[i]._Destination)
                         {
-                            _WeaselMovementHandlers[i].MoveWeasel(_Weasels[i]._DestinationsWithInformation[0]);
                             _Weasels[i]._Destination = _Weasels[i]._DestinationsWithInformation[0].Destination;
+                            _WeaselMovementHandlers[i].MoveWeasel(_Weasels[i]._DestinationsWithInformation[0]);
                         }
                     }
                 }
@@ -106,7 +118,10 @@ namespace Weasel_Controller
             {
                 for (int i = 0; i < _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.Count; i++)
                 {
-                    _listBox_Destinations.Items.Add(_Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].ActionBeforeMovement + " | " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].Destination + " | " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].ActionAfterMovement + " |  " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].SendBy);
+                    if(_Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation.Count > 0)
+                    {
+                        _listBox_Destinations.Items.Add(_Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].ActionBeforeMovement + " | " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].Destination + " | " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].ActionAfterMovement + " |  " + _Weasels[_WeaselDropDown.SelectedIndex]._DestinationsWithInformation[i].SendBy);
+                    }
                 }
             }
 
@@ -126,6 +141,61 @@ namespace Weasel_Controller
 
             //Show battery for the weasel
             _lbl_Online.Text = Convert.ToString(_Weasels[_WeaselDropDown.SelectedIndex].BatteryPercentage) + "%";
+        }
+
+        private void SendWeaselCharging(object sender, EventArgs e)
+        {
+            if(this._ChargingEnabled == true)
+            {
+                bool schalter_possible = true;
+                for (int i = 0; i < _Weasels.Length; i++)
+                {
+                    if (_Weasels[i]._DestinationsWithInformation.Count != 0)
+                    {
+                        schalter_possible = false;
+                    }
+                }
+
+                if (schalter_possible)
+                {
+                    Thread SendWeaselsChargingThread = new Thread(SendWeaselChargingBackend);
+                    SendWeaselsChargingThread.Start();
+                }
+            }
+        }
+
+        private void SendWeaselChargingBackend()
+        {
+            //Get lowest weasel
+            int lowest_battery_weasel_number = 0;
+            int lowest_battery = _Weasels[lowest_battery_weasel_number].BatteryPercentage;
+            for (int i = 1; i < _Weasels.Length; i++)
+            {
+                if (lowest_battery > _Weasels[i].BatteryPercentage)
+                {
+                    lowest_battery_weasel_number = i;
+                    lowest_battery = _Weasels[i].BatteryPercentage;
+                }
+            }
+
+            //Send all weasels to new positions
+            //Send the right weasel to the charging position
+            _Weasels[lowest_battery_weasel_number]._DestinationsWithInformation.Add(new DestinationwithInformation(46, "none", "Battery"));
+
+            //Sleep to not create two movements at the exact same time
+            Thread.Sleep(5000);
+
+            //Send the rest of the weasels
+            int[] still_alive_position = { 48, 39 };
+            int u = 0;
+            for (int i = 0; i < _Weasels.Length; i++)
+            {
+                if (i != lowest_battery_weasel_number)
+                {
+                    _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(still_alive_position[u], "none", "Battery"));
+                    u++;
+                }
+            }
         }
 
         private void btnClick_SendWeasel(object sender, EventArgs e)
@@ -212,6 +282,7 @@ namespace Weasel_Controller
             this.btn_StopMove = new System.Windows.Forms.Button();
             this.btn_RandomPosition = new System.Windows.Forms.Button();
             this.groupBox_MoveWeasel = new System.Windows.Forms.GroupBox();
+            this.btn_ChargingActivation = new System.Windows.Forms.Button();
             this.btn_RemoveBox = new System.Windows.Forms.Button();
             this.btn_StopAllMovement = new System.Windows.Forms.Button();
             this.btn_AllWeaselsRandomPositionSPL = new System.Windows.Forms.Button();
@@ -271,7 +342,7 @@ namespace Weasel_Controller
             this._listBox_Destinations.ItemHeight = 16;
             this._listBox_Destinations.Location = new System.Drawing.Point(242, 39);
             this._listBox_Destinations.Name = "_listBox_Destinations";
-            this._listBox_Destinations.Size = new System.Drawing.Size(237, 100);
+            this._listBox_Destinations.Size = new System.Drawing.Size(237, 228);
             this._listBox_Destinations.TabIndex = 5;
             // 
             // _label_Destinations
@@ -307,6 +378,7 @@ namespace Weasel_Controller
             // groupBox_MoveWeasel
             // 
             this.groupBox_MoveWeasel.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox_MoveWeasel.Controls.Add(this.btn_ChargingActivation);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_RemoveBox);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_StopAllMovement);
             this.groupBox_MoveWeasel.Controls.Add(this.btn_AllWeaselsRandomPositionSPL);
@@ -332,6 +404,16 @@ namespace Weasel_Controller
             this.groupBox_MoveWeasel.TabIndex = 9;
             this.groupBox_MoveWeasel.TabStop = false;
             this.groupBox_MoveWeasel.Text = "Move Weasel";
+            // 
+            // btn_ChargingActivation
+            // 
+            this.btn_ChargingActivation.Location = new System.Drawing.Point(485, 150);
+            this.btn_ChargingActivation.Name = "btn_ChargingActivation";
+            this.btn_ChargingActivation.Size = new System.Drawing.Size(227, 23);
+            this.btn_ChargingActivation.TabIndex = 20;
+            this.btn_ChargingActivation.Text = "Charging: Off";
+            this.btn_ChargingActivation.UseVisualStyleBackColor = true;
+            this.btn_ChargingActivation.Click += new System.EventHandler(this.btn_ChargingActivation_Click);
             // 
             // btn_RemoveBox
             // 
@@ -553,6 +635,22 @@ namespace Weasel_Controller
             if(switcher == true)
             {
                 _Weasels[_WeaselDropDown.SelectedIndex].ChangeBattery(value);
+            }
+        }
+
+        private void btn_ChargingActivation_Click(object sender, EventArgs e)
+        {
+            //Invert the current status, of the charging timer
+            this._ChargingEnabled = !this._ChargingEnabled;
+
+            //Change the text of the button
+            if(this._ChargingEnabled == true)
+            {
+                this.btn_ChargingActivation.Text = "Charging: On";
+            }
+            if(this._ChargingEnabled == false)
+            {
+                this.btn_ChargingActivation.Text = "Charging: Off";
             }
         }
     }

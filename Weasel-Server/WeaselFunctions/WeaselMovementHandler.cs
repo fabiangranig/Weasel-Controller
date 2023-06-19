@@ -164,6 +164,7 @@ namespace Weasel_Controller
             while (_Weasel._DestinationsWithInformation.Count > 0 && _Weasel._LastPosition == _Weasel._DestinationsWithInformation[0].Destination)
             {
                 _Weasel._DestinationsWithInformation.RemoveAt(0);
+                _Weasel._Destination = -1;
             }
 
             //Output finish
