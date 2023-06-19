@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
+using S7.Net;
 
 namespace Weasel_Controller
 {
@@ -89,6 +90,10 @@ namespace Weasel_Controller
             tmr3.Interval = 600000;
             tmr3.Tick += SendWeaselCharging;
             tmr3.Start();
+
+            //Check for sensor and if an box is placed move weasel and pick-up
+            System.Threading.Thread tmr4 = new Thread(CheckForBox);
+            tmr4.Start();
         }
 
         //Works through all Weasels and figures out which one needs to reposition
@@ -651,6 +656,41 @@ namespace Weasel_Controller
             if(this._ChargingEnabled == false)
             {
                 this.btn_ChargingActivation.Text = "Charging: Off";
+            }
+        }
+
+        private void CheckForBox()
+        {
+            //Only execute if the program is in online mode
+            if(this._KukaRobot.AppOnline)
+            {
+                while(1 == 1)
+                {
+                    using (var plc = new Plc(CpuType.S7300, "10.0.9.100", 0, 2))
+                    {
+                        plc.Open();
+                        bool AnfangFörderband = (bool)plc.Read("I510.1");
+
+                        if (!AnfangFörderband == true)
+                        {
+                            //Leet the Thread sleep for an second to not disturb the next iteration
+                            Thread.Sleep(1000);
+
+                            //Let the not occupied weasel get the box
+                            for (int i = 0; i < _Weasels.Length; i++)
+                            {
+                                if (_Weasels[i]._DestinationsWithInformation.Count == 0 && _Weasels[i]._HasBox == false)
+                                {
+                                    _Weasels[i]._DestinationsWithInformation.Add(new DestinationwithInformation(41, "Kuka1", "Server"));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    //When one rotation is finished
+                    Thread.Sleep(100);
+                }
             }
         }
     }

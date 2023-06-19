@@ -47,6 +47,12 @@ namespace Weasel_Controller
             }
         }
 
+        //Encapsulation
+        public bool AppOnline
+        {
+            get { return this._AppOnline; }
+        }
+
         //Methods
         public bool Check_RDK()
         {
@@ -414,7 +420,8 @@ namespace Weasel_Controller
 
         public void GreiferZu()
         {
-            if(_AppOnline == true)
+            int mode = RDK.RunMode();
+            if (_AppOnline == true && mode == 6)
             {
                 using (Plc plc = new Plc(CpuType.S71200, "10.0.9.106", 0, 1))
                 {
@@ -429,7 +436,8 @@ namespace Weasel_Controller
 
         public void GreiferAuf()
         {
-            if (_AppOnline == true)
+            int mode = RDK.RunMode();
+            if (_AppOnline == true && mode == 6)
             {
                 using (Plc plc = new Plc(CpuType.S71200, "10.0.9.106", 0, 1))
                 {
