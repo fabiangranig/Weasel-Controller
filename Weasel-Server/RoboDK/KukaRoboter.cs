@@ -268,6 +268,79 @@ namespace Weasel_Controller
             ROBOT.WaitMove();
         }
 
+        public void PickUp2()
+        {
+            //To test the SPS
+            GreiferZu();
+            GreiferAuf();
+
+            // Step 1
+            jointsNEU = String_2_Values_NEU("85,6719284000001 ; -40,1077384999999 ; 49,0251616999997 ; -15,5197802 ; 55,7212410000003 ; -12,3155000000001");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 2
+            jointsNEU = String_2_Values_NEU("86,3778305 ; -25,0595893999976 ; 27,209829299995 ; -25,5521506999993 ; 56,006900000002 ; -1,48121000000116");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 3
+            jointsNEU = String_2_Values_NEU("86,5107727 ; -10,1597794999997 ; 20,5891303999996 ; -25,7888602999999 ; 17,6271 ; -2,14715000000013");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 4
+            jointsNEU = String_2_Values_NEU("86,5107727 ; -10,159779499998 ; 29,5891303999958 ; -25,7888602999983 ; 33,6271000000024 ; -2,14715000000196");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 5
+            jointsNEU = String_2_Values_NEU("86,8824768 ; -9,42768000000065 ; 28,0469398000014 ; -30,6476000000004 ; 37,1969108999996 ; 6,35593000000053");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 6
+            jointsNEU = String_2_Values_NEU("86,8824768 ; -3,14254999999802 ; 24,3774394999958 ; -32,5280608999984 ; 34,9684000000017 ; 8,68218999999816");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 7
+            jointsNEU = String_2_Values_NEU("86,8824768 ; -3,14254999999802 ; 24,3774394999958 ; -32,5280608999985 ; 34,9684000000017 ; 8,68218999999816");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 8
+            jointsNEU = String_2_Values_NEU("86,7184601 ; -12,8612498999997 ; 45,4505195999993 ; -44,4939803999989 ; 25,9330406000005 ; 22,4167594999987");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 9
+            jointsNEU = String_2_Values_NEU("86,7184601 ; -12,8612498999997 ; 45,4505195999993 ; -44,4939803999989 ; 25,9330406000005 ; 22,4167594999987");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 10
+            jointsNEU = String_2_Values_NEU("86,9105606000001 ; -10,7146300999982 ; 22,9347999999963 ; -26,9890403999991 ; 42,8207397000014 ; 1,59614999999895");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 11
+            jointsNEU = String_2_Values_NEU("83,9533463 ; -22,2237796999996 ; 42,0987395999992 ; 3,10368999999998 ; 71,7927000000005 ; 72,2094116000004");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+
+            // Step 12
+            jointsNEU = String_2_Values_NEU("83,9533463 ; -10,5088195999996 ; 40,1772999999993 ; 3,33900000000005 ; 62,0144999999999 ; 71,6118164000004");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+            GreiferZu();
+
+            // Step 13
+            jointsNEU = String_2_Values_NEU("83,9533463 ; -18,1570205999999 ; 42,7372817999998 ; 3,20079999999998 ; 67,0945282000002 ; 71,9331206999995");
+            ROBOT.MoveJ(jointsNEU, MOVE_BLOCKING);
+            ROBOT.WaitMove();
+        }
+
         public void PutDown()
         {
             //To test the SPS

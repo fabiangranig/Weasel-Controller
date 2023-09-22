@@ -45,6 +45,9 @@ namespace Weasel_Controller
         private Button btn_Step4;
         private Button btn_Step5;
         private Button btn_Step2;
+        private Button btn_CloseClaw;
+        private Button btn_OpenClaw;
+        private Button btn_PickUp2;
         KukaRoboter _KukaRobot;
 
         public RobotDKControlPanel(KukaRoboter kukaRoboter1)
@@ -77,6 +80,8 @@ namespace Weasel_Controller
             this.txt_PositionMovement = new System.Windows.Forms.TextBox();
             this.txtBox_JointsMovement = new System.Windows.Forms.TextBox();
             this.groupBox_CustomMovement = new System.Windows.Forms.GroupBox();
+            this.btn_CloseClaw = new System.Windows.Forms.Button();
+            this.btn_OpenClaw = new System.Windows.Forms.Button();
             this.btn_Step13 = new System.Windows.Forms.Button();
             this.btn_Step12 = new System.Windows.Forms.Button();
             this.btn_Step11 = new System.Windows.Forms.Button();
@@ -93,6 +98,7 @@ namespace Weasel_Controller
             this.btn_Step1 = new System.Windows.Forms.Button();
             this.btn_PickUp = new System.Windows.Forms.Button();
             this.btn_Home = new System.Windows.Forms.Button();
+            this.btn_PickUp2 = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
             this.groupBox_CordinatesMovement.SuspendLayout();
             this.groupBox_CustomMovement.SuspendLayout();
@@ -301,6 +307,9 @@ namespace Weasel_Controller
             // 
             // groupBox_CustomMovement
             // 
+            this.groupBox_CustomMovement.Controls.Add(this.btn_PickUp2);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_CloseClaw);
+            this.groupBox_CustomMovement.Controls.Add(this.btn_OpenClaw);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Step13);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Step12);
             this.groupBox_CustomMovement.Controls.Add(this.btn_Step11);
@@ -323,6 +332,26 @@ namespace Weasel_Controller
             this.groupBox_CustomMovement.TabIndex = 14;
             this.groupBox_CustomMovement.TabStop = false;
             this.groupBox_CustomMovement.Text = "Custom Movement";
+            // 
+            // btn_CloseClaw
+            // 
+            this.btn_CloseClaw.Location = new System.Drawing.Point(238, 204);
+            this.btn_CloseClaw.Name = "btn_CloseClaw";
+            this.btn_CloseClaw.Size = new System.Drawing.Size(109, 23);
+            this.btn_CloseClaw.TabIndex = 17;
+            this.btn_CloseClaw.Text = "CloseClaw";
+            this.btn_CloseClaw.UseVisualStyleBackColor = true;
+            this.btn_CloseClaw.Click += new System.EventHandler(this.btn_CloseClaw_Click);
+            // 
+            // btn_OpenClaw
+            // 
+            this.btn_OpenClaw.Location = new System.Drawing.Point(238, 175);
+            this.btn_OpenClaw.Name = "btn_OpenClaw";
+            this.btn_OpenClaw.Size = new System.Drawing.Size(109, 23);
+            this.btn_OpenClaw.TabIndex = 16;
+            this.btn_OpenClaw.Text = "OpenClaw";
+            this.btn_OpenClaw.UseVisualStyleBackColor = true;
+            this.btn_OpenClaw.Click += new System.EventHandler(this.btn_OpenClaw_Click);
             // 
             // btn_Step13
             // 
@@ -484,6 +513,16 @@ namespace Weasel_Controller
             this.btn_Home.UseVisualStyleBackColor = true;
             this.btn_Home.Click += new System.EventHandler(this.btn_Home_Click);
             // 
+            // btn_PickUp2
+            // 
+            this.btn_PickUp2.Location = new System.Drawing.Point(236, 119);
+            this.btn_PickUp2.Name = "btn_PickUp2";
+            this.btn_PickUp2.Size = new System.Drawing.Size(109, 23);
+            this.btn_PickUp2.TabIndex = 18;
+            this.btn_PickUp2.Text = "PickUp2";
+            this.btn_PickUp2.UseVisualStyleBackColor = true;
+            this.btn_PickUp2.Click += new System.EventHandler(this.btn_PickUp2_Click);
+            // 
             // RobotDKControlPanel
             // 
             this.ClientSize = new System.Drawing.Size(784, 258);
@@ -600,6 +639,21 @@ namespace Weasel_Controller
         private void btn_Step13_Click(object sender, EventArgs e)
         {
             _KukaRobot.Step13();
+        }
+
+        private void btn_CloseClaw_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.GreiferZu();
+        }
+
+        private void btn_OpenClaw_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.GreiferAuf();
+        }
+
+        private void btn_PickUp2_Click(object sender, EventArgs e)
+        {
+            _KukaRobot.PickUp2();
         }
     }
 }
