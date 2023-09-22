@@ -1,0 +1,29 @@
+﻿using System;
+using Weasel_Server_2.CommandHandler;
+using Weasel_Server_2.ServerHandler;
+
+namespace Weasel_Server_2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //Starting the server...
+            Console.WriteLine("Starting the Weasel-Server 2!");
+            Console.WriteLine("Open for Post Requests.");
+            PostRequestReceiver PostReceiver = new PostRequestReceiver();
+
+            //Get unlimited commands from the user
+            string input = String.Empty;
+            while (input != "exit")
+            {
+                //Read in
+                Console.Write("> ");
+                input = Console.ReadLine();
+
+                //Pass the command to the ConsoleQueryWorker
+                ConsoleQueryWorker.PickHandler(input);
+            }
+        }
+    }
+}
