@@ -1,6 +1,7 @@
 ﻿using System;
 using Weasel_Server_2.CommandHandler;
 using Weasel_Server_2.ServerHandler;
+using Weasel_Server_2.Weasel_Server1_Logic;
 
 namespace Weasel_Server_2
 {
@@ -10,6 +11,8 @@ namespace Weasel_Server_2
         {
             //Starting the server...
             Console.WriteLine("Starting the Weasel-Server 2!");
+            Console.WriteLine("Starting the Weasel Controller Foundation.");
+            WeaselControllerFoundation WCF = new WeaselControllerFoundation();
             Console.WriteLine("Open for Post Requests.");
             PostRequestReceiver PostReceiver = new PostRequestReceiver();
 
