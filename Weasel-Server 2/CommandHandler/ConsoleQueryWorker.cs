@@ -2,12 +2,13 @@
 using System.Threading;
 using Weasel_Server_2.Logger;
 using Weasel_Server_2.CommandHandler.Resolvers;
+using Weasel_Server_2.Weasel_Server1_Logic;
 
 namespace Weasel_Server_2.ServerHandler
 {
     internal class ConsoleQueryWorker
     {
-        public static void PickHandler(string command)
+        public void PickHandler(string command, ref WeaselControllerFoundation WCF)
         {
             //Break command into parts
             string[] split_string = GetSpaceSplitString(command);
@@ -20,8 +21,8 @@ namespace Weasel_Server_2.ServerHandler
                     LoggerWorker.LogText("Showed help text.");
                     break;
 
-                case "move":
-
+                case "weasel":
+                    WeaselResolver.InputWorker(split_string, ref WCF);
                     break;
 
                 default:
@@ -30,7 +31,7 @@ namespace Weasel_Server_2.ServerHandler
             }
         }
 
-        private static string[] GetSpaceSplitString(string command)
+        private string[] GetSpaceSplitString(string command)
         {
             string[] split_string;
             if (command.Contains(" "))

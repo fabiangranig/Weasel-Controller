@@ -17,7 +17,6 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
     internal class WeaselControlPanel
     {
         private Map _WeaselMap;
-        private Label _label_Destinations;
         private Weasel[] _Weasels;
         private Label _lbl_Online;
         private Label lbl_RoboDKControls;
@@ -137,7 +136,7 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
             }
         }
 
-        private void btnClick_SendWeasel(int weaselid, string position)
+        public void SendWeasel(int weaselid, string position)
         {
             //Check if that position exists
             Waypoint temp = _WeaselMap.FindWayPoint(Int32.Parse(position));

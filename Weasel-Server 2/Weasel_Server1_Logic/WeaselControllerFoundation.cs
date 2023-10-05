@@ -18,6 +18,7 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
         private Map _WeaselMap;
         private Weasel[] _Weasels;
         private KukaRoboter _KukaRobot;
+        private WeaselControlPanel _WCP;
         private bool _AppOnline;
         private string _InputAddress;
 
@@ -48,27 +49,6 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
             //Load the user input
             InputtableInformations();
 
-            //Timer -> uses are stated below this command
-            Timer tmr = new Timer(10);
-            tmr.Elapsed += Update10ms;
-            tmr.Start();
-
-            //Start the WeaselControlPanel
-            WeaselControlPanel WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels, ref _KukaRobot);
-        }
-
-        private void Update10ms(object sender, EventArgs e)
-        {
-            //Unreserve past nodes with updating the weasels information
-            UpdateWeaselInformation();
-            UnreserveNodes();
-
-            //Write map to .txt
-            File.WriteAllText(@"map.txt", _WeaselMap.ToString());
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
             //Build the map through the .txt
             txtParser txtparse = new txtParser(_InputAddress);
             _WeaselMap = txtparse.ParseToWeaselMap();
@@ -79,6 +59,24 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
                 SetBeforeLastPosition(i);
                 _WeaselMap.Reserve(_Weasels[i]._LastPosition, _Weasels[i]._Colored);
             }
+
+            //Timer -> uses are stated below this command
+            Timer tmr = new Timer(10);
+            tmr.Elapsed += Update10ms;
+            tmr.Start();
+
+            //Start the WeaselControlPanel
+            _WCP = new WeaselControlPanel(ref _WeaselMap, ref _Weasels, ref _KukaRobot);
+        }
+
+        private void Update10ms(object sender, EventArgs e)
+        {
+            //Unreserve past nodes with updating the weasels information
+            UpdateWeaselInformation();
+            UnreserveNodes();
+
+            //Write map to .txt
+            File.WriteAllText(@"map.txt", _WeaselMap.ToString());
         }
 
         //Unreserve nodes when Weasel changes position. Has to be used in an Timer Class
@@ -142,6 +140,11 @@ namespace Weasel_Server_2.Weasel_Server1_Logic
         private void SetBeforeLastPosition(int weaselindex1)
         {
             _Weasels[weaselindex1]._BeforeLastPosition = _Weasels[weaselindex1]._LastPosition;
+        }
+
+        public void MoveWeasel(int weaselid, string position)
+        {
+            _WCP.SendWeasel(weaselid, position);
         }
     }
 }

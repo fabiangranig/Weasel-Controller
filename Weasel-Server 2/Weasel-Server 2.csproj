@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="CommandHandler\PostRequestReceiver.cs" />
     <Compile Include="CommandHandler\Resolvers\HelpResolver.cs" />
+    <Compile Include="CommandHandler\Resolvers\WeaselResolver.cs" />
     <Compile Include="Logger\LoggerWorker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

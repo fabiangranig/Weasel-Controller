@@ -4,24 +4,29 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using Weasel_Server_2.ServerHandler;
+using Weasel_Server_2.Weasel_Server1_Logic;
 
 namespace Weasel_Server_2.CommandHandler
 {
     internal class PostRequestReceiver
     {
-        static Thread _Handler;
-        static string _URL;
+        private Thread _Handler;
+        private string _URL;
+        private ConsoleQueryWorker _CQW;
+        private WeaselControllerFoundation _WCF;
 
-        public PostRequestReceiver()
+        public PostRequestReceiver(ref ConsoleQueryWorker CQW, ref WeaselControllerFoundation WCF)
         {
             _Handler = new Thread(WaitForPostRequest);
-            _URL = "http://192.232.0.112:9999/";
+            _URL = "http://10.0.1.189:9999/";
+            _CQW = CQW;
+            _WCF = WCF;
 
             //Start the Thread
             _Handler.Start();
         }
 
-        private static void WaitForPostRequest()
+        private void WaitForPostRequest()
         {
             //Listener erstellen und starten
             HttpListener listener = new HttpListener();
@@ -45,7 +50,7 @@ namespace Weasel_Server_2.CommandHandler
                     if(requestBody.Contains("data"))
                     {
                         string[] split = requestBody.Split('=');
-                        ConsoleQueryWorker.PickHandler(split[1]);
+                        _CQW.PickHandler(System.Uri.UnescapeDataString(split[1]), ref _WCF);
                     }
 
                     byte[] responseBytes = Encoding.UTF8.GetBytes("POST request received successfully.");
