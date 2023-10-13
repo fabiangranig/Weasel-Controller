@@ -18,7 +18,7 @@ namespace Weasel_Server_2.CommandHandler
         public PostRequestReceiver(ref ConsoleQueryWorker CQW, ref WeaselControllerFoundation WCF)
         {
             _Handler = new Thread(WaitForPostRequest);
-            _URL = "http://10.0.1.189:9999/";
+            _URL = "http://192.168.182.56:9999/";
             _CQW = CQW;
             _WCF = WCF;
 
