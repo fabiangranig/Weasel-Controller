@@ -80,6 +80,7 @@ namespace Weasel_Controller
             this.txt_PositionMovement = new System.Windows.Forms.TextBox();
             this.txtBox_JointsMovement = new System.Windows.Forms.TextBox();
             this.groupBox_CustomMovement = new System.Windows.Forms.GroupBox();
+            this.btn_PickUp2 = new System.Windows.Forms.Button();
             this.btn_CloseClaw = new System.Windows.Forms.Button();
             this.btn_OpenClaw = new System.Windows.Forms.Button();
             this.btn_Step13 = new System.Windows.Forms.Button();
@@ -98,7 +99,6 @@ namespace Weasel_Controller
             this.btn_Step1 = new System.Windows.Forms.Button();
             this.btn_PickUp = new System.Windows.Forms.Button();
             this.btn_Home = new System.Windows.Forms.Button();
-            this.btn_PickUp2 = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
             this.groupBox_CordinatesMovement.SuspendLayout();
             this.groupBox_CustomMovement.SuspendLayout();
@@ -333,6 +333,16 @@ namespace Weasel_Controller
             this.groupBox_CustomMovement.TabStop = false;
             this.groupBox_CustomMovement.Text = "Custom Movement";
             // 
+            // btn_PickUp2
+            // 
+            this.btn_PickUp2.Location = new System.Drawing.Point(236, 119);
+            this.btn_PickUp2.Name = "btn_PickUp2";
+            this.btn_PickUp2.Size = new System.Drawing.Size(109, 23);
+            this.btn_PickUp2.TabIndex = 18;
+            this.btn_PickUp2.Text = "PickUp2";
+            this.btn_PickUp2.UseVisualStyleBackColor = true;
+            this.btn_PickUp2.Click += new System.EventHandler(this.btn_PickUp2_Click);
+            // 
             // btn_CloseClaw
             // 
             this.btn_CloseClaw.Location = new System.Drawing.Point(238, 204);
@@ -485,7 +495,7 @@ namespace Weasel_Controller
             // 
             // btn_Step1
             // 
-            this.btn_Step1.Location = new System.Drawing.Point(6, 33);
+            this.btn_Step1.Location = new System.Drawing.Point(6, 32);
             this.btn_Step1.Name = "btn_Step1";
             this.btn_Step1.Size = new System.Drawing.Size(109, 23);
             this.btn_Step1.TabIndex = 2;
@@ -512,16 +522,6 @@ namespace Weasel_Controller
             this.btn_Home.Text = "Home";
             this.btn_Home.UseVisualStyleBackColor = true;
             this.btn_Home.Click += new System.EventHandler(this.btn_Home_Click);
-            // 
-            // btn_PickUp2
-            // 
-            this.btn_PickUp2.Location = new System.Drawing.Point(236, 119);
-            this.btn_PickUp2.Name = "btn_PickUp2";
-            this.btn_PickUp2.Size = new System.Drawing.Size(109, 23);
-            this.btn_PickUp2.TabIndex = 18;
-            this.btn_PickUp2.Text = "PickUp2";
-            this.btn_PickUp2.UseVisualStyleBackColor = true;
-            this.btn_PickUp2.Click += new System.EventHandler(this.btn_PickUp2_Click);
             // 
             // RobotDKControlPanel
             // 

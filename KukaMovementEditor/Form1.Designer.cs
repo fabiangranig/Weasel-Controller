@@ -49,30 +49,36 @@
             this.button_RealRobot = new System.Windows.Forms.Button();
             this.button_Simulation = new System.Windows.Forms.Button();
             this.groupBox_currentPosition = new System.Windows.Forms.GroupBox();
-            this.textBox_Joints = new System.Windows.Forms.TextBox();
-            this.textBox_Positions = new System.Windows.Forms.TextBox();
-            this.label_Joints = new System.Windows.Forms.Label();
             this.label_Position = new System.Windows.Forms.Label();
+            this.label_Joints = new System.Windows.Forms.Label();
+            this.textBox_Positions = new System.Windows.Forms.TextBox();
+            this.textBox_Joints = new System.Windows.Forms.TextBox();
             this.groupBox_PositionList = new System.Windows.Forms.GroupBox();
-            this.listBox_PositionList = new System.Windows.Forms.ListBox();
-            this.button_Select = new System.Windows.Forms.Button();
-            this.button_Overwrite = new System.Windows.Forms.Button();
+            this.listBox_NameList = new System.Windows.Forms.ListBox();
+            this.button_Insert = new System.Windows.Forms.Button();
+            this.button_Run = new System.Windows.Forms.Button();
+            this.button_LoadSaveTxT = new System.Windows.Forms.Button();
+            this.button_LoadTxT = new System.Windows.Forms.Button();
+            this.button_New = new System.Windows.Forms.Button();
             this.button_Delete = new System.Windows.Forms.Button();
             this.textBox_Name = new System.Windows.Forms.TextBox();
-            this.button_New = new System.Windows.Forms.Button();
-            this.button_LoadTxT = new System.Windows.Forms.Button();
-            this.button_LoadSaveTxT = new System.Windows.Forms.Button();
-            this.button_Run = new System.Windows.Forms.Button();
-            this.button_Insert = new System.Windows.Forms.Button();
-            this.listBox_NameList = new System.Windows.Forms.ListBox();
-            this.groupBox_Greifer = new System.Windows.Forms.GroupBox();
-            this.button_GreiferZu = new System.Windows.Forms.Button();
-            this.button_GreiferAuf = new System.Windows.Forms.Button();
+            this.listBox_JointsList = new System.Windows.Forms.ListBox();
+            this.button_Select = new System.Windows.Forms.Button();
+            this.groupBox_Gripper = new System.Windows.Forms.GroupBox();
+            this.button_GripperClose = new System.Windows.Forms.Button();
+            this.button_GripperOpen = new System.Windows.Forms.Button();
+            this.listBox_PositionList = new System.Windows.Forms.ListBox();
+            this.groupBox_MoveToPosition = new System.Windows.Forms.GroupBox();
+            this.textBox_MoveToPosition = new System.Windows.Forms.TextBox();
+            this.button_PositionMove = new System.Windows.Forms.Button();
+            this.textBox_MoveToJoints = new System.Windows.Forms.TextBox();
+            this.button_JointsMove = new System.Windows.Forms.Button();
             this.groupBox_IncrementalMove.SuspendLayout();
             this.groupBox_Mode.SuspendLayout();
             this.groupBox_currentPosition.SuspendLayout();
             this.groupBox_PositionList.SuspendLayout();
-            this.groupBox_Greifer.SuspendLayout();
+            this.groupBox_Gripper.SuspendLayout();
+            this.groupBox_MoveToPosition.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox_IncrementalMove
@@ -270,7 +276,7 @@
             this.groupBox_Mode.Controls.Add(this.button_Simulation);
             this.groupBox_Mode.Location = new System.Drawing.Point(209, 12);
             this.groupBox_Mode.Name = "groupBox_Mode";
-            this.groupBox_Mode.Size = new System.Drawing.Size(111, 86);
+            this.groupBox_Mode.Size = new System.Drawing.Size(152, 86);
             this.groupBox_Mode.TabIndex = 1;
             this.groupBox_Mode.TabStop = false;
             this.groupBox_Mode.Text = "Mode";
@@ -279,7 +285,7 @@
             // 
             this.button_RealRobot.Location = new System.Drawing.Point(6, 53);
             this.button_RealRobot.Name = "button_RealRobot";
-            this.button_RealRobot.Size = new System.Drawing.Size(94, 23);
+            this.button_RealRobot.Size = new System.Drawing.Size(140, 23);
             this.button_RealRobot.TabIndex = 1;
             this.button_RealRobot.Text = "Real Robot";
             this.button_RealRobot.UseVisualStyleBackColor = true;
@@ -289,7 +295,7 @@
             // 
             this.button_Simulation.Location = new System.Drawing.Point(6, 21);
             this.button_Simulation.Name = "button_Simulation";
-            this.button_Simulation.Size = new System.Drawing.Size(94, 23);
+            this.button_Simulation.Size = new System.Drawing.Size(140, 23);
             this.button_Simulation.TabIndex = 0;
             this.button_Simulation.Text = "Simulation";
             this.button_Simulation.UseVisualStyleBackColor = true;
@@ -308,19 +314,14 @@
             this.groupBox_currentPosition.TabStop = false;
             this.groupBox_currentPosition.Text = "current Position";
             // 
-            // textBox_Joints
+            // label_Position
             // 
-            this.textBox_Joints.Location = new System.Drawing.Point(91, 29);
-            this.textBox_Joints.Name = "textBox_Joints";
-            this.textBox_Joints.Size = new System.Drawing.Size(888, 22);
-            this.textBox_Joints.TabIndex = 0;
-            // 
-            // textBox_Positions
-            // 
-            this.textBox_Positions.Location = new System.Drawing.Point(91, 59);
-            this.textBox_Positions.Name = "textBox_Positions";
-            this.textBox_Positions.Size = new System.Drawing.Size(888, 22);
-            this.textBox_Positions.TabIndex = 1;
+            this.label_Position.AutoSize = true;
+            this.label_Position.Location = new System.Drawing.Point(14, 62);
+            this.label_Position.Name = "label_Position";
+            this.label_Position.Size = new System.Drawing.Size(58, 16);
+            this.label_Position.TabIndex = 3;
+            this.label_Position.Text = "Position:";
             // 
             // label_Joints
             // 
@@ -331,17 +332,23 @@
             this.label_Joints.TabIndex = 2;
             this.label_Joints.Text = "Joints:";
             // 
-            // label_Position
+            // textBox_Positions
             // 
-            this.label_Position.AutoSize = true;
-            this.label_Position.Location = new System.Drawing.Point(14, 62);
-            this.label_Position.Name = "label_Position";
-            this.label_Position.Size = new System.Drawing.Size(58, 16);
-            this.label_Position.TabIndex = 3;
-            this.label_Position.Text = "Position:";
+            this.textBox_Positions.Location = new System.Drawing.Point(91, 59);
+            this.textBox_Positions.Name = "textBox_Positions";
+            this.textBox_Positions.Size = new System.Drawing.Size(888, 22);
+            this.textBox_Positions.TabIndex = 1;
+            // 
+            // textBox_Joints
+            // 
+            this.textBox_Joints.Location = new System.Drawing.Point(91, 29);
+            this.textBox_Joints.Name = "textBox_Joints";
+            this.textBox_Joints.Size = new System.Drawing.Size(888, 22);
+            this.textBox_Joints.TabIndex = 0;
             // 
             // groupBox_PositionList
             // 
+            this.groupBox_PositionList.Controls.Add(this.listBox_PositionList);
             this.groupBox_PositionList.Controls.Add(this.listBox_NameList);
             this.groupBox_PositionList.Controls.Add(this.button_Insert);
             this.groupBox_PositionList.Controls.Add(this.button_Run);
@@ -350,104 +357,14 @@
             this.groupBox_PositionList.Controls.Add(this.button_New);
             this.groupBox_PositionList.Controls.Add(this.button_Delete);
             this.groupBox_PositionList.Controls.Add(this.textBox_Name);
-            this.groupBox_PositionList.Controls.Add(this.button_Overwrite);
-            this.groupBox_PositionList.Controls.Add(this.listBox_PositionList);
+            this.groupBox_PositionList.Controls.Add(this.listBox_JointsList);
             this.groupBox_PositionList.Controls.Add(this.button_Select);
-            this.groupBox_PositionList.Location = new System.Drawing.Point(326, 16);
+            this.groupBox_PositionList.Location = new System.Drawing.Point(367, 12);
             this.groupBox_PositionList.Name = "groupBox_PositionList";
-            this.groupBox_PositionList.Size = new System.Drawing.Size(671, 322);
+            this.groupBox_PositionList.Size = new System.Drawing.Size(630, 322);
             this.groupBox_PositionList.TabIndex = 3;
             this.groupBox_PositionList.TabStop = false;
             this.groupBox_PositionList.Text = "Position List";
-            // 
-            // listBox_PositionList
-            // 
-            this.listBox_PositionList.FormattingEnabled = true;
-            this.listBox_PositionList.ItemHeight = 16;
-            this.listBox_PositionList.Location = new System.Drawing.Point(227, 21);
-            this.listBox_PositionList.Name = "listBox_PositionList";
-            this.listBox_PositionList.ScrollAlwaysVisible = true;
-            this.listBox_PositionList.Size = new System.Drawing.Size(277, 292);
-            this.listBox_PositionList.TabIndex = 0;
-            // 
-            // button_Select
-            // 
-            this.button_Select.Location = new System.Drawing.Point(520, 82);
-            this.button_Select.Name = "button_Select";
-            this.button_Select.Size = new System.Drawing.Size(145, 23);
-            this.button_Select.TabIndex = 4;
-            this.button_Select.Text = "Select";
-            this.button_Select.UseVisualStyleBackColor = true;
-            // 
-            // button_Overwrite
-            // 
-            this.button_Overwrite.Location = new System.Drawing.Point(520, 142);
-            this.button_Overwrite.Name = "button_Overwrite";
-            this.button_Overwrite.Size = new System.Drawing.Size(145, 23);
-            this.button_Overwrite.TabIndex = 5;
-            this.button_Overwrite.Text = "Overwrite";
-            this.button_Overwrite.UseVisualStyleBackColor = true;
-            // 
-            // button_Delete
-            // 
-            this.button_Delete.Location = new System.Drawing.Point(520, 171);
-            this.button_Delete.Name = "button_Delete";
-            this.button_Delete.Size = new System.Drawing.Size(145, 23);
-            this.button_Delete.TabIndex = 6;
-            this.button_Delete.Text = "Delete";
-            this.button_Delete.UseVisualStyleBackColor = true;
-            // 
-            // textBox_Name
-            // 
-            this.textBox_Name.Location = new System.Drawing.Point(520, 26);
-            this.textBox_Name.Name = "textBox_Name";
-            this.textBox_Name.Size = new System.Drawing.Size(145, 22);
-            this.textBox_Name.TabIndex = 7;
-            // 
-            // button_New
-            // 
-            this.button_New.Location = new System.Drawing.Point(520, 54);
-            this.button_New.Name = "button_New";
-            this.button_New.Size = new System.Drawing.Size(145, 23);
-            this.button_New.TabIndex = 8;
-            this.button_New.Text = "New";
-            this.button_New.UseVisualStyleBackColor = true;
-            // 
-            // button_LoadTxT
-            // 
-            this.button_LoadTxT.Location = new System.Drawing.Point(520, 200);
-            this.button_LoadTxT.Name = "button_LoadTxT";
-            this.button_LoadTxT.Size = new System.Drawing.Size(145, 23);
-            this.button_LoadTxT.TabIndex = 9;
-            this.button_LoadTxT.Text = "Load .txt";
-            this.button_LoadTxT.UseVisualStyleBackColor = true;
-            // 
-            // button_LoadSaveTxT
-            // 
-            this.button_LoadSaveTxT.Location = new System.Drawing.Point(520, 229);
-            this.button_LoadSaveTxT.Name = "button_LoadSaveTxT";
-            this.button_LoadSaveTxT.Size = new System.Drawing.Size(145, 23);
-            this.button_LoadSaveTxT.TabIndex = 10;
-            this.button_LoadSaveTxT.Text = "Save .txt";
-            this.button_LoadSaveTxT.UseVisualStyleBackColor = true;
-            // 
-            // button_Run
-            // 
-            this.button_Run.Location = new System.Drawing.Point(520, 258);
-            this.button_Run.Name = "button_Run";
-            this.button_Run.Size = new System.Drawing.Size(145, 23);
-            this.button_Run.TabIndex = 11;
-            this.button_Run.Text = "Run";
-            this.button_Run.UseVisualStyleBackColor = true;
-            // 
-            // button_Insert
-            // 
-            this.button_Insert.Location = new System.Drawing.Point(520, 111);
-            this.button_Insert.Name = "button_Insert";
-            this.button_Insert.Size = new System.Drawing.Size(145, 23);
-            this.button_Insert.TabIndex = 12;
-            this.button_Insert.Text = "Insert";
-            this.button_Insert.UseVisualStyleBackColor = true;
             // 
             // listBox_NameList
             // 
@@ -456,44 +373,194 @@
             this.listBox_NameList.Location = new System.Drawing.Point(6, 21);
             this.listBox_NameList.Name = "listBox_NameList";
             this.listBox_NameList.ScrollAlwaysVisible = true;
-            this.listBox_NameList.Size = new System.Drawing.Size(215, 292);
+            this.listBox_NameList.Size = new System.Drawing.Size(164, 292);
             this.listBox_NameList.TabIndex = 13;
             // 
-            // groupBox_Greifer
+            // button_Insert
             // 
-            this.groupBox_Greifer.Controls.Add(this.button_GreiferZu);
-            this.groupBox_Greifer.Controls.Add(this.button_GreiferAuf);
-            this.groupBox_Greifer.Location = new System.Drawing.Point(209, 104);
-            this.groupBox_Greifer.Name = "groupBox_Greifer";
-            this.groupBox_Greifer.Size = new System.Drawing.Size(111, 87);
-            this.groupBox_Greifer.TabIndex = 4;
-            this.groupBox_Greifer.TabStop = false;
-            this.groupBox_Greifer.Text = "Greifer";
+            this.button_Insert.Location = new System.Drawing.Point(466, 106);
+            this.button_Insert.Name = "button_Insert";
+            this.button_Insert.Size = new System.Drawing.Size(145, 23);
+            this.button_Insert.TabIndex = 12;
+            this.button_Insert.Text = "Insert";
+            this.button_Insert.UseVisualStyleBackColor = true;
+            this.button_Insert.Click += new System.EventHandler(this.button_Insert_Click);
             // 
-            // button_GreiferZu
+            // button_Run
             // 
-            this.button_GreiferZu.Location = new System.Drawing.Point(6, 54);
-            this.button_GreiferZu.Name = "button_GreiferZu";
-            this.button_GreiferZu.Size = new System.Drawing.Size(94, 23);
-            this.button_GreiferZu.TabIndex = 2;
-            this.button_GreiferZu.Text = "GreiferZu";
-            this.button_GreiferZu.UseVisualStyleBackColor = true;
+            this.button_Run.Enabled = false;
+            this.button_Run.Location = new System.Drawing.Point(466, 290);
+            this.button_Run.Name = "button_Run";
+            this.button_Run.Size = new System.Drawing.Size(145, 23);
+            this.button_Run.TabIndex = 11;
+            this.button_Run.Text = "Run";
+            this.button_Run.UseVisualStyleBackColor = true;
+            this.button_Run.Click += new System.EventHandler(this.button_Run_Click);
             // 
-            // button_GreiferAuf
+            // button_LoadSaveTxT
             // 
-            this.button_GreiferAuf.Location = new System.Drawing.Point(6, 21);
-            this.button_GreiferAuf.Name = "button_GreiferAuf";
-            this.button_GreiferAuf.Size = new System.Drawing.Size(94, 23);
-            this.button_GreiferAuf.TabIndex = 3;
-            this.button_GreiferAuf.Text = "Greifer Auf";
-            this.button_GreiferAuf.UseVisualStyleBackColor = true;
+            this.button_LoadSaveTxT.Location = new System.Drawing.Point(466, 232);
+            this.button_LoadSaveTxT.Name = "button_LoadSaveTxT";
+            this.button_LoadSaveTxT.Size = new System.Drawing.Size(145, 23);
+            this.button_LoadSaveTxT.TabIndex = 10;
+            this.button_LoadSaveTxT.Text = "Save .txt";
+            this.button_LoadSaveTxT.UseVisualStyleBackColor = true;
+            this.button_LoadSaveTxT.Click += new System.EventHandler(this.button_LoadSaveTxT_Click);
+            // 
+            // button_LoadTxT
+            // 
+            this.button_LoadTxT.Location = new System.Drawing.Point(466, 261);
+            this.button_LoadTxT.Name = "button_LoadTxT";
+            this.button_LoadTxT.Size = new System.Drawing.Size(145, 23);
+            this.button_LoadTxT.TabIndex = 9;
+            this.button_LoadTxT.Text = "Load .txt";
+            this.button_LoadTxT.UseVisualStyleBackColor = true;
+            this.button_LoadTxT.Click += new System.EventHandler(this.button_LoadTxT_Click);
+            // 
+            // button_New
+            // 
+            this.button_New.Location = new System.Drawing.Point(466, 49);
+            this.button_New.Name = "button_New";
+            this.button_New.Size = new System.Drawing.Size(145, 23);
+            this.button_New.TabIndex = 8;
+            this.button_New.Text = "New";
+            this.button_New.UseVisualStyleBackColor = true;
+            this.button_New.Click += new System.EventHandler(this.button_New_Click);
+            // 
+            // button_Delete
+            // 
+            this.button_Delete.Location = new System.Drawing.Point(466, 135);
+            this.button_Delete.Name = "button_Delete";
+            this.button_Delete.Size = new System.Drawing.Size(145, 23);
+            this.button_Delete.TabIndex = 6;
+            this.button_Delete.Text = "Delete";
+            this.button_Delete.UseVisualStyleBackColor = true;
+            this.button_Delete.Click += new System.EventHandler(this.button_Delete_Click);
+            // 
+            // textBox_Name
+            // 
+            this.textBox_Name.Location = new System.Drawing.Point(466, 21);
+            this.textBox_Name.Name = "textBox_Name";
+            this.textBox_Name.Size = new System.Drawing.Size(145, 22);
+            this.textBox_Name.TabIndex = 7;
+            // 
+            // listBox_JointsList
+            // 
+            this.listBox_JointsList.FormattingEnabled = true;
+            this.listBox_JointsList.ItemHeight = 16;
+            this.listBox_JointsList.Location = new System.Drawing.Point(176, 21);
+            this.listBox_JointsList.Name = "listBox_JointsList";
+            this.listBox_JointsList.ScrollAlwaysVisible = true;
+            this.listBox_JointsList.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBox_JointsList.Size = new System.Drawing.Size(139, 292);
+            this.listBox_JointsList.TabIndex = 0;
+            // 
+            // button_Select
+            // 
+            this.button_Select.Location = new System.Drawing.Point(466, 77);
+            this.button_Select.Name = "button_Select";
+            this.button_Select.Size = new System.Drawing.Size(145, 23);
+            this.button_Select.TabIndex = 4;
+            this.button_Select.Text = "Select";
+            this.button_Select.UseVisualStyleBackColor = true;
+            this.button_Select.Click += new System.EventHandler(this.button_Select_Click);
+            // 
+            // groupBox_Gripper
+            // 
+            this.groupBox_Gripper.Controls.Add(this.button_GripperClose);
+            this.groupBox_Gripper.Controls.Add(this.button_GripperOpen);
+            this.groupBox_Gripper.Location = new System.Drawing.Point(209, 104);
+            this.groupBox_Gripper.Name = "groupBox_Gripper";
+            this.groupBox_Gripper.Size = new System.Drawing.Size(152, 101);
+            this.groupBox_Gripper.TabIndex = 4;
+            this.groupBox_Gripper.TabStop = false;
+            this.groupBox_Gripper.Text = "Gripper";
+            // 
+            // button_GripperClose
+            // 
+            this.button_GripperClose.Location = new System.Drawing.Point(6, 59);
+            this.button_GripperClose.Name = "button_GripperClose";
+            this.button_GripperClose.Size = new System.Drawing.Size(140, 32);
+            this.button_GripperClose.TabIndex = 2;
+            this.button_GripperClose.Text = "GripperClose";
+            this.button_GripperClose.UseVisualStyleBackColor = true;
+            this.button_GripperClose.Click += new System.EventHandler(this.button_GripperClose_Click);
+            // 
+            // button_GripperOpen
+            // 
+            this.button_GripperOpen.Location = new System.Drawing.Point(6, 21);
+            this.button_GripperOpen.Name = "button_GripperOpen";
+            this.button_GripperOpen.Size = new System.Drawing.Size(140, 32);
+            this.button_GripperOpen.TabIndex = 3;
+            this.button_GripperOpen.Text = "Gripper Open";
+            this.button_GripperOpen.UseVisualStyleBackColor = true;
+            this.button_GripperOpen.Click += new System.EventHandler(this.button_GripperOpen_Click);
+            // 
+            // listBox_PositionList
+            // 
+            this.listBox_PositionList.FormattingEnabled = true;
+            this.listBox_PositionList.ItemHeight = 16;
+            this.listBox_PositionList.Location = new System.Drawing.Point(321, 21);
+            this.listBox_PositionList.Name = "listBox_PositionList";
+            this.listBox_PositionList.ScrollAlwaysVisible = true;
+            this.listBox_PositionList.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBox_PositionList.Size = new System.Drawing.Size(139, 292);
+            this.listBox_PositionList.TabIndex = 14;
+            // 
+            // groupBox_MoveToPosition
+            // 
+            this.groupBox_MoveToPosition.Controls.Add(this.button_JointsMove);
+            this.groupBox_MoveToPosition.Controls.Add(this.textBox_MoveToJoints);
+            this.groupBox_MoveToPosition.Controls.Add(this.button_PositionMove);
+            this.groupBox_MoveToPosition.Controls.Add(this.textBox_MoveToPosition);
+            this.groupBox_MoveToPosition.Location = new System.Drawing.Point(209, 211);
+            this.groupBox_MoveToPosition.Name = "groupBox_MoveToPosition";
+            this.groupBox_MoveToPosition.Size = new System.Drawing.Size(152, 123);
+            this.groupBox_MoveToPosition.TabIndex = 5;
+            this.groupBox_MoveToPosition.TabStop = false;
+            this.groupBox_MoveToPosition.Text = "MovePosition";
+            // 
+            // textBox_MoveToPosition
+            // 
+            this.textBox_MoveToPosition.Location = new System.Drawing.Point(6, 21);
+            this.textBox_MoveToPosition.Name = "textBox_MoveToPosition";
+            this.textBox_MoveToPosition.Size = new System.Drawing.Size(140, 22);
+            this.textBox_MoveToPosition.TabIndex = 0;
+            // 
+            // button_PositionMove
+            // 
+            this.button_PositionMove.Location = new System.Drawing.Point(6, 47);
+            this.button_PositionMove.Name = "button_PositionMove";
+            this.button_PositionMove.Size = new System.Drawing.Size(140, 23);
+            this.button_PositionMove.TabIndex = 1;
+            this.button_PositionMove.Text = "Position!";
+            this.button_PositionMove.UseVisualStyleBackColor = true;
+            this.button_PositionMove.Click += new System.EventHandler(this.button_PositionMove_Click);
+            // 
+            // textBox_MoveToJoints
+            // 
+            this.textBox_MoveToJoints.Location = new System.Drawing.Point(6, 76);
+            this.textBox_MoveToJoints.Name = "textBox_MoveToJoints";
+            this.textBox_MoveToJoints.Size = new System.Drawing.Size(140, 22);
+            this.textBox_MoveToJoints.TabIndex = 2;
+            // 
+            // button_JointsMove
+            // 
+            this.button_JointsMove.Location = new System.Drawing.Point(6, 100);
+            this.button_JointsMove.Name = "button_JointsMove";
+            this.button_JointsMove.Size = new System.Drawing.Size(140, 23);
+            this.button_JointsMove.TabIndex = 3;
+            this.button_JointsMove.Text = "Joints!";
+            this.button_JointsMove.UseVisualStyleBackColor = true;
+            this.button_JointsMove.Click += new System.EventHandler(this.button_JointsMove_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1009, 450);
-            this.Controls.Add(this.groupBox_Greifer);
+            this.Controls.Add(this.groupBox_MoveToPosition);
+            this.Controls.Add(this.groupBox_Gripper);
             this.Controls.Add(this.groupBox_PositionList);
             this.Controls.Add(this.groupBox_currentPosition);
             this.Controls.Add(this.groupBox_Mode);
@@ -507,7 +574,9 @@
             this.groupBox_currentPosition.PerformLayout();
             this.groupBox_PositionList.ResumeLayout(false);
             this.groupBox_PositionList.PerformLayout();
-            this.groupBox_Greifer.ResumeLayout(false);
+            this.groupBox_Gripper.ResumeLayout(false);
+            this.groupBox_MoveToPosition.ResumeLayout(false);
+            this.groupBox_MoveToPosition.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -540,9 +609,8 @@
         private System.Windows.Forms.TextBox textBox_Positions;
         private System.Windows.Forms.TextBox textBox_Joints;
         private System.Windows.Forms.GroupBox groupBox_PositionList;
-        private System.Windows.Forms.ListBox listBox_PositionList;
+        private System.Windows.Forms.ListBox listBox_JointsList;
         private System.Windows.Forms.Button button_Select;
-        private System.Windows.Forms.Button button_Overwrite;
         private System.Windows.Forms.Button button_Delete;
         private System.Windows.Forms.TextBox textBox_Name;
         private System.Windows.Forms.Button button_LoadSaveTxT;
@@ -551,9 +619,15 @@
         private System.Windows.Forms.ListBox listBox_NameList;
         private System.Windows.Forms.Button button_Insert;
         private System.Windows.Forms.Button button_Run;
-        private System.Windows.Forms.GroupBox groupBox_Greifer;
-        private System.Windows.Forms.Button button_GreiferZu;
-        private System.Windows.Forms.Button button_GreiferAuf;
+        private System.Windows.Forms.GroupBox groupBox_Gripper;
+        private System.Windows.Forms.Button button_GripperClose;
+        private System.Windows.Forms.Button button_GripperOpen;
+        private System.Windows.Forms.ListBox listBox_PositionList;
+        private System.Windows.Forms.GroupBox groupBox_MoveToPosition;
+        private System.Windows.Forms.Button button_JointsMove;
+        private System.Windows.Forms.TextBox textBox_MoveToJoints;
+        private System.Windows.Forms.Button button_PositionMove;
+        private System.Windows.Forms.TextBox textBox_MoveToPosition;
     }
 }
 
