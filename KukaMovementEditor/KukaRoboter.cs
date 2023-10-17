@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using S7.Net;
 
 namespace KukaMovementEditor
@@ -523,18 +524,16 @@ namespace KukaMovementEditor
             }
         }
 
-        public void Incremental_Move(string button_name, int distance)
+        public void Incremental_Move(string button_name, int distance, RadioButton RB1, RadioButton RB2, RadioButton RB3)
         {
             if (!Check_ROBOT()) { return; }
 
-            Console.WriteLine("Button selected: " + button_name);
-
             if (button_name.Length < 3)
             {
-                Console.WriteLine("Internal problem! Button name should be like +J1, -Tx, +Rz or similar");
                 return;
             }
 
+            // get the the sense of motion the first character as '+' or '-'
             double move_step = 0.0;
             if (button_name[0] == '+')
             {
@@ -546,32 +545,36 @@ namespace KukaMovementEditor
             }
             else
             {
-                Console.WriteLine("Internal problem! Unexpected button name");
                 return;
             }
 
-            if (1 != 1)
+            //////////////////////////////////////////////
+            //////// if we are moving in the joint space:
+            if (RB3.Checked)
             {
-                //This code is temporary and only required for other features
-                //This code is temporary and only required for other features
-                //This code is temporary and only required for other features
-                //double[] joints = ROBOT.Joints();
+                double[] joints = ROBOT.Joints();
 
-                //int joint_id = Convert.ToInt32(button_name[2].ToString()) - 1;
+                // get the moving axis (1, 2, 3, 4, 5 or 6)
+                int joint_id = Convert.ToInt32(button_name[2].ToString()) - 1; // important, double array starts at 0
 
-                //joints[joint_id] = joints[joint_id] + move_step;
+                joints[joint_id] = joints[joint_id] + move_step;
 
-                //try
-                //{
-                //    ROBOT.MoveJ(joints, MOVE_BLOCKING);
-                //}
-                //catch (RoboDK.RDKException rdkex)
-                //{
-                //    Console.WriteLine("The robot can't move to the target joints: " + rdkex.Message);
-                //}
+                try
+                {
+                    ROBOT.MoveJ(joints, MOVE_BLOCKING);
+                    //ROBOT.MoveL(joints, MOVE_BLOCKING);
+                }
+                catch (RoboDK.RDKException rdkex)
+                {
+                    //MessageBox.Show("The robot can't move to " + new_pose.ToString());
+                }
             }
             else
             {
+                //////////////////////////////////////////////
+                //////// if we are moving in the cartesian space
+                // Button name examples: +Tx, -Tz, +Rx, +Ry, +Rz
+
                 int move_id = 0;
 
                 string[] move_types = new string[6] { "Tx", "Ty", "Tz", "Rx", "Ry", "Rz" };
@@ -588,30 +591,54 @@ namespace KukaMovementEditor
                 move_xyzwpr[move_id] = move_step;
                 Mat movement_pose = Mat.FromTxyzRxyz(move_xyzwpr);
 
+                // the the current position of the robot (as a 4x4 matrix)
                 Mat robot_pose = ROBOT.Pose();
 
+                // Calculate the new position of the robot
                 Mat new_robot_pose;
-                bool is_TCP_relative_move = false;
+                bool is_TCP_relative_move = RB2.Checked;
                 if (is_TCP_relative_move)
                 {
+                    // if the movement is relative to the TCP we must POST MULTIPLY the movement
                     new_robot_pose = robot_pose * movement_pose;
                 }
                 else
                 {
+                    // if the movement is relative to the reference frame we must PRE MULTIPLY the XYZ translation:
+                    // new_robot_pose = movement_pose * robot_pose;
+                    // Note: Rotation applies from the robot axes.
+
                     Mat transformation_axes = new Mat(robot_pose);
                     transformation_axes.setPos(0, 0, 0);
                     Mat movement_pose_aligned = transformation_axes.inv() * movement_pose * transformation_axes;
                     new_robot_pose = robot_pose * movement_pose_aligned;
                 }
 
+                // Then, we can do the movement:
                 try
                 {
                     ROBOT.MoveJ(new_robot_pose, MOVE_BLOCKING);
                 }
                 catch (RoboDK.RDKException rdkex)
                 {
-                    Console.WriteLine("The robot can't move to " + new_robot_pose.ToString() + " " + rdkex.ToString());
+                    //MessageBox.Show("The robot can't move to " + new_pose.ToString());
                 }
+
+
+                // Some tips:
+                // retrieve the current pose of the robot: the active TCP with respect to the current reference frame
+                // Tip 1: use
+                // ROBOT.setFrame()
+                // to set a reference frame (object link or pose)
+                //
+                // Tip 2: use
+                // ROBOT.setTool()
+                // to set a tool frame (object link or pose)
+                //
+                // Tip 3: use
+                // ROBOT.MoveL_Collision(j1, new_move)
+                // to test if a movement is feasible by the robot before doing the movement
+                //
             }
         }
 

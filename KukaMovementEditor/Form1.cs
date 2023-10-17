@@ -13,11 +13,24 @@ namespace KukaMovementEditor
     public partial class Form1 : Form
     {
         private KukaRoboter _KR;
+        private Timer _TimerPositionUpdate;
 
         public Form1()
         {
             InitializeComponent();
             _KR = new KukaRoboter(false);
+
+            //Create the timer
+            _TimerPositionUpdate = new Timer();
+            _TimerPositionUpdate.Interval = 1000;
+            _TimerPositionUpdate.Tick += PositionUpdate;
+            _TimerPositionUpdate.Start();
+        }
+
+        private void PositionUpdate(object sender, EventArgs e)
+        {
+            textBox_Joints.Text = _KR.GetJointsPosition();
+            textBox_Positions.Text = _KR.GetPositionCordinates();
         }
 
         private void IncrementalMoveRadioCheckedChange(object sender, EventArgs e)
@@ -81,7 +94,7 @@ namespace KukaMovementEditor
         private void IncrementalMovementClick(object sender, EventArgs e)
         {
             Button btn = (Button)sender;
-            _KR.Incremental_Move(btn.Text, Int32.Parse(textBox_DistanceStep.Text));
+            _KR.Incremental_Move(btn.Text, Int32.Parse(textBox_DistanceStep.Text), radioButton_Reference, radioButton_Tool, radioButton_JointMove);
         }
 
         private void btn_RobotSimulation_Click(object sender, EventArgs e)
